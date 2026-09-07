@@ -16,10 +16,10 @@
 .dash-jadwal-item em { font-style: normal; color: var(--text-muted); }
 
 .stat-card.highlight {
-  border-color: var(--accent-border);
+  border-color: var(--border);
 }
 .stat-card.highlight:hover {
-  border-color: var(--accent);
+  border-color: var(--border-strong);
 }
 
 .stat-card .value.status-hadir { color: var(--status-hadir); }

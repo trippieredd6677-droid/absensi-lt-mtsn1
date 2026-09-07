@@ -909,10 +909,22 @@ html[data-theme="dark"] .form-group input[type="date"]::-webkit-calendar-picker-
   .sidebar-brand-img {
     margin: 0 auto;
   }
+  /* Header kolom terpusat: logo, toggle, keluar — semua center di 74px */
+  .sidebar-header-row {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+  }
   .sidebar-header-actions {
     flex-direction: column;
-    margin-top: 8px;
+    gap: 6px;
+    margin-top: 0;
+    margin-left: 0;
   }
+  .mobile-logout { display: inline-flex; }
+  .sidebar-footer { display: none; }
   .sidebar-menu a,
   .sidebar-menu button {
     justify-content: center;

@@ -67,8 +67,9 @@
   text-align: center;
 }
 
+/* Statistik: satu baris kartu kompak, ikon + label sejajar */
 .stats-section {
-  margin-top: 32px;
+  margin-top: 0;
 }
 
 .stats-section h2 {
@@ -78,12 +79,45 @@
 
 .histori-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.histori-stats-grid .stat-card {
+  padding: 14px 16px;
+}
+
+.histori-stats-grid .stat-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.histori-stats-grid .stat-card h3 svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.histori-stats-grid .stat-card .value {
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.histori-stats-grid .stat-card .value.accent { color: var(--accent); }
+
+@media (max-width: 1024px) {
+  .histori-stats-grid { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
+  .histori-stats-grid .stat-card .value { font-size: 20px; }
 }
 
 @media (max-width: 768px) {
   .filter-section { grid-template-columns: 1fr; }
-  .pagination { flex-direction: column; }
+  .pagination { flex-direction: column; gap: 10px; }
   .histori-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-section h2 { font-size: 15px; }
 }
