@@ -9,6 +9,8 @@ import {
   ClockCounterClockwise,
   ListBullets,
   ShieldCheck,
+  Alarm,
+  PaperPlaneTilt,
 } from '@phosphor-icons/react'
 import api from '../../api'
 import Layout from '../../components/Layout'
@@ -17,23 +19,39 @@ import './AdminDashboard.css'
 function AdminDashboard({ user, onLogout }) {
   const [stats, setStats] = useState({})
   const [recent, setRecent] = useState([])
+  const [breakdown, setBreakdown] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [remindMsg, setRemindMsg] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetchStats()
+    fetchAll()
   }, [])
 
-  const fetchStats = async () => {
+  const fetchAll = async () => {
     try {
-      const response = await api.get('/admin/dashboard')
-      setStats(response.data)
-      const recentRes = await api.get('/absensi?limit=5')
-      setRecent(recentRes.data.absensi || [])
+      const [dash, rec, bd] = await Promise.all([
+        api.get('/admin/dashboard'),
+        api.get('/absensi?limit=5'),
+        api.get('/admin/guru-breakdown'),
+      ])
+      setStats(dash.data)
+      setRecent(rec.data.absensi || [])
+      setBreakdown(bd.data)
       setLoading(false)
     } catch (err) {
       console.error('Error fetching dashboard:', err)
       setLoading(false)
+    }
+  }
+
+  const sendRemind = async (guruId, name) => {
+    try {
+      await api.post(`/admin/remind/${guruId}`)
+      setRemindMsg(`Reminder tercatat untuk ${name}`)
+      setTimeout(() => setRemindMsg(''), 3000)
+    } catch (err) {
+      setRemindMsg('Gagal mengirim reminder')
     }
   }
 
@@ -43,6 +61,9 @@ function AdminDashboard({ user, onLogout }) {
   const trend = stats.trend || []
   const maxTrend = Math.max(1, ...trend.map((t) => t.count))
   const notSubmitted = stats.notSubmitted || []
+
+  const bdSummary = breakdown?.summary || {}
+  const lateList = (breakdown?.breakdown || []).filter((b) => b.late)
 
   const statusChips = [
     { key: 'hadir', label: 'Hadir', color: 'var(--status-hadir)' },
@@ -70,7 +91,7 @@ function AdminDashboard({ user, onLogout }) {
             <span className="stat-label">Belum Input</span>
             <span className="stat-chip"><Warning weight="duotone" /></span>
           </div>
-          <div className="stat-value">{notSubmitted.length}</div>
+          <div className="stat-value">{bdSummary.belum ?? notSubmitted.length}</div>
         </div>
         <div className="stat-card accent-brand">
           <div className="stat-row">
@@ -79,13 +100,12 @@ function AdminDashboard({ user, onLogout }) {
           </div>
           <div className="stat-value">{today.total || 0}</div>
         </div>
-        <div className="stat-card accent-brand">
+        <div className="stat-card accent-warn">
           <div className="stat-row">
-            <span className="stat-label">Kehadiran Hari Ini</span>
-            <span className="stat-chip"><CheckCircle weight="duotone" /></span>
+            <span className="stat-label">Terlambat</span>
+            <span className="stat-chip"><Alarm weight="duotone" /></span>
           </div>
-          <div className="stat-value">{today.hadir || 0} / {today.total || 0}</div>
-          <div className="stat-sub">hadir dari yang submit</div>
+          <div className="stat-value">{bdSummary.terlambat || 0}</div>
         </div>
       </div>
 
@@ -131,7 +151,7 @@ function AdminDashboard({ user, onLogout }) {
 
         <div className="card dash-panel">
           <h2>
-            <Warning weight="duotone" /> Guru Belum Input ({notSubmitted.length})
+            <Warning weight="duotone" /> Guru Belum Input ({bdSummary.belum ?? notSubmitted.length})
           </h2>
           {notSubmitted.length > 0 ? (
             <ul className="not-submitted">
@@ -139,39 +159,72 @@ function AdminDashboard({ user, onLogout }) {
                 <li key={g.id}>
                   <span className="ns-name">{g.full_name || g.username}</span>
                   {g.username && <span className="ns-user">@{g.username}</span>}
+                  <button
+                    className="btn btn-ghost btn-xs"
+                    title="Kirim reminder"
+                    onClick={() => sendRemind(g.id, g.full_name || g.username)}
+                  >
+                    <PaperPlaneTilt weight="duotone" />
+                  </button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="ns-empty">Semua guru sudah input absensi hari ini 🎉</p>
+            <p className="ns-empty">Semua guru sudah input absensi hari ini.</p>
+          )}
+
+          {lateList.length > 0 && (
+            <>
+              <h2 style={{ marginTop: '22px' }}>
+                <Alarm weight="duotone" /> Terlambat ({lateList.length})
+              </h2>
+              <ul className="late-list">
+                {lateList.map((g) => (
+                  <li key={g.id}>
+                    <span className="ns-name">{g.full_name}</span>
+                    <span className="late-tag">shift {g.shift}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
       </div>
 
+      {remindMsg && <div className="alert alert-success" style={{ marginTop: 16 }}>{remindMsg}</div>}
+
       <div className="admin-actions">
-        <div className="action-card" onClick={() => navigate('/admin/users')}>
-          <div className="action-icon"><Users weight="duotone" /></div>
-          <h3>Manajemen Guru</h3>
-          <p>Kelola akun guru dan data pribadi</p>
-          <button className="btn btn-secondary">Kelola <ArrowRight weight="bold" /></button>
+        <div className="adm-quick" onClick={() => navigate('/admin/users')}>
+          <div className="adm-quick-icon"><Users weight="duotone" /></div>
+          <div className="adm-quick-text">
+            <h3>Manajemen Guru</h3>
+            <p>Kelola akun guru dan data pribadi</p>
+          </div>
+          <ArrowRight weight="bold" className="adm-quick-arrow" />
         </div>
-        <div className="action-card" onClick={() => navigate('/admin/absensi')}>
-          <div className="action-icon"><ClipboardText weight="duotone" /></div>
-          <h3>Data Absensi</h3>
-          <p>Lihat dan kelola data absensi</p>
-          <button className="btn btn-secondary">Lihat <ArrowRight weight="bold" /></button>
+        <div className="adm-quick" onClick={() => navigate('/admin/absensi')}>
+          <div className="adm-quick-icon"><ClipboardText weight="duotone" /></div>
+          <div className="adm-quick-text">
+            <h3>Data Absensi</h3>
+            <p>Lihat dan kelola data absensi</p>
+          </div>
+          <ArrowRight weight="bold" className="adm-quick-arrow" />
         </div>
-        <div className="action-card" onClick={() => navigate('/admin/kelas')}>
-          <div className="action-icon"><ListBullets weight="duotone" /></div>
-          <h3>Kelola Kelas</h3>
-          <p>Atur kelas & shift untuk input absensi</p>
-          <button className="btn btn-secondary">Kelola <ArrowRight weight="bold" /></button>
+        <div className="adm-quick" onClick={() => navigate('/admin/kelas')}>
+          <div className="adm-quick-icon"><ListBullets weight="duotone" /></div>
+          <div className="adm-quick-text">
+            <h3>Kelola Kelas</h3>
+            <p>Atur kelas &amp; shift untuk input absensi</p>
+          </div>
+          <ArrowRight weight="bold" className="adm-quick-arrow" />
         </div>
-        <div className="action-card" onClick={() => navigate('/admin/audit')}>
-          <div className="action-icon"><ShieldCheck weight="duotone" /></div>
-          <h3>Audit Log</h3>
-          <p>Jejak aktivitas pengguna</p>
-          <button className="btn btn-secondary">Lihat <ArrowRight weight="bold" /></button>
+        <div className="adm-quick" onClick={() => navigate('/admin/audit')}>
+          <div className="adm-quick-icon"><ShieldCheck weight="duotone" /></div>
+          <div className="adm-quick-text">
+            <h3>Audit Log</h3>
+            <p>Jejak aktivitas pengguna</p>
+          </div>
+          <ArrowRight weight="bold" className="adm-quick-arrow" />
         </div>
       </div>
     </Layout>

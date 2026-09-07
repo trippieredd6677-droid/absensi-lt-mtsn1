@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
 const pool = require('../db');
 const { auditLog } = require('../middleware/auth');
+const { issueRefreshToken, consumeRefreshToken, revokeRefreshToken, revokeAllForUser } = require('../auth-tokens');
 const { sendOtpEmail } = require('../mailer');
 const upload = require('../middleware/upload');
 
@@ -42,19 +43,20 @@ router.post('/register', [
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert user
+    // Insert user — status 'pending': butuh persetujuan admin sebelum bisa login
     const result = await pool.query(
-      `INSERT INTO users (username, email, password, full_name, nip, kelas, jabatan, no_hp, role)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       RETURNING id, username, email, full_name, role`,
+      `INSERT INTO users (username, email, password, full_name, nip, kelas, jabatan, no_hp, role, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending')
+       RETURNING id, username, email, full_name, role, status`,
       [username, email, hashedPassword, full_name, nip, kelas, jabatan, no_hp, 'guru']
     );
 
-    await auditLog('CREATE', 'users', result.rows[0].id, {}, result.rows[0], req);
+    await auditLog('REGISTER_PENDING', 'users', result.rows[0].id, {}, result.rows[0], req);
 
     res.status(201).json({
-      message: 'User registered successfully',
-      user: result.rows[0],
+      // Jangan bocorkan data akun sebelum disetujui
+      message: 'Pendaftaran berhasil. Akun menunggu persetujuan admin sebelum dapat digunakan.',
+      status: 'pending',
     });
   } catch (err) {
     console.error('Register error:', err);
@@ -75,12 +77,14 @@ router.post('/login', [
   try {
     const { username, password } = req.body;
 
-    // Find user
+    // Find user (status apapun dulu, biar bisa kasih pesan spesifik utk pending/nonaktif)
     const result = await pool.query(
-      'SELECT * FROM users WHERE username = $1 AND status = $2',
-      [username, 'active']
+      'SELECT * FROM users WHERE username = $1 LIMIT 1',
+      [username]
     );
 
+    // Pesan sama utk user tak ada & password salah (anti user-enumeration).
+    // Pengecualian: kalau password BENAR tapi akun belum disetujui -> beri tahu statusnya.
     if (result.rows.length === 0) {
       return res.status(401).json({ message: 'Username atau password salah' });
     }
@@ -95,18 +99,29 @@ router.post('/login', [
       return res.status(401).json({ message: 'Username atau password salah' });
     }
 
-    // Generate JWT
+    if (user.status === 'pending') {
+      await auditLog('LOGIN_PENDING', 'users', user.id, {}, { username }, req);
+      return res.status(403).json({ message: 'Akun masih menunggu persetujuan admin. Hubungi admin sekolah.' });
+    }
+    if (user.status !== 'active') {
+      await auditLog('LOGIN_INACTIVE', 'users', user.id, {}, { username }, req);
+      return res.status(403).json({ message: 'Akun dinonaktifkan. Hubungi admin sekolah.' });
+    }
+
+    // Generate JWT (access, short-lived) + refresh token (rotatable)
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      { expiresIn: process.env.JWT_EXPIRE || '2h', algorithm: 'HS256' }
     );
+    const refresh = await issueRefreshToken(user.id, req);
 
     await auditLog('LOGIN', 'users', user.id, {}, { username, role: user.role }, req);
 
     res.json({
       message: 'Login successful',
       token,
+      refresh_token: refresh.token,
       user: {
         id: user.id,
         username: user.username,
@@ -120,6 +135,65 @@ router.post('/login', [
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: 'Kesalahan server' });
+  }
+});
+
+// Refresh sesi: tukar refresh token -> access JWT baru + refresh baru (rotasi).
+// Reuse refresh lama yang sudah revoked = indikasi token dicuri -> semua sesi user dicabut.
+router.post('/refresh', async (req, res) => {
+  try {
+    const { refresh_token } = req.body;
+    if (!refresh_token) {
+      return res.status(400).json({ message: 'refresh_token wajib diisi' });
+    }
+    const row = await consumeRefreshToken(refresh_token, req);
+    if (!row) {
+      return res.status(401).json({ message: 'Sesi tidak valid. Silakan login kembali.' });
+    }
+    // User harus masih aktif (kalau di-deactivate, refresh pun ditolak)
+    const u = await pool.query('SELECT id, username, role, status FROM users WHERE id = $1', [row.user_id]);
+    if (u.rows.length === 0 || u.rows[0].status !== 'active') {
+      await revokeAllForUser(row.user_id);
+      return res.status(401).json({ message: 'Akun tidak aktif. Silakan login kembali.' });
+    }
+    const user = u.rows[0];
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE || '2h', algorithm: 'HS256' }
+    );
+    const next = await issueRefreshToken(user.id, req);
+    await revokeRefreshToken(row.id, next.id);
+
+    res.json({
+      message: 'Token diperbarui',
+      token,
+      refresh_token: next.token,
+      user: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    console.error('Refresh error:', err);
+    res.status(500).json({ message: 'Kesalahan server' });
+  }
+});
+
+// Logout: cabut refresh token yang dikirim (best-effort; access JWT memang dibiarkan kedaluwarsa sendiri)
+router.post('/logout', async (req, res) => {
+  try {
+    const { refresh_token } = req.body;
+    if (refresh_token) {
+      const row = await consumeRefreshToken(refresh_token, req);
+      if (row) await revokeRefreshToken(row.id, null);
+    }
+    res.json({ message: 'Logout berhasil' });
+  } catch (err) {
+    console.error('Logout error:', err);
+    res.json({ message: 'Logout berhasil' });
   }
 });
 
@@ -231,6 +305,9 @@ router.put('/password', require('../middleware/auth').verifyToken, [
 
     await auditLog('CHANGE_PASSWORD', 'users', req.user.id, {}, { id: req.user.id }, req);
 
+    // Password berubah -> cabut semua sesi refresh lama (kecuali sesi ini; sederhananya: semua)
+    await revokeAllForUser(req.user.id);
+
     res.json({ message: 'Password berhasil diganti' });
   } catch (err) {
     console.error('Change password error:', err);
@@ -289,8 +366,10 @@ router.post('/forgot-password', [
     );
 
     const sendResult = await sendOtpEmail(lowerEmail, otp, user.full_name);
+    await auditLog('FORGOT_PASSWORD', 'users', user.id, {}, { email: lowerEmail, delivered: !!sendResult?.delivered }, req);
 
-    const dev = process.env.MAIL_LOGGING === 'true';
+    // Hanya boleh aktif di non-production — jangan pernah bocorkan OTP di response produksi
+    const dev = process.env.MAIL_LOGGING === 'true' && process.env.NODE_ENV !== 'production';
     res.json({
       message: 'Jika email terdaftar, kode OTP telah dikirim.',
       // Hanya dikembalikan saat dev logging — supaya alur teruji tanpa SMTP asli
@@ -350,6 +429,7 @@ router.post('/verify-otp', [
 
     // OTP benar -> tandai terpakai + terbitkan reset token (short-lived JWT)
     await pool.query('UPDATE password_resets SET used = true WHERE id = $1', [reset.id]);
+    await auditLog('OTP_VERIFIED', 'password_resets', reset.id, {}, { email: lowerEmail }, req);
 
     const resetToken = jwt.sign(
       { email: lowerEmail, purpose: 'password_reset' },
@@ -381,7 +461,7 @@ router.post('/reset-password', [
 
     let decoded;
     try {
-      decoded = jwt.verify(reset_token, process.env.JWT_SECRET);
+      decoded = jwt.verify(reset_token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
     } catch (e) {
       return res.status(400).json({ message: 'Tautan reset tidak valid atau berakhir.' });
     }
@@ -408,6 +488,9 @@ router.post('/reset-password', [
 
     // Bersihkan semua kode reset untuk email ini
     await pool.query('DELETE FROM password_resets WHERE email = $1', [lowerEmail]);
+
+    // Password berubah -> cabut semua sesi refresh lama
+    await revokeAllForUser(user.id);
 
     await auditLog('RESET_PASSWORD', 'users', user.id, {}, { id: user.id, email: lowerEmail }, req);
 

@@ -1,4 +1,4 @@
-// Data jadwal (layanan tambahan / FDS) — sumber: PDF 'Jadwal LT Gasal TA 2026/2027'
+// Data jadwal (layanan tambahan / FDS) — sumber: PDF 'Jadwal LT Gasal TA 2627_Revisi New' (full sync)
 // Dipakai oleh seed-jadwal.js (CLI) & auto-seed saat server start.
 
 const GURU_MAP = [
@@ -62,42 +62,103 @@ const GURU_MAP = [
 
 const JADWAL = [
   // Ahad
-  ['Ahad', '18.30 - 19.50', '9H', 'B1', null], ['Ahad', '18.30 - 19.50', '9I', 'Q1', null], ['Ahad', '18.30 - 19.50', '9J', 'H1', null],
-  // Senin 14.10-15.30
-  ['Senin', '14.10 - 15.30', '7D', 'I4', null], ['Senin', '14.10 - 15.30', '7E', 'J4', null],
-  ['Senin', '14.10 - 15.30', '8A', 'J1', null], ['Senin', '14.10 - 15.30', '8B', 'I1', null],
-  ['Senin', '14.10 - 15.30', '9A', 'J5', null], ['Senin', '14.10 - 15.30', '9B', 'I3', null],
-  ['Senin', '14.10 - 15.30', '9C', 'K5', null], ['Senin', '14.10 - 15.30', '9D', 'J2', null],
-  ['Senin', '14.10 - 15.30', '9E', 'K6', null], ['Senin', '14.10 - 15.30', '9F', 'G3', null],
-  ['Senin', '14.10 - 15.30', '9G', 'J3', null], ['Senin', '14.10 - 15.30', '9H', 'G1', null],
-  ['Senin', '14.10 - 15.30', '9I', 'G4', null], ['Senin', '14.10 - 15.30', '9J', 'H2', null],
-  // Senin 18.30-19.50
-  ['Senin', '18.30 - 19.50', '9H', 'D1', null], ['Senin', '18.30 - 19.50', '9I', 'Q1', null], ['Senin', '18.30 - 19.50', '9J', 'C2', null],
-  // Selasa 14.10-15.30
-  ['Selasa', '14.10 - 15.30', '7D', 'J2', null], ['Selasa', '14.10 - 15.30', '7E', 'I5', null],
-  ['Selasa', '14.10 - 15.30', '8A', 'I3', null], ['Selasa', '14.10 - 15.30', '8B', 'J3', null],
-  ['Selasa', '14.10 - 15.30', '9A', 'K6', null], ['Selasa', '14.10 - 15.30', '9B', 'G4', null],
-  ['Selasa', '14.10 - 15.30', '9C', 'I1', null], ['Selasa', '14.10 - 15.30', '9D', 'K4', null],
-  ['Selasa', '14.10 - 15.30', '9E', 'G6', null], ['Selasa', '14.10 - 15.30', '9F', 'K5', null],
-  ['Selasa', '14.10 - 15.30', '9G', 'K2', null], ['Selasa', '14.10 - 15.30', '9H', 'J1', null],
-  ['Selasa', '14.10 - 15.30', '9I', 'J6', null], ['Selasa', '14.10 - 15.30', '9J', 'J5', null],
-  // Selasa 18.30-19.50
-  ['Selasa', '18.30 - 19.50', '9H', 'Q1', null], ['Selasa', '18.30 - 19.50', '9I', 'H1', null], ['Selasa', '18.30 - 19.50', '9J', 'B2', null],
-  // Rabu 18.30-19.50 (7D/8A = sel kombinasi -> kode + keterangan)
-  ['Rabu', '18.30 - 19.50', '7D', 'I1', 'EA'], ['Rabu', '18.30 - 19.50', '8A', 'O2', 'Infotek'],
-  ['Rabu', '18.30 - 19.50', '9H', 'C2', null], ['Rabu', '18.30 - 19.50', '9I', 'B1', null], ['Rabu', '18.30 - 19.50', '9J', 'S8', null],
-  // Rabu 14.10-15.30 (Ekstra; 7D-8B = OLIM)
-  ['Rabu', '14.10 - 15.30', '7D', null, 'OLIM'], ['Rabu', '14.10 - 15.30', '7E', null, 'OLIM'],
-  ['Rabu', '14.10 - 15.30', '8A', null, 'OLIM'], ['Rabu', '14.10 - 15.30', '8B', null, 'OLIM'],
+  ['Ahad', '14.10 - 15.30', '7 INF', 'I5', null], ['Ahad', '14.10 - 15.30', '7 OR', 'N1', null],
+  ['Ahad', '14.10 - 15.30', '7 RST', 'G6', null], ['Ahad', '14.10 - 15.30', '7 TH', 'Q1', null],
+  ['Ahad', '14.10 - 15.30', '7A', 'H4', null], ['Ahad', '14.10 - 15.30', '7B', 'S6', null],
+  ['Ahad', '14.10 - 15.30', '7C', 'J6', null], ['Ahad', '14.10 - 15.30', '7D', 'I4', null],
+  ['Ahad', '14.10 - 15.30', '7E', 'J4', null], ['Ahad', '14.10 - 15.30', '8 BIL', 'I2', null],
+  ['Ahad', '14.10 - 15.30', '8 OR', 'N2', null], ['Ahad', '14.10 - 15.30', '8 RST', 'G5', null],
+  ['Ahad', '14.10 - 15.30', '8 THF', 'S8', null], ['Ahad', '14.10 - 15.30', '8A', 'J1', null],
+  ['Ahad', '14.10 - 15.30', '8B', 'I1', null], ['Ahad', '14.10 - 15.30', '8C', 'C1', null],
+  ['Ahad', '14.10 - 15.30', '8D', 'S1', null], ['Ahad', '14.10 - 15.30', '8E', 'K4', null],
+  ['Ahad', '14.10 - 15.30', '9A', 'J5', null], ['Ahad', '14.10 - 15.30', '9B', 'I3', null],
+  ['Ahad', '14.10 - 15.30', '9C', 'K5', null], ['Ahad', '14.10 - 15.30', '9D', 'J2', null],
+  ['Ahad', '14.10 - 15.30', '9E', 'K6', null], ['Ahad', '14.10 - 15.30', '9F', 'G3', null],
+  ['Ahad', '14.10 - 15.30', '9G', 'J3', null], ['Ahad', '14.10 - 15.30', '9H', 'G1', null],
+  ['Ahad', '14.10 - 15.30', '9I', 'G4', null], ['Ahad', '14.10 - 15.30', '9J', 'H2', null],
+  ['Ahad', '18.30 - 19.50', '7A', 'S9', null], ['Ahad', '18.30 - 19.50', '7B', 'J6', null],
+  ['Ahad', '18.30 - 19.50', '7C', 'H2', null], ['Ahad', '18.30 - 19.50', '8C', 'S8', null],
+  ['Ahad', '18.30 - 19.50', '8D', 'P1', null], ['Ahad', '18.30 - 19.50', '8E', 'E1', null],
+  ['Ahad', '18.30 - 19.50', '9H', 'B1', null], ['Ahad', '18.30 - 19.50', '9I', 'Q1', null],
+  ['Ahad', '18.30 - 19.50', '9J', 'H1', null],
+
+  // Senin
+  ['Senin', '14.10 - 15.30', '7 BIL', 'I4', null], ['Senin', '14.10 - 15.30', '7 OR', 'N1', null],
+  ['Senin', '14.10 - 15.30', '7 TH', 'Q1', null], ['Senin', '14.10 - 15.30', '7A', 'H4', null],
+  ['Senin', '14.10 - 15.30', '7B', 'S2', null], ['Senin', '14.10 - 15.30', '7C', 'Q2', null],
+  ['Senin', '14.10 - 15.30', '7D', 'J2', null], ['Senin', '14.10 - 15.30', '7E', 'I5', null],
+  ['Senin', '14.10 - 15.30', '8 INF', 'O2', null], ['Senin', '14.10 - 15.30', '8 OR', 'N2', null],
+  ['Senin', '14.10 - 15.30', '8 THF', 'S8', null], ['Senin', '14.10 - 15.30', '8A', 'I3', null],
+  ['Senin', '14.10 - 15.30', '8B', 'J3', null], ['Senin', '14.10 - 15.30', '8C', 'H3', null],
+  ['Senin', '14.10 - 15.30', '8D', 'G1', null], ['Senin', '14.10 - 15.30', '8E', 'G3', null],
+  ['Senin', '14.10 - 15.30', '9A', 'K6', null], ['Senin', '14.10 - 15.30', '9B', 'G4', null],
+  ['Senin', '14.10 - 15.30', '9C', 'I1', null], ['Senin', '14.10 - 15.30', '9D', 'K4', null],
+  ['Senin', '14.10 - 15.30', '9E', 'G6', null], ['Senin', '14.10 - 15.30', '9F', 'K5', null],
+  ['Senin', '14.10 - 15.30', '9G', 'K2', null], ['Senin', '14.10 - 15.30', '9H', 'J1', null],
+  ['Senin', '14.10 - 15.30', '9I', 'J6', null], ['Senin', '14.10 - 15.30', '9J', 'J5', null],
+  ['Senin', '18.30 - 19.50', '7A', 'S1', null], ['Senin', '18.30 - 19.50', '7B', 'Q2', null],
+  ['Senin', '18.30 - 19.50', '7C', 'S6', null], ['Senin', '18.30 - 19.50', '8C', 'H3', null],
+  ['Senin', '18.30 - 19.50', '8D', 'E1', null], ['Senin', '18.30 - 19.50', '8E', 'S8', null],
+  ['Senin', '18.30 - 19.50', '9H', 'D1', null], ['Senin', '18.30 - 19.50', '9I', 'Q1', null],
+  ['Senin', '18.30 - 19.50', '9J', 'C2', null],
+
+  // Selasa
+  ['Selasa', '14.10 - 15.30', '7A', 'H4', null], ['Selasa', '14.10 - 15.30', '7B', 'Q2', null],
+  ['Selasa', '14.10 - 15.30', '7C', 'S5', null], ['Selasa', '14.10 - 15.30', '7D', null, 'OLIM'],
+  ['Selasa', '14.10 - 15.30', '7E', null, 'OLIM'], ['Selasa', '14.10 - 15.30', '8A', null, 'OLIM'],
+  ['Selasa', '14.10 - 15.30', '8B', null, 'OLIM'], ['Selasa', '14.10 - 15.30', '8C', 'K1', null],
+  ['Selasa', '14.10 - 15.30', '8D', 'P1', null], ['Selasa', '14.10 - 15.30', '8E', 'S8', null],
+  ['Selasa', '14.10 - 15.30', '9A', 'G2', null], ['Selasa', '14.10 - 15.30', '9B', 'B2', null],
+  ['Selasa', '14.10 - 15.30', '9C', 'J2', null], ['Selasa', '14.10 - 15.30', '9D', 'G6', null],
+  ['Selasa', '14.10 - 15.30', '9E', 'J1', null], ['Selasa', '14.10 - 15.30', '9F', 'I4', null],
+  ['Selasa', '14.10 - 15.30', '9G', 'I5', null], ['Selasa', '14.10 - 15.30', '9H', 'Q1', null],
+  ['Selasa', '14.10 - 15.30', '9I', 'I3', null], ['Selasa', '14.10 - 15.30', '9J', 'I2', null],
+  ['Selasa', '18.30 - 19.50', '7A', 'S10', null], ['Selasa', '18.30 - 19.50', '7B', 'Q2', null],
+  ['Selasa', '18.30 - 19.50', '7C', 'D3', null], ['Selasa', '18.30 - 19.50', '8C', 'S8', null],
+  ['Selasa', '18.30 - 19.50', '8D', 'S3', null], ['Selasa', '18.30 - 19.50', '8E', 'D2', null],
+  ['Selasa', '18.30 - 19.50', '9H', 'Q1', null], ['Selasa', '18.30 - 19.50', '9I', 'H1', null],
+  ['Selasa', '18.30 - 19.50', '9J', 'B2', null],
+
+  // Rabu
+  ['Rabu', '14.10 - 15.30', '7A', 'J2', null], ['Rabu', '14.10 - 15.30', '7B', 'D3', null],
+  ['Rabu', '14.10 - 15.30', '7C', 'Q2', null], ['Rabu', '14.10 - 15.30', '7D', null, 'OLIM'],
+  ['Rabu', '14.10 - 15.30', '7E', null, 'OLIM'], ['Rabu', '14.10 - 15.30', '8A', null, 'OLIM'],
+  ['Rabu', '14.10 - 15.30', '8B', null, 'OLIM'], ['Rabu', '14.10 - 15.30', '8C', 'S8', null],
+  ['Rabu', '14.10 - 15.30', '8D', 'S3', null], ['Rabu', '14.10 - 15.30', '8E', 'H1', null],
   ['Rabu', '14.10 - 15.30', '9A', 'H4', null], ['Rabu', '14.10 - 15.30', '9B', 'K3', null],
   ['Rabu', '14.10 - 15.30', '9C', 'G2', null], ['Rabu', '14.10 - 15.30', '9D', 'I5', null],
   ['Rabu', '14.10 - 15.30', '9E', 'I4', null], ['Rabu', '14.10 - 15.30', '9F', 'J3', null],
   ['Rabu', '14.10 - 15.30', '9G', 'G1', null], ['Rabu', '14.10 - 15.30', '9H', 'I1', null],
   ['Rabu', '14.10 - 15.30', '9I', 'D2', null], ['Rabu', '14.10 - 15.30', '9J', 'G3', null],
-  // Jumat 14.00-15.20
-  ['Jumat', '14.00 - 15.20', '9C', 'I5', null], ['Jumat', '14.00 - 15.20', '9D', 'G2', null],
-  ['Jumat', '14.00 - 15.20', '9E', 'Q1', null], ['Jumat', '14.00 - 15.20', '9F', 'I3', null],
-  ['Jumat', '14.00 - 15.20', '9G', 'N3', null],
+  ['Rabu', '18.30 - 19.50', '7A', 'S9', null], ['Rabu', '18.30 - 19.50', '7B', 'S2', null],
+  ['Rabu', '18.30 - 19.50', '7C', 'H2', null], ['Rabu', '18.30 - 19.50', '7D', 'I1', 'EA'],
+  ['Rabu', '18.30 - 19.50', '8A', 'O2', 'Infotek'], ['Rabu', '18.30 - 19.50', '8C', 'G4', null],
+  ['Rabu', '18.30 - 19.50', '8D', 'K6', null], ['Rabu', '18.30 - 19.50', '8E', 'H1', null],
+  ['Rabu', '18.30 - 19.50', '9H', 'C2', null], ['Rabu', '18.30 - 19.50', '9I', 'B1', null],
+  ['Rabu', '18.30 - 19.50', '9J', 'S8', null],
+
+  // Kamis
+  ['Kamis', '14.10 - 15.30', '9A', 'I2', null], ['Kamis', '14.10 - 15.30', '9B', 'J6', null],
+  ['Kamis', '14.10 - 15.30', '9H', 'K4', null], ['Kamis', '14.10 - 15.30', '9I', 'K3', null],
+  ['Kamis', '14.10 - 15.30', '9J', 'K2', null], ['Kamis', '18.30 - 19.50', '7A', 'S4', 'Putra'],
+  ['Kamis', '18.30 - 19.50', '7B', 'S3', 'Putri'], ['Kamis', '18.30 - 19.50', '8C', 'K4', 'Putra'],
+  ['Kamis', '18.30 - 19.50', '8D', 'S2', 'Putri'], ['Kamis', '18.30 - 19.50', '9H', 'D2', null],
+  ['Kamis', '18.30 - 19.50', '9I', 'S6', null],
+
+  // Jumat
+  ['Jumat', '14.00 - 15.20', '8D', 'S9', null], ['Jumat', '14.00 - 15.20', '9C', 'I5', null],
+  ['Jumat', '14.00 - 15.20', '9D', 'G2', null], ['Jumat', '14.00 - 15.20', '9E', 'Q1', null],
+  ['Jumat', '14.00 - 15.20', '9F', 'I3', null], ['Jumat', '14.00 - 15.20', '9G', 'N3', null],
+  ['Jumat', '18.30 - 19.50', '7A', 'S6', null], ['Jumat', '18.30 - 19.50', '7B', 'S5', null],
+  ['Jumat', '18.30 - 19.50', '7C', 'Q2', null], ['Jumat', '18.30 - 19.50', '8C', 'E1', null],
+  ['Jumat', '18.30 - 19.50', '8D', 'S3', null], ['Jumat', '18.30 - 19.50', '8E', 'S8', null],
+  ['Jumat', '18.30 - 19.50', '9H', 'H2', null], ['Jumat', '18.30 - 19.50', '9I', 'S10', null],
+  ['Jumat', '18.30 - 19.50', '9J', 'B1', null],
+
+  // Sabtu
+  ['Sabtu', '14.10 - 15.30', '9H', 'H3', null], ['Sabtu', '14.10 - 15.30', '9I', 'B2', null],
+  ['Sabtu', '14.10 - 15.30', '9J', 'S8', null],
+
 ];
 
 module.exports = { GURU_MAP, JADWAL };

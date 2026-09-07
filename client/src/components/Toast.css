@@ -22,6 +22,7 @@
 .toast-info .toast-icon { color: var(--accent); }
 .toast-close {
   background: none; border: none; color: var(--text-faint);
-  cursor: pointer; font-size: 13px; line-height: 1; padding: 2px 3px;
+  cursor: pointer; line-height: 1; padding: 2px 3px; display: inline-flex;
 }
+.toast-close svg { width: 14px; height: 14px; }
 .toast-close:hover { color: var(--text); }

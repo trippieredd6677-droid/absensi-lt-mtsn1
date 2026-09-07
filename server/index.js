@@ -1,7 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+// .env menang atas env lama dari shell (dotenv default tidak menimpa var yang sudah ada)
+require('dotenv').config({ override: true });
+
+// Guard: jangan jalankan dengan secret placeholder / lemah
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 || /change_this|your_?jwt/i.test(process.env.JWT_SECRET)) {
+  console.error('✗ JWT_SECRET tidak aman (hilang, <32 char, atau placeholder). Set di .env lalu restart.');
+  process.exit(1);
+}
+
+const { seed } = require('./seed-jadwal');
 
 const authRoutes = require('./routes/auth');
 const absensiRoutes = require('./routes/absensi');
@@ -132,13 +141,14 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 runMigrations()
-  .then(() => {
+.then(() => seed())
+.then(() => {
     app.listen(PORT, () => {
       console.log(`✓ Server running on http://localhost:${PORT}`);
       console.log(`✓ Environment: ${process.env.NODE_ENV}`);
     });
   })
-  .catch((err) => {
+.catch((err) => {
     console.error('Migration error:', err);
     process.exit(1);
-  });
+  })

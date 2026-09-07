@@ -66,6 +66,49 @@ router.post('/', verifyToken, isGuruOrAdmin, upload.single('foto_kegiatan'), [
   }
 });
 
+// Admin: input absensi manual atas nama guru (backfill tanggal apa saja)
+router.post('/admin-create', verifyToken, isAdmin, upload.single('foto_kegiatan'), [
+  body('user_id').isInt().withMessage('user_id wajib'),
+  body('tanggal').isISO8601().withMessage('Format tanggal tidak valid'),
+  body('shift').notEmpty().withMessage('Shift wajib diisi'),
+  body('kelas').notEmpty().withMessage('Kelas wajib diisi'),
+  body('status').isIn(['hadir', 'sakit', 'izin', 'alpa']).withMessage('Status tidak valid'),
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  try {
+    const { user_id, tanggal, shift, kelas, status, catatan } = req.body;
+    const fotoKegiatan = req.file ? req.file.filename : null;
+    const ipAddress = req.ip || req.connection.remoteAddress;
+
+    const date = new Date(tanggal);
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const hari = days[date.getDay()];
+
+    const own = await pool.query('SELECT id, role, status FROM users WHERE id = $1', [user_id]);
+    if (own.rows.length === 0) return res.status(404).json({ message: 'User tidak ditemukan' });
+
+    const existing = await pool.query(
+      'SELECT id FROM absensi WHERE user_id = $1 AND tanggal = $2 AND shift = $3',
+      [user_id, tanggal, shift]
+    );
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ message: 'Absensi untuk guru, tanggal & shift ini sudah ada' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO absensi (user_id, tanggal, hari, shift, kelas, status, foto_kegiatan, catatan, ip_address)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+      [user_id, tanggal, hari, shift, kelas, status, fotoKegiatan, catatan || null, ipAddress]
+    );
+    await auditLog('CREATE', 'absensi', result.rows[0].id, {}, result.rows[0], req);
+    res.status(201).json({ message: 'Absensi manual berhasil dibuat', absensi: result.rows[0] });
+  } catch (err) {
+    console.error('Admin create absensi error:', err);
+    res.status(500).json({ message: 'Kesalahan server' });
+  }
+});
+
 // Get absensi statistics (per user if guru, all if admin) for a given month/year
 router.get('/stats', verifyToken, isGuruOrAdmin, async (req, res) => {
   try {

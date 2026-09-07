@@ -18,7 +18,7 @@ router.get('/', verifyToken, isGuruOrAdmin, async (req, res) => {
 
 // Tambah kelas — admin
 router.post('/', verifyToken, isAdmin, [
-  body('nama').notEmpty().withMessage('Nama kelas wajib diisi').isLength({ max: 10 }).withMessage('Maks 10 karakter'),
+  body('nama').notEmpty().withMessage('Nama kelas wajib diisi').isLength({ max: 30 }).withMessage('Maks 30 karakter'),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
@@ -41,7 +41,7 @@ router.post('/', verifyToken, isAdmin, [
 
 // Ubah kelas — admin
 router.put('/:id', verifyToken, isAdmin, [
-  body('nama').notEmpty().withMessage('Nama kelas wajib diisi').isLength({ max: 10 }).withMessage('Maks 10 karakter'),
+  body('nama').notEmpty().withMessage('Nama kelas wajib diisi').isLength({ max: 30 }).withMessage('Maks 30 karakter'),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });

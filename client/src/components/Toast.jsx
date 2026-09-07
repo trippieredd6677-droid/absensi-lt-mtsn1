@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { CheckCircle, XCircle, Info } from '@phosphor-icons/react'
+import { CheckCircle, XCircle, Info, X } from '@phosphor-icons/react'
 import './Toast.css'
 
 const ICONS = { success: CheckCircle, error: XCircle, info: Info }
@@ -19,7 +19,7 @@ function Toast({ open, message, type = 'success', onClose, duration = 3200 }) {
     <div className={`toast toast-${type}`} role="status">
       <Icon weight="duotone" className="toast-icon" />
       <span className="toast-msg">{message}</span>
-      <button className="toast-close" onClick={onClose} aria-label="Tutup">✕</button>
+      <button className="toast-close" onClick={onClose} aria-label="Tutup"><X weight="bold" /></button>
     </div>
   )
 }

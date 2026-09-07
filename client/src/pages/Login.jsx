@@ -33,6 +33,7 @@ function Login({ onLogin }) {
         password,
       })
 
+      localStorage.setItem('refresh_token', response.data.refresh_token)
       onLogin(response.data.token, response.data.user)
 
       if (response.data.user.role === 'admin') {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { CaretLeft, CaretRight, ShieldCheck } from '@phosphor-icons/react'
+import { CaretLeft, CaretRight, ShieldCheck, FunnelSimple, X } from '@phosphor-icons/react'
 import api from '../../api'
 import Layout from '../../components/Layout'
 import './AdminAuditLog.css'
@@ -12,6 +12,14 @@ const ACTION_LABEL = {
   RESET_PASSWORD: 'Reset Password',
   ACTIVATE: 'Aktifkan',
   DEACTIVATE: 'Nonaktifkan',
+  BULK_STATUS: 'Bulk Status',
+  BULK_RESET: 'Bulk Reset PW',
+  BULK_DELETE: 'Bulk Hapus',
+  LINK_GURU_MAP: 'Link Guru Map',
+  ABSENSI_UPDATE: 'Edit Absensi',
+  ABSENSI_DELETE: 'Hapus Absensi',
+  REMIND: 'Reminder',
+  IMPERSONATE: 'Impersonate',
 }
 
 const ACTION_COLOR = {
@@ -22,6 +30,14 @@ const ACTION_COLOR = {
   RESET_PASSWORD: 'warn',
   ACTIVATE: 'ok',
   DEACTIVATE: 'warn',
+  BULK_STATUS: 'accent',
+  BULK_RESET: 'warn',
+  BULK_DELETE: 'danger',
+  LINK_GURU_MAP: 'accent',
+  ABSENSI_UPDATE: 'accent',
+  ABSENSI_DELETE: 'danger',
+  REMIND: 'ok',
+  IMPERSONATE: 'warn',
 }
 
 function fmtWaktu(iso) {
@@ -37,16 +53,36 @@ function AdminAuditLog({ user, onLogout }) {
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [actions, setActions] = useState([])
+  const [filters, setFilters] = useState({
+    action: '',
+    username: '',
+    date_from: '',
+    date_to: '',
+  })
   const limit = 20
+
+  useEffect(() => {
+    api.get('/admin/audit-actions').then((r) => setActions(r.data || [])).catch(() => setActions([]))
+  }, [])
 
   useEffect(() => {
     fetchLogs()
   }, [page])
 
+  useEffect(() => {
+    setPage(1)
+  }, [filters])
+
   const fetchLogs = async () => {
     try {
       setLoading(true)
-      const res = await api.get(`/admin/audit-logs?page=${page}&limit=${limit}`)
+      const params = [`page=${page}`, `limit=${limit}`]
+      if (filters.action) params.push(`action=${filters.action}`)
+      if (filters.username) params.push(`username=${encodeURIComponent(filters.username)}`)
+      if (filters.date_from) params.push(`date_from=${filters.date_from}`)
+      if (filters.date_to) params.push(`date_to=${filters.date_to}`)
+      const res = await api.get(`/admin/audit-logs?${params.join('&')}`)
       setLogs(res.data.logs || [])
       setTotal(res.data.pagination?.total || 0)
     } catch (err) {
@@ -54,6 +90,17 @@ function AdminAuditLog({ user, onLogout }) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const applyFilter = () => {
+    if (page !== 1) setPage(1)
+    else fetchLogs()
+  }
+
+  const resetFilter = () => {
+    setFilters({ action: '', username: '', date_from: '', date_to: '' })
+    if (page !== 1) setPage(1)
+    else fetchLogs()
   }
 
   const pages = Math.ceil(total / limit)
@@ -65,6 +112,44 @@ function AdminAuditLog({ user, onLogout }) {
       </div>
 
       <div className="card">
+        <div className="audit-filter">
+          <div className="filter-group">
+            <label>Aksi</label>
+            <select value={filters.action} onChange={(e) => setFilters({ ...filters, action: e.target.value })}>
+              <option value="">Semua Aksi</option>
+              {actions.map((a) => (
+                <option key={a} value={a}>{ACTION_LABEL[a] || a}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label>Pengguna</label>
+            <input
+              type="text"
+              placeholder="username…"
+              value={filters.username}
+              onChange={(e) => setFilters({ ...filters, username: e.target.value })}
+              onKeyDown={(e) => e.key === 'Enter' && applyFilter()}
+            />
+          </div>
+          <div className="filter-group">
+            <label>Dari</label>
+            <input type="date" value={filters.date_from} onChange={(e) => setFilters({ ...filters, date_from: e.target.value })} />
+          </div>
+          <div className="filter-group">
+            <label>Sampai</label>
+            <input type="date" value={filters.date_to} onChange={(e) => setFilters({ ...filters, date_to: e.target.value })} />
+          </div>
+          <div className="filter-group filter-actions">
+            <button className="btn btn-primary btn-sm" onClick={applyFilter}>
+              <FunnelSimple weight="bold" /> Filter
+            </button>
+            <button className="btn btn-secondary btn-sm" onClick={resetFilter}>
+              <X weight="bold" /> Reset
+            </button>
+          </div>
+        </div>
+
         {loading ? (
           <p className="audit-loading">Memuat data...</p>
         ) : logs.length > 0 ? (
@@ -76,6 +161,7 @@ function AdminAuditLog({ user, onLogout }) {
                   <th>Pengguna</th>
                   <th>Aksi</th>
                   <th>Objek</th>
+                  <th>Detail</th>
                   <th>IP</th>
                 </tr>
               </thead>
@@ -90,6 +176,9 @@ function AdminAuditLog({ user, onLogout }) {
                       </span>
                     </td>
                     <td><code>{l.table_name || '-'} #{l.record_id || '-'}</code></td>
+                    <td className="audit-detail">
+                      {l.new_value ? <span className="audit-change">{l.new_value}</span> : '-'}
+                    </td>
                     <td className="audit-ip">{l.ip_address || '-'}</td>
                   </tr>
                 ))}

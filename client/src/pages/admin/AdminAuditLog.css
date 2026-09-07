@@ -3,17 +3,49 @@
 .table th:nth-child(2), .table td:nth-child(2) { max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .table th:nth-child(4), .table td:nth-child(4) { white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
 .audit-loading svg { width: 20px; height: 20px; color: var(--accent); }
-.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12.5px; }
+.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12px; }
 .audit-ip { color: var(--text-faint); font-size: 12px; }
 .audit-badge {
   display: inline-block;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 .audit-accent { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
 .audit-ok { background: var(--status-hadir-bg); color: var(--status-hadir); border: 1px solid var(--accent-border); }
 .audit-danger { background: var(--status-alpa-bg); color: var(--status-alpa); border: 1px solid var(--status-alpa-bg); }
-.audit-warn { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+.audit-warn { background: var(--status-sakit-bg); color: var(--status-sakit); border: 1px solid var(--status-sakit); }
+
+.audit-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.audit-filter .filter-group { display: flex; flex-direction: column; gap: 5px; min-width: 140px; }
+.audit-filter .filter-group label { font-size: 11px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+.audit-filter .filter-group input,
+.audit-filter .filter-group select {
+  padding: 7px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+}
+.audit-filter .filter-actions { flex-direction: row; gap: 8px; min-width: 0; }
+.audit-detail { font-size: 12px; color: var(--text-muted); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audit-change { font-family: ui-monospace, monospace; font-size: 11px; }
+
+@media (max-width: 768px) {
+  .audit-filter { flex-direction: column; align-items: stretch; }
+  .audit-filter .filter-group { min-width: 100%; }
+  .audit-filter .filter-actions { justify-content: flex-end; }
+  .table th:nth-child(5), .table td:nth-child(5) { display: none; }
+}
+

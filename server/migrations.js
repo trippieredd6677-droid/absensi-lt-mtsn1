@@ -114,7 +114,34 @@ async function runMigrations() {
     CREATE INDEX IF NOT EXISTS idx_audit_log_user_id ON audit_log(user_id);
   `);
 
-  console.log('✓ Migrations ready (password_resets, kelas, shift, users, absensi, audit_log)');
+  // Tabel refresh token (rotasi + revoke; hash disimpan, bukan token mentah) — idempotent
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS refresh_tokens (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      token_hash VARCHAR(255) NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      revoked BOOLEAN DEFAULT false,
+      replaced_by INTEGER NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      last_used_at TIMESTAMP NULL,
+      ip_address VARCHAR(64) NULL,
+      user_agent TEXT NULL
+    );
+  `);
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id);`);
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash ON refresh_tokens(token_hash);`);
+
+  // Tabel settings (key/value) untuk konfigurasi app (jam telat dsb)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS settings (
+      key VARCHAR(50) PRIMARY KEY,
+      value TEXT,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  console.log('✓ Migrations ready (password_resets, kelas, shift, users, absensi, audit_log, settings)');
 
   // ===== Fitur JADWAL (layanan tambahan / FDS) =====
   // guru_map: pemetaan kode (dari PDF jadwal) -> guru + jenis layanan
@@ -127,21 +154,100 @@ async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
-  // jadwal: (hari, jam, kelas) -> kode guru (NULL untuk aktivitas khusus: Olim/Ekstra/Pramuka)
+  // jadwal: slot (hari, jam, kelas, gender_target) -> kode guru / keterangan aktivitas
+  // gender_target ('Putra'/'Putri'/'Campur') bagian dari kunci unik supaya baris
+  // "Pembinaan Putra" & "Pembinaan Putri" pada slot yang sama tidak saling menimpa.
   await pool.query(`
     CREATE TABLE IF NOT EXISTS jadwal (
       id SERIAL PRIMARY KEY,
       hari VARCHAR(12) NOT NULL,
       jam VARCHAR(20) NOT NULL,
-      kelas VARCHAR(12) NOT NULL,
+      kelas VARCHAR(40) NOT NULL,
+      gender_target VARCHAR(10) NOT NULL DEFAULT 'Campur',
+      program VARCHAR(20),
       kode_guru VARCHAR(10) REFERENCES guru_map(kode) ON DELETE CASCADE,
       keterangan VARCHAR(120),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE(hari, jam, kelas)
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
   // Backward-compat: kalau kolom sudah ada dengan NOT NULL dari versi lama, longgarkan.
   await pool.query(`ALTER TABLE jadwal ALTER COLUMN kode_guru DROP NOT NULL`);
+
+  // Evolusi skema untuk DB lama (idempotent): kelas lebih lebar + kolom baru + kunci unik baru
+  await pool.query(`ALTER TABLE jadwal ALTER COLUMN kelas TYPE VARCHAR(40)`);
+  await pool.query(`ALTER TABLE jadwal ADD COLUMN IF NOT EXISTS gender_target VARCHAR(10) NOT NULL DEFAULT 'Campur'`);
+  await pool.query(`ALTER TABLE jadwal ADD COLUMN IF NOT EXISTS program VARCHAR(20)`);
+
+  // jadwal_source: salinan jadwal tanpa FK (sinkron dengan jadwal saat tambah/edit/hapus,
+  // dipakai juga oleh import Excel). Tanpa tabel ini setiap simpan jadwal akan gagal.
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS jadwal_source (
+      id SERIAL PRIMARY KEY,
+      hari VARCHAR(12) NOT NULL,
+      jam VARCHAR(20) NOT NULL,
+      kelas VARCHAR(40) NOT NULL,
+      gender_target VARCHAR(10) NOT NULL DEFAULT 'Campur',
+      program VARCHAR(20),
+      kode_guru VARCHAR(10),
+      keterangan VARCHAR(120),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await pool.query(`ALTER TABLE jadwal_source ALTER COLUMN kelas TYPE VARCHAR(40)`);
+  await pool.query(`ALTER TABLE jadwal_source ADD COLUMN IF NOT EXISTS gender_target VARCHAR(10) NOT NULL DEFAULT 'Campur'`);
+  await pool.query(`ALTER TABLE jadwal_source ADD COLUMN IF NOT EXISTS program VARCHAR(20)`);
+
+  // Ganti kunci unik lama (hari,jam,kelas) -> (hari,jam,kelas,gender_target).
+  // Nama constraint lama dihasilkan otomatis oleh CREATE TABLE: <tabel>_<kolom>_key.
+  const constraintExists = async (table, constraint) => {
+    const { rowCount } = await pool.query(
+      'SELECT 1 FROM pg_constraint WHERE conname = $1 AND conrelid = to_regclass($2)',
+      [constraint, table]
+    );
+    return rowCount > 0;
+  };
+  const dropConstraintIfExists = async (table, constraint) => {
+    if (await constraintExists(table, constraint)) {
+      await pool.query(`ALTER TABLE ${table} DROP CONSTRAINT ${constraint}`);
+    }
+  };
+  const addConstraintIfNotExists = async (table, constraint, definition) => {
+    if (!(await constraintExists(table, constraint))) {
+      await pool.query(`ALTER TABLE ${table} ADD CONSTRAINT ${constraint} ${definition}`);
+    }
+  };
+  await dropConstraintIfExists('jadwal', 'jadwal_hari_jam_kelas_key');
+  await addConstraintIfNotExists('jadwal', 'jadwal_slot_unique', 'UNIQUE (hari, jam, kelas, gender_target)');
+  await dropConstraintIfExists('jadwal_source', 'jadwal_source_hari_jam_kelas_key');
+  await addConstraintIfNotExists('jadwal_source', 'jadwal_source_slot_unique', 'UNIQUE (hari, jam, kelas, gender_target)');
+
+  // Trigger propagasi jadwal_source -> jadwal (dipakai import Excel yang hanya menulis
+  // jadwal_source). Dibuat ulang di sini supaya selalu mengikuti kunci slot terbaru
+  // (hari, jam, kelas, gender_target) — versi lama memakai kunci 3 kolom dan error saat insert.
+  await pool.query(`
+    CREATE OR REPLACE FUNCTION sync_jadwal_from_source() RETURNS trigger AS $fn$
+    BEGIN
+      UPDATE jadwal SET
+        kode_guru = NEW.kode_guru,
+        keterangan = NEW.keterangan,
+        program = NEW.program
+      WHERE hari = NEW.hari AND jam = NEW.jam AND kelas = NEW.kelas AND gender_target = NEW.gender_target;
+
+      INSERT INTO jadwal (hari, jam, kelas, gender_target, kode_guru, keterangan, program)
+      SELECT hari, jam, kelas, gender_target, kode_guru, keterangan, program
+      FROM jadwal_source
+      WHERE hari = NEW.hari AND jam = NEW.jam AND kelas = NEW.kelas AND gender_target = NEW.gender_target
+      ON CONFLICT (hari, jam, kelas, gender_target) DO NOTHING;
+
+      RETURN NEW;
+    END;
+    $fn$ LANGUAGE plpgsql;
+  `);
+  await pool.query(`DROP TRIGGER IF EXISTS trg_sync_jadwal ON jadwal_source`);
+  await pool.query(`
+    CREATE TRIGGER trg_sync_jadwal AFTER INSERT OR UPDATE ON jadwal_source
+    FOR EACH ROW EXECUTE FUNCTION sync_jadwal_from_source()
+  `);
 
   // Link akun user -> guru_map (biar jadwal sesuai nama guru PDF)
   await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS guru_map_kode VARCHAR(10)`);
@@ -166,22 +272,21 @@ async function runMigrations() {
     console.log('⚠️  ADMIN_PASSWORD belum diset — akun admin TIDAK dibuat otomatis.');
   }
 
-  // Auto-seed data jadwal (guru_map + jadwal) kalau masih kosong — biar app langsung kebuka
-  // dengan jadwal dari PDF pas deploy. Idempotent.
-  const { GURU_MAP, JADWAL } = require('./data/jadwal-data');
+  // Auto-sync jadwal dari SUMBER DATA TUNGGAL (server/data/jadwal-patokan.json) kalau tabel
+  // masih kosong — biar app langsung kebuka dengan jadwal patokan pas deploy. Idempotent.
+  // Untuk REPLACE paksa dari JSON kapan saja: `npm run sync-jadwal`.
+  const { syncJadwal } = require('./sync-jadwal');
   const { rows: [{ c: gmCount }] } = await pool.query('SELECT COUNT(*)::int AS c FROM guru_map');
-  if (gmCount === 0) {
-    for (const [kode, nama, jenis] of GURU_MAP) {
-      await pool.query(`INSERT INTO guru_map (kode, nama_guru, jenis_layanan) VALUES ($1,$2,$3) ON CONFLICT (kode) DO NOTHING`, [kode, nama, jenis]);
-    }
-    for (const [hari, jam, kelas, kode, ket] of JADWAL) {
-      await pool.query(`INSERT INTO jadwal (hari, jam, kelas, kode_guru, keterangan) VALUES ($1,$2,$3,$4,$5) ON CONFLICT (hari, jam, kelas) DO NOTHING`, [hari, jam, kelas, kode, ket]);
-    }
-    console.log(`✓ Auto-seed jadwal: ${GURU_MAP.length} guru_map + ${JADWAL.length} baris jadwal`);
+  const { rows: [{ c: jdCount }] } = await pool.query('SELECT COUNT(*)::int AS c FROM jadwal');
+  if (gmCount === 0 || jdCount === 0) {
+    const plan = await syncJadwal(pool, { apply: true });
+    console.log(`✓ Auto-sync jadwal dari jadwal-patokan.json: ${plan.guru_map.length} guru_map + ${plan.jadwal.length} baris jadwal`);
   }
   // Auto-buat akun guru dari guru_map kalau GURU_DEFAULT_PASSWORD di-set (biar guru PDF bisa login utk tes)
   const guruPw = process.env.GURU_DEFAULT_PASSWORD;
   if (guruPw && guruPw.length >= 8) {
+    const { loadSource } = require('./sync-jadwal');
+    const GURU_MAP = loadSource().master_teachers.map((t) => [t.code, t.name]);
     const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
     let created = 0;
     for (const [kode, nama] of GURU_MAP) {

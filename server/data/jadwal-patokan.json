@@ -1,0 +1,2013 @@
+{
+  "metadata": {
+    "institution": "MTs Negeri 1 Kebumen",
+    "document_title": "Jadwal Layanan Tambahan (LT)",
+    "semester": "Gasal",
+    "academic_year": "2026/2027",
+    "effective_date": "2026-07-27"
+  },
+  "master_teachers": [
+    {
+      "code": "B1",
+      "name": "Mansyur Nurudin, S.Pd.I.",
+      "default_subject": "I'rob"
+    },
+    {
+      "code": "B2",
+      "name": "Nafisatul Umamah, S.Pd.",
+      "default_subject": "Hadits / Tahfidz"
+    },
+    {
+      "code": "C1",
+      "name": "Siti Solihah, S.Pd., M.Pd.",
+      "default_subject": "Akhlak"
+    },
+    {
+      "code": "C2",
+      "name": "Dinda Amaly Ayyu Humaida",
+      "default_subject": "Akhlak"
+    },
+    {
+      "code": "D1",
+      "name": "Mokhamad Arifin, S.Pd.I.",
+      "default_subject": "Hadits"
+    },
+    {
+      "code": "D2",
+      "name": "Slamet Riyanto, S.Ag.",
+      "default_subject": "Akhlak dan MI"
+    },
+    {
+      "code": "D3",
+      "name": "Radis, S.Pd.",
+      "default_subject": "Akhlak"
+    },
+    {
+      "code": "E1",
+      "name": "M. Kholiluddin, S.Ag.",
+      "default_subject": "Tarikh"
+    },
+    {
+      "code": "G1",
+      "name": "Yulihadi, S.Pd.",
+      "default_subject": "Bahasa Indonesia / Lit Baca Tulis"
+    },
+    {
+      "code": "G2",
+      "name": "Rr. Sri Murniayani Tri W., S.Pd.",
+      "default_subject": "Bahasa Indonesia / Riset"
+    },
+    {
+      "code": "G3",
+      "name": "Taufiqurrohman, S.Pd.",
+      "default_subject": "Bahasa Indonesia / Lit Baca Tulis"
+    },
+    {
+      "code": "G4",
+      "name": "Imam Supriyadi, S.Sos.",
+      "default_subject": "Bahasa Indonesia / Lit Baca Tulis"
+    },
+    {
+      "code": "G5",
+      "name": "Yakino, S.Pd., M.Pd.I.",
+      "default_subject": "Riset"
+    },
+    {
+      "code": "G6",
+      "name": "Dian Lukiana, S.Pd., M.Pd.",
+      "default_subject": "Literasi Baca Tulis / Riset"
+    },
+    {
+      "code": "H1",
+      "name": "H. M. Harmuzi, S.Ag.",
+      "default_subject": "Nahwu / Fiqih"
+    },
+    {
+      "code": "H2",
+      "name": "Irham Basyir, S.Ag., M.Pd.",
+      "default_subject": "Nahwu / Fiqih"
+    },
+    {
+      "code": "H3",
+      "name": "Mokh. Istajib, S.Pd.I.",
+      "default_subject": "Nahwu / Fiqih"
+    },
+    {
+      "code": "H4",
+      "name": "Nurlaila Febriyanti, S.Pd.I.",
+      "default_subject": "Tahfidz"
+    },
+    {
+      "code": "I1",
+      "name": "Siti Nur Cahyani, M.Pd.",
+      "default_subject": "Bahasa Inggris / EA 7 FDS"
+    },
+    {
+      "code": "I2",
+      "name": "Sakti Dwiastuti, M.Pd.",
+      "default_subject": "Bahasa Inggris / EA 8 FDS"
+    },
+    {
+      "code": "I3",
+      "name": "Ari Endah Miyosi, S.Pd.",
+      "default_subject": "Bahasa Inggris"
+    },
+    {
+      "code": "I4",
+      "name": "Astri Sugiarti, S.Pd.",
+      "default_subject": "Bahasa Inggris"
+    },
+    {
+      "code": "I5",
+      "name": "Sigit Arfian Syah, S.Pd.",
+      "default_subject": "Bahasa Inggris / Infotek"
+    },
+    {
+      "code": "J1",
+      "name": "H. M. Ja'far Muzakir, S.Pd.",
+      "default_subject": "Matematika"
+    },
+    {
+      "code": "J2",
+      "name": "Tri Isnowati, S.Pd.",
+      "default_subject": "Matematika"
+    },
+    {
+      "code": "J3",
+      "name": "Yuli Fitriono, S.Pd., M.Pd.",
+      "default_subject": "Matematika"
+    },
+    {
+      "code": "J4",
+      "name": "Yuli Wardani, S.Pd.",
+      "default_subject": "Matematika"
+    },
+    {
+      "code": "J5",
+      "name": "Ratri Maret Indriyani M., S.Pd.",
+      "default_subject": "Matematika / Olim"
+    },
+    {
+      "code": "J6",
+      "name": "Mugi Febriyanto, S.Pd.",
+      "default_subject": "Matematika / Olim"
+    },
+    {
+      "code": "K1",
+      "name": "Bangun Sudibyo, S.Pd.",
+      "default_subject": "IPA"
+    },
+    {
+      "code": "K2",
+      "name": "Tri Sartikoningsih, M.Sc.",
+      "default_subject": "IPA"
+    },
+    {
+      "code": "K3",
+      "name": "Rini Ariyanti, S.Pd.",
+      "default_subject": "IPA / Olim"
+    },
+    {
+      "code": "K4",
+      "name": "Lukman Setiawan, S.Pd.I.",
+      "default_subject": "IPA / MI"
+    },
+    {
+      "code": "K5",
+      "name": "Wiwik Widhaningsih, S.Pd.",
+      "default_subject": "IPA"
+    },
+    {
+      "code": "K6",
+      "name": "Ahmad Nur Asyik, S.Pd.",
+      "default_subject": "IPA / Olim"
+    },
+    {
+      "code": "L1",
+      "name": "Dra. Hj. Kriswati, M.Ag.",
+      "default_subject": "Olimpiade"
+    },
+    {
+      "code": "L5",
+      "name": "Yulia Sari Anggraeni, S.Pd.",
+      "default_subject": "Olimpiade"
+    },
+    {
+      "code": "L6",
+      "name": "Ana Pangesti, S.Pd.",
+      "default_subject": "Olimpiade"
+    },
+    {
+      "code": "N1",
+      "name": "Eki Sefriyanto, S.Pd.",
+      "default_subject": "OR Prestasi"
+    },
+    {
+      "code": "N2",
+      "name": "Yodi Pradana, S.Pd.",
+      "default_subject": "OR Prestasi"
+    },
+    {
+      "code": "N3",
+      "name": "Akhmad Amir, S.Pd.",
+      "default_subject": "OR Prestasi"
+    },
+    {
+      "code": "O1",
+      "name": "Sugeng Widodo, S.Pd.",
+      "default_subject": "Infotek / Robotik"
+    },
+    {
+      "code": "O2",
+      "name": "Sekar Kanti Rahayu, S.Kom.",
+      "default_subject": "Infotek / Robotik"
+    },
+    {
+      "code": "P1",
+      "name": "Ahmad Khalwani, S.Pd.",
+      "default_subject": "Nahwu / Fiqih / Khot Imla'"
+    },
+    {
+      "code": "Q1",
+      "name": "A. Maskur, S.Pd.I.",
+      "default_subject": "Tahfidz"
+    },
+    {
+      "code": "Q2",
+      "name": "Fina Nihayah, S.Pd.",
+      "default_subject": "Tahfidz"
+    },
+    {
+      "code": "S1",
+      "name": "M. Sholeh, S.Pd.",
+      "default_subject": "Akhlak"
+    },
+    {
+      "code": "S2",
+      "name": "Siti Wahidatul Khasanah, S.Hum.",
+      "default_subject": "Nahwu / Fiqih / MI"
+    },
+    {
+      "code": "S3",
+      "name": "Syifa Febriola Tiara Cinta",
+      "default_subject": "Tahfidz / MI"
+    },
+    {
+      "code": "S4",
+      "name": "Kadaryanto",
+      "default_subject": "MI"
+    },
+    {
+      "code": "S5",
+      "name": "Irwan Rudiansyah",
+      "default_subject": "Tajwid"
+    },
+    {
+      "code": "S6",
+      "name": "Hanifah Nur Azizah",
+      "default_subject": "Bahasa Inggris / MI"
+    },
+    {
+      "code": "S7",
+      "name": "Aldini Aulia Rahmadanti",
+      "default_subject": "Muhadloroh"
+    },
+    {
+      "code": "S8",
+      "name": "Farah Dien Rahmana",
+      "default_subject": "Tahfidz"
+    },
+    {
+      "code": "S9",
+      "name": "Nahidl Iqbalul Anam, S.Fil.",
+      "default_subject": "Nahwu / Fiqih / Khot Imla'"
+    },
+    {
+      "code": "S10",
+      "name": "Mohamad Tamzis, S.Pd.",
+      "default_subject": "Tajwid / Nahwu"
+    }
+  ],
+  "schedules": [
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "S9",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "J6",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "H2",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "P1",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "E1",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "B1",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Ahad",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "H1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D",
+      "gender_target": "Campur",
+      "teacher_code": "I4",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7E",
+      "gender_target": "Campur",
+      "teacher_code": "J4",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A",
+      "gender_target": "Campur",
+      "teacher_code": "J1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8B",
+      "gender_target": "Campur",
+      "teacher_code": "I1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9A",
+      "gender_target": "Campur",
+      "teacher_code": "J5",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9B",
+      "gender_target": "Campur",
+      "teacher_code": "I3",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "OR 7",
+      "gender_target": "Campur",
+      "teacher_code": "N1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "TH 7",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "RST 7",
+      "gender_target": "Campur",
+      "teacher_code": "G6",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "INF 7",
+      "gender_target": "Campur",
+      "teacher_code": "I5",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "RST 8",
+      "gender_target": "Campur",
+      "teacher_code": "G5",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "THF 8",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "BIL 8",
+      "gender_target": "Campur",
+      "teacher_code": "I2",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "OR 8",
+      "gender_target": "Campur",
+      "teacher_code": "N2",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9C",
+      "gender_target": "Campur",
+      "teacher_code": "K5",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9D",
+      "gender_target": "Campur",
+      "teacher_code": "J2",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9E",
+      "gender_target": "Campur",
+      "teacher_code": "K6",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9F",
+      "gender_target": "Campur",
+      "teacher_code": "G3",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9G",
+      "gender_target": "Campur",
+      "teacher_code": "J3",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "H4",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "S6",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "J6",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "C1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "S1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "K4",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "G1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "G4",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "H2",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "S1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "S6",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "H3",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "E1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "D1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Senin",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "C2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D",
+      "gender_target": "Campur",
+      "teacher_code": "J2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7E",
+      "gender_target": "Campur",
+      "teacher_code": "I5",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A",
+      "gender_target": "Campur",
+      "teacher_code": "I3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8B",
+      "gender_target": "Campur",
+      "teacher_code": "J3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9A",
+      "gender_target": "Campur",
+      "teacher_code": "K6",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9B",
+      "gender_target": "Campur",
+      "teacher_code": "G4",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "OR 7",
+      "gender_target": "Campur",
+      "teacher_code": "N1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "TH 7",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "INF 7",
+      "gender_target": "Campur",
+      "teacher_code": "O2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "BIL 7",
+      "gender_target": "Campur",
+      "teacher_code": "I4",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "THF 8",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "OR 8",
+      "gender_target": "Campur",
+      "teacher_code": "N2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9C",
+      "gender_target": "Campur",
+      "teacher_code": "I1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9D",
+      "gender_target": "Campur",
+      "teacher_code": "K4",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9E",
+      "gender_target": "Campur",
+      "teacher_code": "G6",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9F",
+      "gender_target": "Campur",
+      "teacher_code": "K5",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9G",
+      "gender_target": "Campur",
+      "teacher_code": "K2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "H4",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "S2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "H3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "G1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "G3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "J1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "J6",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "J5",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "S10",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "D3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "S3",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "D2",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "H1",
+      "activity": null
+    },
+    {
+      "day": "Selasa",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "B2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D & 7E (Kelompok Olim)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Olimpiade (OLIM)"
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D & 7E (Kelompok Bahasa)",
+      "gender_target": "Campur",
+      "teacher_code": "I1",
+      "activity": "English Area (EA 7 FDS)"
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A & 8B (Kelompok Olim)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Olimpiade (OLIM)"
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A & 8B (Kelompok Infotek)",
+      "gender_target": "Campur",
+      "teacher_code": "O2",
+      "activity": "Infotek Kelas 8 FDS"
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9A",
+      "gender_target": "Campur",
+      "teacher_code": "G2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9B",
+      "gender_target": "Campur",
+      "teacher_code": "B2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "Seluruh Cendekia 7 & 8",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstra Olah Raga Prestasi"
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9C",
+      "gender_target": "Campur",
+      "teacher_code": "J2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9D",
+      "gender_target": "Campur",
+      "teacher_code": "G6",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9E",
+      "gender_target": "Campur",
+      "teacher_code": "J1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9F",
+      "gender_target": "Campur",
+      "teacher_code": "I4",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9G",
+      "gender_target": "Campur",
+      "teacher_code": "I5",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "H4",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "S5",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "K1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "P1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "I3",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "I2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "S9",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "S2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "H2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "G4",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "K6",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "H1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "C2",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "B1",
+      "activity": null
+    },
+    {
+      "day": "Rabu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D & 7E (Kelompok Olim)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Olimpiade (OLIM)"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D & 7E (Kelompok Infotek)",
+      "gender_target": "Campur",
+      "teacher_code": "O1",
+      "activity": "Infotek Kelas 7 FDS"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A & 8B (Kelompok Olim)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Olimpiade (OLIM)"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "8A & 8B (Kelompok Bahasa)",
+      "gender_target": "Campur",
+      "teacher_code": "I2",
+      "activity": "English Area (EA 8 FDS)"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9A",
+      "gender_target": "Campur",
+      "teacher_code": "H4",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9B",
+      "gender_target": "Campur",
+      "teacher_code": "K3",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "Seluruh Cendekia 7 & 8",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstra Olah Raga Prestasi"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9C",
+      "gender_target": "Campur",
+      "teacher_code": "G2",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9D",
+      "gender_target": "Campur",
+      "teacher_code": "I5",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9E",
+      "gender_target": "Campur",
+      "teacher_code": "I4",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9F",
+      "gender_target": "Campur",
+      "teacher_code": "J3",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9G",
+      "gender_target": "Campur",
+      "teacher_code": "G1",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "J2",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "D3",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "S3",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "H1",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "I1",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "D2",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "G3",
+      "activity": null
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 7 (All)",
+      "gender_target": "Putra",
+      "teacher_code": "S4",
+      "activity": "Pembinaan Putra"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 7 (All)",
+      "gender_target": "Putri",
+      "teacher_code": "S3",
+      "activity": "Pembinaan Putri"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 8 (All)",
+      "gender_target": "Putra",
+      "teacher_code": "K4",
+      "activity": "Pembinaan Putra"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 8 (All)",
+      "gender_target": "Putri",
+      "teacher_code": "S2",
+      "activity": "Pembinaan Putri"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 9 (9H, 9I, 9J)",
+      "gender_target": "Putra",
+      "teacher_code": "D2",
+      "activity": "Pembinaan Putra"
+    },
+    {
+      "day": "Kamis",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS Kelas 9 (9H, 9I, 9J)",
+      "gender_target": "Putri",
+      "teacher_code": "S6",
+      "activity": "Pembinaan Putri"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "13:00",
+      "end_time": "14:20",
+      "program": "FDS",
+      "target_class": "7D & 7E",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstra Pramuka"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "13:00",
+      "end_time": "15:20",
+      "program": "FDS",
+      "target_class": "8A & 8B",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "DP / KRW / Padus"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "FDS",
+      "target_class": "9A",
+      "gender_target": "Campur",
+      "teacher_code": "I2",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "FDS",
+      "target_class": "9B",
+      "gender_target": "Campur",
+      "teacher_code": "J6",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "13:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "Seluruh Cendekia 7 & 8",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstrakurikuler Pramuka"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "9 INF",
+      "gender_target": "Campur",
+      "teacher_code": "I5",
+      "activity": "Peminatan Infotek"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "9 RST",
+      "gender_target": "Campur",
+      "teacher_code": "G2",
+      "activity": "Peminatan Riset"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "9 THF",
+      "gender_target": "Campur",
+      "teacher_code": "Q1",
+      "activity": "Peminatan Tahfidz"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "9 BIL",
+      "gender_target": "Campur",
+      "teacher_code": "I3",
+      "activity": "Peminatan Bilingual"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "Cendekia",
+      "target_class": "9 OR",
+      "gender_target": "Campur",
+      "teacher_code": "N3",
+      "activity": "Peminatan Olahraga"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "13:00",
+      "end_time": "14:20",
+      "program": "IBS",
+      "target_class": "IBS Kelas 7 (All)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstra Pramuka"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "IBS",
+      "target_class": "IBS Kelas 8 (All)",
+      "gender_target": "Putra",
+      "teacher_code": "P1",
+      "activity": "Pembinaan Putra"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "IBS",
+      "target_class": "IBS Kelas 8 (All)",
+      "gender_target": "Putri",
+      "teacher_code": "S9",
+      "activity": "Pembinaan Putri"
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "K4",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "K3",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "14:00",
+      "end_time": "15:20",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "K2",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-1",
+      "gender_target": "Campur",
+      "teacher_code": "S6",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 7-2",
+      "gender_target": "Campur",
+      "teacher_code": "S5",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-1",
+      "gender_target": "Campur",
+      "teacher_code": "Q2",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-2",
+      "gender_target": "Campur",
+      "teacher_code": "E1",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-3",
+      "gender_target": "Campur",
+      "teacher_code": "S3",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "IBS 8-4",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "H2",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "S10",
+      "activity": null
+    },
+    {
+      "day": "Jumat",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "B1",
+      "activity": null
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "7D, 7E, 8A, 8B",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstrakurikuler"
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "FDS",
+      "target_class": "9A & 9B",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Kegiatan Mandiri"
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "Seluruh Cendekia 7 & 8",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstrakurikuler"
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "Cendekia",
+      "target_class": "9C, 9D, 9E, 9F, 9G",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Kegiatan Mandiri"
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "Seluruh IBS 7 & 8",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Ekstrakurikuler"
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9H",
+      "gender_target": "Campur",
+      "teacher_code": "H3",
+      "activity": null
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9I",
+      "gender_target": "Campur",
+      "teacher_code": "B2",
+      "activity": null
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "14:10",
+      "end_time": "15:30",
+      "program": "IBS",
+      "target_class": "9J",
+      "gender_target": "Campur",
+      "teacher_code": "S8",
+      "activity": null
+    },
+    {
+      "day": "Sabtu",
+      "start_time": "18:30",
+      "end_time": "19:50",
+      "program": "IBS",
+      "target_class": "Seluruh IBS (Kelas 7, 8, 9)",
+      "gender_target": "Campur",
+      "teacher_code": null,
+      "activity": "Muhadhoroh (Dikelola Santri Pengurus)"
+    }
+  ]
+}

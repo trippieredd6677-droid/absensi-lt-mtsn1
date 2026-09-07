@@ -13,6 +13,7 @@ import AdminAbsensi from './pages/admin/AdminAbsensi'
 import AdminKelas from './pages/admin/AdminKelas'
 import AdminAuditLog from './pages/admin/AdminAuditLog'
 import './App.css'
+import api from './api'
 import { useTheme } from './ThemeContext'
 
 function App() {
@@ -40,7 +41,13 @@ function App() {
   }
 
   const handleLogout = () => {
+    // Cabut refresh token di server (best-effort) lalu bersihkan sesi lokal
+    const refreshToken = localStorage.getItem('refresh_token')
+    if (refreshToken) {
+      api.post('/auth/logout', { refresh_token: refreshToken }).catch(() => {})
+    }
     localStorage.removeItem('token')
+    localStorage.removeItem('refresh_token')
     localStorage.removeItem('user')
     resetTheme() // logout → tema balik ke light
     setIsAuthenticated(false)

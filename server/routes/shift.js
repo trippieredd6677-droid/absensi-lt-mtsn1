@@ -5,7 +5,7 @@ const { verifyToken, isGuruOrAdmin, isAdmin, auditLog } = require('../middleware
 
 const router = express.Router();
 
-// List semua shift — guru & admin
+// Legacy: List semua shift (siang/malam) — untuk backward compatibility
 router.get('/', verifyToken, isGuruOrAdmin, async (req, res) => {
   try {
     const result = await pool.query('SELECT id, nama FROM shift ORDER BY urutan, nama');
@@ -16,75 +16,86 @@ router.get('/', verifyToken, isGuruOrAdmin, async (req, res) => {
   }
 });
 
-// Tambah shift — admin
-router.post('/', verifyToken, isAdmin, [
-  body('nama').notEmpty().withMessage('Nama shift wajib diisi').isLength({ max: 20 }).withMessage('Maks 20 karakter'),
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
+// Jam LT CRUD — admin only
+const createJam = async (req, res) => {
+  const { nama, urutan } = req.body;
+  const cleanNama = nama ? nama.trim() : null;
+  if (!cleanNama) {
+    return res.status(400).json({ message: 'Nama jam wajib diisi' });
+  }
   try {
-    const { nama } = req.body;
-    const clean = nama.trim().toLowerCase();
-    const order = await pool.query('SELECT COALESCE(MAX(urutan),0)+1 AS u FROM shift');
-    try {
-      const result = await pool.query('INSERT INTO shift (nama, urutan) VALUES ($1, $2) RETURNING id, nama', [clean, order.rows[0].u]);
-      await auditLog('CREATE', 'shift', result.rows[0].id, {}, result.rows[0], req);
-      res.status(201).json({ message: 'Shift ditambahkan', shift: result.rows[0] });
-    } catch (err) {
-      if (err.code === '23505') return res.status(400).json({ message: 'Shift sudah ada' });
-      throw err;
-    }
+    const result = await pool.query(
+      'INSERT INTO jam_lt (nama, urutan) VALUES ($1, $2) RETURNING id, nama, urutan',
+      [cleanNama, urutan ?? null]
+    );
+    await auditLog('CREATE', 'jam_lt', result.rows[0].id, {}, result.rows[0], req);
+    res.status(201).json({ message: 'Jam LT ditambahkan', jam_lt: result.rows[0] });
   } catch (err) {
-    console.error('Create shift error:', err);
+    if (err.code === '23505') {
+      return res.status(400).json({ message: 'Jam LT sudah ada' });
+    }
+    console.error('Create jam-lt error:', err);
     res.status(500).json({ message: 'Kesalahan server' });
   }
-});
+};
 
-// Ubah shift — admin
-router.put('/:id', verifyToken, isAdmin, [
-  body('nama').notEmpty().withMessage('Nama shift wajib diisi').isLength({ max: 20 }).withMessage('Maks 20 karakter'),
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
+const listJam = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nama } = req.body;
-    const clean = nama.trim().toLowerCase();
-    const existing = await pool.query('SELECT * FROM shift WHERE id = $1', [id]);
-    if (existing.rows.length === 0) return res.status(404).json({ message: 'Shift tidak ditemukan' });
-    try {
-      const result = await pool.query('UPDATE shift SET nama = $1 WHERE id = $2 RETURNING id, nama', [clean, id]);
-      await auditLog('UPDATE', 'shift', id, existing.rows[0], result.rows[0], req);
-      res.json({ message: 'Shift diperbarui', shift: result.rows[0] });
-    } catch (err) {
-      if (err.code === '23505') return res.status(400).json({ message: 'Nama shift sudah ada' });
-      throw err;
-    }
+    const result = await pool.query('SELECT id, nama, urutan FROM jam_lt ORDER BY urutan NULLS FIRST, nama');
+    res.json({ jam_lt: result.rows });
   } catch (err) {
-    console.error('Update shift error:', err);
+    console.error('List jam-lt error:', err);
     res.status(500).json({ message: 'Kesalahan server' });
   }
-});
+};
 
-// Hapus shift — admin
-router.delete('/:id', verifyToken, isAdmin, async (req, res) => {
+const updateJam = async (req, res) => {
+  const { id } = req.params;
+  const { nama, urutan } = req.body;
+  const cleanNama = nama ? nama.trim() : null;
+  if (!cleanNama) {
+    return res.status(400).json({ message: 'Nama jam wajib diisi' });
+  }
   try {
-    const { id } = req.params;
-    const existing = await pool.query('SELECT * FROM shift WHERE id = $1', [id]);
-    if (existing.rows.length === 0) return res.status(404).json({ message: 'Shift tidak ditemukan' });
-
-    const used = await pool.query('SELECT COUNT(*)::int AS c FROM absensi WHERE shift = $1', [existing.rows[0].nama]);
-    if (used.rows[0].c > 0) {
-      return res.status(400).json({ message: `Shift masih dipakai ${used.rows[0].c} data absensi. Ganti dulu.` });
+    const existing = await pool.query('SELECT * FROM jam_lt WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ message: 'Jam LT tidak ditemukan' });
     }
-
-    await pool.query('DELETE FROM shift WHERE id = $1', [id]);
-    await auditLog('DELETE', 'shift', id, existing.rows[0], {}, req);
-    res.json({ message: 'Shift dihapus' });
+    const result = await pool.query(
+      'UPDATE jam_lt SET nama = $1, urutan = $2 WHERE id = $3 RETURNING id, nama, urutan',
+      [cleanNama, urutan ?? null, id]
+    );
+    await auditLog('UPDATE', 'jam_lt', id, existing.rows[0], result.rows[0], req);
+    res.json({ message: 'Jam LT diperbarui', jam_lt: result.rows[0] });
   } catch (err) {
-    console.error('Delete shift error:', err);
+    if (err.code === '23505') {
+      return res.status(400).json({ message: 'Jam LT sudah ada' });
+    }
+    console.error('Update jam-lt error:', err);
     res.status(500).json({ message: 'Kesalahan server' });
   }
-});
+};
+
+const deleteJam = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const existing = await pool.query('SELECT * FROM jam_lt WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ message: 'Jam LT tidak ditemukan' });
+    }
+    await pool.query('DELETE FROM jam_lt WHERE id = $1', [id]);
+    await auditLog('DELETE', 'jam_lt', id, existing.rows[0], {}, req);
+    res.json({ message: 'Jam LT dihapus' });
+  } catch (err) {
+    console.error('Delete jam-lt error:', err);
+    res.status(500).json({ message: 'Kesalahan server' });
+  }
+};
+
+// Endpoint admin: Jam LT — list & create (POST)
+router.get('/jam-lt', verifyToken, isAdmin, listJam);
+router.post('/jam-lt', verifyToken, isAdmin, createJam);
+router.put('/jam-lt/:id', verifyToken, isAdmin, updateJam);
+router.delete('/jam-lt/:id', verifyToken, isAdmin, deleteJam);
 
 module.exports = router;

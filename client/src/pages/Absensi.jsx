@@ -97,7 +97,6 @@ function Absensi({ user, onLogout }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setMessage('')
 
     try {
       const formDataToSend = new FormData()
@@ -113,7 +112,8 @@ function Absensi({ user, onLogout }) {
       }
 
       await api.post('/absensi', formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 60000, // upload foto bisa lama di koneksi lambat — jangan kepotong 10s
       })
 
       setToast({ open: true, message: 'Absensi berhasil dikirim', type: 'success' })
