@@ -457,7 +457,7 @@ function Jadwal({ user, onLogout, role }) {
                           <button className="btn-action" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
                             <PencilSimple weight="duotone" />
                           </button>
-                          <button className="btn-action" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="duotone" /></button>
+                          <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="duotone" /></button>
                         </div>
                       </td>
                     </tr>
@@ -574,7 +574,7 @@ function Jadwal({ user, onLogout, role }) {
                       </div>
                       <div className="jadwal-item-actions">
                         <button className="btn-action btn-sm" onClick={() => handleEditStaged(r, idx)} title="Edit baris"><PencilSimple weight="duotone" /></button>
-                        <button className="btn-action btn-sm" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><Trash weight="duotone" /></button>
+                        <button className="btn-action btn-sm btn-delete" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><Trash weight="duotone" /></button>
                       </div>
                     </div>
                   ))}
