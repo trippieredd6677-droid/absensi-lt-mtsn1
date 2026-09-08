@@ -157,8 +157,10 @@ function AdminDashboard({ user, onLogout }) {
             <ul className="not-submitted">
               {notSubmitted.map((g) => (
                 <li key={g.id}>
-                  <span className="ns-name">{g.full_name || g.username}</span>
-                  {g.username && <span className="ns-user">@{g.username}</span>}
+                  <span className="ns-left">
+                    <span className="ns-name">{g.full_name || g.username}</span>
+                    {g.username && <span className="ns-user">@{g.username}</span>}
+                  </span>
                   <button
                     className="btn btn-ghost btn-xs"
                     title="Kirim reminder"
