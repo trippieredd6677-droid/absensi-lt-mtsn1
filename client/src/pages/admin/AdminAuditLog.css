@@ -3,7 +3,7 @@
 .table th:nth-child(2), .table td:nth-child(2) { max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .table th:nth-child(4), .table td:nth-child(4) { white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
 .audit-loading svg { width: 20px; height: 20px; color: var(--accent); }
-.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12px; }
+.table td.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 .audit-ip { color: var(--text-faint); font-size: 12px; }
 .audit-badge {
   display: inline-block;
