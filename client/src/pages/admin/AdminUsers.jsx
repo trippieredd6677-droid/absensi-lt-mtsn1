@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   PencilSimple,
   Key,
@@ -114,7 +114,38 @@ function AdminUsers({ user, onLogout }) {
     setShowForm(true)
   }
 
-  const handleFormChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const lastGen = useRef(null)
+  const STRIP_TITLES = /,?\s*(M\.Pd\.?|M\.Pd\.I\.?|M\.Si\.?|S\.Pd\.?|S\.Pd\.I\.?|S\.Kom\.?|S\.Ag\.?|M\.M\.?|M\.Hum\.?|M\.Ed\.?|Dr\.?|Dra\.?|Drs\.?|Hj\.?|Lc\.?)\b/gi
+  const genUsername = (name) => {
+    if (!name) return ''
+    const clean = name.replace(STRIP_TITLES, ' ')
+      .replace(/\./g, ' ')
+      .replace(/[^a-zA-Z\s]/g, ' ')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ')
+    if (!clean) return ''
+    const words = clean.split(' ').filter(Boolean)
+    let result
+    if (words.length === 1) result = words[0]
+    else {
+      result = words[0] + '.' + words[words.length - 1]
+      if (result.replace(/\./g, '').length < 6 && words.length >= 3) {
+        result = words.slice(0, 3).join('.')
+      }
+    }
+    return result.slice(0, 18).replace(/\.$/, '')
+  }
+
+  const handleFormChange = (e) => {
+    const f = { ...form, [e.target.name]: e.target.value }
+    if (e.target.name === 'full_name' && !editUser) {
+      const gen = genUsername(e.target.value)
+      if (!f.username || f.username === lastGen.current) f.username = gen
+      lastGen.current = gen
+    }
+    setForm(f)
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
@@ -479,8 +510,8 @@ function AdminUsers({ user, onLogout }) {
             <form onSubmit={handleFormSubmit}>
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Username</label>
-                  <input name="username" value={form.username} onChange={handleFormChange} required minLength={3} />
+                  <label>Username {!editUser && <span className="form-hint">otomatis dari nama, boleh diubah</span>}</label>
+                  <input name="username" value={form.username} onChange={handleFormChange} required minLength={3} maxLength={18} />
                 </div>
                 <div className="form-group">
                   <label>Email</label>
