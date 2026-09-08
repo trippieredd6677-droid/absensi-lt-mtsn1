@@ -47,9 +47,14 @@
 .jw-cell {
   padding: 6px 8px;
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   transition: border-color 0.14s ease, background 0.14s ease;
+}
+.jw-cell-mine {
+  background: var(--accent-dim);
+  border: 1.5px solid var(--accent-border);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 .jw-cell:hover {
   border-color: var(--accent-border);

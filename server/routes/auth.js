@@ -130,6 +130,7 @@ router.post('/login', [
         role: user.role,
         kelas: user.kelas,
         foto_profil: user.foto_profil,
+        guru_map_kode: user.guru_map_kode,
       },
     });
   } catch (err) {

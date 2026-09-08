@@ -97,7 +97,8 @@ function Jadwal({ user, onLogout, role }) {
     return map
   }, [all])
 
-  // matrix for grid view (hari|jam -> list of {kelas, jenis, ket, guru, kode_guru, id})
+  // matrix for grid view (hari|jam -> list of {kelas, jenis, ket, guru, kode_guru, id, mine})
+  const myKode = user?.guru_map_kode || null
   const matrix = useMemo(() => {
     const source = isAdmin ? all : mine
     const m = {}
@@ -110,17 +111,18 @@ function Jadwal({ user, onLogout, role }) {
         gender: r.gender_target || 'Campur',
         guru: r.nama_guru || '',
         kode_guru: r.kode_guru || '',
-        id: r.id
+        id: r.id,
+        mine: !!myKode && r.kode_guru === myKode
       })
     }
     return m
-  }, [all, mine, isAdmin])
+  }, [all, mine, isAdmin, myKode])
 
   const buildCell = (hari, slot) => {
     const items = matrix[`${hari}|${slot}`] || []
     if (items.length === 0) return <span className="jw-empty">–</span>
     return <div className="jw-cells">{items.map((it, i) => (
-      <div key={i} className="jw-cell">
+      <div key={i} className={`jw-cell ${it.mine ? 'jw-cell-mine' : ''}`}>
         <strong>{it.kelas}</strong>
         {it.ket && <span className="jw-sub jw-activity">{it.ket}</span>}
         {it.jenis && !it.ket && <span className="jw-sub">{it.jenis}</span>}
