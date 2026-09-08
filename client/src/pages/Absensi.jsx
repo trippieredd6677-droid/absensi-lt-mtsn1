@@ -239,6 +239,7 @@ function Absensi({ user, onLogout }) {
                 {formData.foto_kegiatan ? (formData.foto_kegiatan.name || 'Foto siap diunggah') : 'Pilih berkas atau seret ke sini'}
               </span>
             </label>
+            <p className="form-hint">Format: JPG, PNG, GIF, WEBP</p>
           </div>
 
           <div className="form-group">
