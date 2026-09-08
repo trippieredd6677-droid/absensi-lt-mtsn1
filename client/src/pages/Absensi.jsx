@@ -167,7 +167,6 @@ function Absensi({ user, onLogout }) {
                 required
                 disabled={loading}
               />
-              <p className="form-hint">Tanggal dikunci hari ini untuk mencegah manipulasi.</p>
             </div>
 
             <div className="form-group">
@@ -240,7 +239,6 @@ function Absensi({ user, onLogout }) {
                 {formData.foto_kegiatan ? (formData.foto_kegiatan.name || 'Foto siap diunggah') : 'Pilih berkas atau seret ke sini'}
               </span>
             </label>
-            <p className="form-hint">Foto otomatis dikompres & di-resize biar upload cepat (maks 8MB). Format: JPG, PNG, GIF, WEBP</p>
           </div>
 
           <div className="form-group">
