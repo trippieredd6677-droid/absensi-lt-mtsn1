@@ -74,7 +74,8 @@
 
 .stats-section h2 {
   margin-bottom: 16px;
-  font-size: 17px;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .histori-stats-grid {
@@ -104,7 +105,7 @@
 }
 
 .histori-stats-grid .stat-card .value {
-  font-size: 24px;
+  font-size: 30px;
   line-height: 1.05;
 }
 
@@ -112,12 +113,12 @@
 
 @media (max-width: 1024px) {
   .histori-stats-grid { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
-  .histori-stats-grid .stat-card .value { font-size: 20px; }
+  .histori-stats-grid .stat-card .value { font-size: 24px; }
 }
 
 @media (max-width: 768px) {
   .filter-section { grid-template-columns: 1fr; }
   .pagination { flex-direction: column; gap: 10px; }
   .histori-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-section h2 { font-size: 15px; }
+  .stats-section h2 { font-size: 14px; }
 }

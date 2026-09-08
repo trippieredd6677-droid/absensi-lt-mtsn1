@@ -144,8 +144,8 @@
   display: inline-block;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
 .role-guru { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border-strong); }
@@ -166,8 +166,8 @@
   display: inline-block;
   padding: 2px 8px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
 .link-badge.linked { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }

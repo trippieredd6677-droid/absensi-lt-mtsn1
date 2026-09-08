@@ -84,7 +84,7 @@
 }
 .section-icon svg { width: 22px; height: 22px; }
 .section-text { flex: 1; min-width: 0; }
-.section-text h2 { font-size: 16px; font-weight: 700; margin: 0 0 3px; }
+.section-text h2 { font-size: 15px; font-weight: 700; margin: 0 0 3px; }
 .section-text p { font-size: 13px; color: var(--text-muted); margin: 0; }
 .section-header .btn { margin-left: auto; }
 
