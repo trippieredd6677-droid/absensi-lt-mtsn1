@@ -601,13 +601,18 @@ router.get('/guru-breakdown', verifyToken, isAdmin, async (req, res) => {
     const malamDeadline = (malamCfg && malamCfg.value) || '20:00';
 
     const { rows } = await pool.query(
-      `SELECT u.id, u.full_name, u.username, u.guru_map_kode,
-              a.id AS absensi_id, a.shift, a.status, a.kelas, a.created_at,
-              a.tanggal
-       FROM users u
-       LEFT JOIN absensi a ON a.user_id = u.id AND a.tanggal = $1
-       WHERE u.role = 'guru' AND u.status = 'active'
-       ORDER BY u.full_name`,
+      // DISTINCT ON: 1 row per guru (absensi terakhir hari itu) — guru input >1x tidak menduplikasi list
+      `SELECT * FROM (
+         SELECT DISTINCT ON (u.id)
+                u.id, u.full_name, u.username, u.guru_map_kode,
+                a.id AS absensi_id, a.shift, a.status, a.kelas, a.created_at,
+                a.tanggal
+         FROM users u
+         LEFT JOIN absensi a ON a.user_id = u.id AND a.tanggal = $1
+         WHERE u.role = 'guru' AND u.status = 'active'
+         ORDER BY u.id, a.created_at DESC NULLS LAST
+       ) sub
+       ORDER BY full_name`,
       [t]
     );
     const breakdown = rows.map((r) => {

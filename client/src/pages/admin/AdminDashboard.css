@@ -103,7 +103,7 @@
 .ns-user { font-size: 11px; color: var(--text-faint); white-space: nowrap; flex-shrink: 0; }
 .ns-empty { color: var(--text-muted); }
 
-.late-list { list-style: none; margin: 0; padding: 0; }
+.late-list { list-style: none; margin: 0; padding: 0; flex: 1; max-height: 464px; overflow-y: auto; scrollbar-width: thin; }
 .late-list li { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .late-list li:last-child { border-bottom: none; }
 .late-tag { font-size: 11px; font-weight: 700; color: var(--status-sakit); background: var(--status-sakit-bg); border: 1px solid var(--status-sakit); padding: 2px 8px; border-radius: var(--radius-pill); }
