@@ -34,9 +34,8 @@ function ForgotPassword() {
     setLoading(true)
     try {
       const res = await api.post('/auth/forgot-password', { email })
-      setInfo(res.data.message)
       // Dev-only convenience (MAIL_LOGGING=true): tampilkan OTP di layar biar alur teruji
-      if (res.data.dev_otp) {
+      if (res.data?.dev_otp) {
         setInfo(`Kode OTP (dev): ${res.data.dev_otp}`)
         setOtp(res.data.dev_otp)
       }
