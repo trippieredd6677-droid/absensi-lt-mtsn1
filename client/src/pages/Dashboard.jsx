@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import {
-  TrendUp,
   CheckCircle,
   FirstAidKit,
   HandWaving,
@@ -48,7 +47,7 @@ function Dashboard({ user, onLogout }) {
 
   if (loading) return <div className="loading">Loading...</div>
 
-  const cards = [
+  const minis = [
     { key: 'hadir', label: 'Hadir', icon: CheckCircle, cls: 'hadir' },
     { key: 'sakit', label: 'Sakit', icon: FirstAidKit, cls: 'sakit' },
     { key: 'izin', label: 'Izin', icon: HandWaving, cls: 'izin' },
@@ -56,89 +55,94 @@ function Dashboard({ user, onLogout }) {
   ]
   const todayName = DAY_NAMES[new Date().getDay()]
   const todayJadwal = jadwal.filter((j) => j.hari === todayName)
+  const periode = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
 
   return (
     <Layout user={user} onLogout={onLogout} role={user?.role} active="dashboard">
       <div className="page-header">
         <h1>Dashboard</h1>
+        <p className="page-header-sub">Rekap kehadiran bulan {periode}</p>
       </div>
 
-      <div className="stats-grid">
-        <div className="stat-card highlight">
-          <div className="stat-label"><TrendUp weight="duotone" /> Kehadiran</div>
-          <div className="value accent">{stats ? stats.persenHadir : 0}%</div>
-          <p>{stats ? stats.hadir : 0} dari {stats ? stats.total : 0} hari kerja</p>
+      <div className="dash-hero">
+        <div className="dash-hero-main">
+          <span className="dash-hero-label">Persentase Kehadiran</span>
+          <div className="dash-hero-value">{stats ? stats.persenHadir : 0}%</div>
+          <p className="dash-hero-sub">
+            {stats ? stats.hadir : 0} dari {stats ? stats.total : 0} hari kerja tercatat hadir
+          </p>
         </div>
-        {cards.map(c => {
-          const Icon = c.icon
-          return (
-            <div className={`stat-card accent-${c.cls}`} key={c.key}>
-              <div className="stat-label"><Icon weight="duotone" /> {c.label}</div>
-              <div className={`value status-${c.cls}`}>{stats ? stats[c.key] : 0}</div>
-              <p>hari</p>
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="card">
-        <h2>Jadwal Hari Ini · {todayName}</h2>
-        {todayJadwal.length === 0 ? (
-          <p className="dash-muted">Tidak ada jadwal hari ini.</p>
-        ) : (
-          <div className="dash-jadwal">
-            {todayJadwal.map((j, i) => (
-              <div key={i} className="dash-jadwal-day">
-                <span className="dash-jadwal-hari">{j.jam}</span>
-                <div className="dash-jadwal-items">
-                  <span className="dash-jadwal-item">
-                    <strong>{j.kelas}</strong>
-                    {j.jenis_layanan && <em> · {j.jenis_layanan}</em>}
-                  </span>
-                </div>
+        <div className="dash-hero-stats">
+          {minis.map((c) => {
+            const Icon = c.icon
+            return (
+              <div className="dash-mini" key={c.key}>
+                <span className="dash-mini-label"><Icon weight="duotone" /> {c.label}</span>
+                <div className={`dash-mini-value ${c.cls}`}>{stats ? stats[c.key] : 0}</div>
               </div>
-            ))}
-          </div>
-        )}
+            )
+          })}
+        </div>
       </div>
 
-      <div className="card">
-        <h2>Absensi Terbaru</h2>
-        {recent.length > 0 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Tanggal</th>
-                <th>Hari</th>
-                <th>Shift</th>
-                <th>Kelas</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.map(abs => (
-                <tr key={abs.id}>
-                  <td>{new Date(abs.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                  <td>{abs.hari}</td>
-                  <td style={{ textTransform: 'capitalize' }}>{abs.shift}</td>
-                  <td>{abs.kelas || '-'}</td>
-                  <td>
-                    <span className={`status-badge status-${abs.status}`} style={{ textTransform: 'capitalize' }}>
-                      {abs.status}
+      <div className="dash-cols">
+        <div className="card">
+          <h2>Jadwal Hari Ini · {todayName}</h2>
+          {todayJadwal.length === 0 ? (
+            <p className="dash-muted">Tidak ada jadwal hari ini.</p>
+          ) : (
+            <div className="dash-jadwal">
+              {todayJadwal.map((j, i) => (
+                <div key={i} className="dash-jadwal-day">
+                  <span className="dash-jadwal-hari">{j.jam}</span>
+                  <div className="dash-jadwal-items">
+                    <span className="dash-jadwal-item">
+                      <strong>{j.kelas}</strong>
+                      {j.jenis_layanan && <em> · {j.jenis_layanan}</em>}
                     </span>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        ) : (
-          <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Belum ada data absensi</p>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
 
+        <div className="card">
+          <h2>Absensi Terbaru</h2>
+          {recent.length > 0 ? (
+            <div className="table-wrap">
+              <table className="table dash-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Shift</th>
+                    <th>Kelas</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recent.map((abs) => (
+                    <tr key={abs.id}>
+                      <td>{new Date(abs.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                      <td style={{ textTransform: 'capitalize' }}>{abs.shift}</td>
+                      <td>{abs.kelas || '-'}</td>
+                      <td>
+                        <span className={`status-badge status-${abs.status}`} style={{ textTransform: 'capitalize' }}>
+                          {abs.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="dash-muted">Belum ada data absensi</p>
+          )}
+        </div>
+      </div>
     </Layout>
   )
 }
 
 export default Dashboard
-

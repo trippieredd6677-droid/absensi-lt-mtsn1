@@ -1,4 +1,98 @@
-/* Dashboard — sidebar/layout via App.css; di sini khusus konten dashboard */
+/* Dashboard guru — komposisi hierarki:
+   baris 1: hero kehadiran (focal, angka besar) + mini stats 2x2
+   baris 2: jadwal hari ini | absensi terbaru (grid 2 kolom asimetris)
+   Alasan (R-31): pertanyaan pertama guru = "kehadiran saya berapa %",
+   jadi itu focal point; sisanya supporting. */
+
+.dash-hero {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+}
+
+.dash-hero-main {
+  flex: 1 1 220px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dash-hero-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.dash-hero-value {
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-hero-sub {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.dash-hero-stats {
+  flex: 2 1 320px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 10px;
+  align-content: center;
+}
+
+.dash-mini {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+}
+
+.dash-mini-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dash-mini-label svg { width: 15px; height: 15px; }
+
+.dash-mini-value {
+  margin-top: 5px;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-mini-value.hadir { color: var(--status-hadir); }
+.dash-mini-value.sakit { color: var(--status-sakit); }
+.dash-mini-value.izin  { color: var(--status-izin); }
+.dash-mini-value.alpa  { color: var(--status-alpa); }
+
+/* Baris 2: dua kolom, tabel absensi lebih lebar (data > jadwal) */
+.dash-cols {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 16px;
+  align-items: start;
+  margin-top: 16px;
+}
 
 /* Kartu Jadwal Mingguan Saya */
 .dash-muted { color: var(--text-muted); font-size: 13px; }
@@ -8,79 +102,27 @@
 .dash-jadwal-hari { width: auto; min-width: 96px; font-weight: 400; font-size: 14px; color: var(--text); flex-shrink: 0; }
 .dash-jadwal-items { display: flex; flex-wrap: wrap; gap: 6px; }
 .dash-jadwal-item {
-  display: inline-flex; align-items: center; gap: 2px;
-  padding: 4px 9px; border-radius: 6px; background: var(--accent-dim);
-  border: 1px solid var(--accent-border); font-size: 12px; color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  font-size: 12px;
+  color: var(--text);
 }
 .dash-jadwal-item strong { color: var(--accent); font-weight: 700; }
 .dash-jadwal-item em { font-style: normal; color: var(--text-muted); }
 
-.stat-card.highlight {
-  border-color: var(--border);
-}
-.stat-card.highlight:hover {
-  border-color: var(--border-strong);
-}
+.dash-table td { font-variant-numeric: tabular-nums; }
 
-.stat-card .value.status-hadir { color: var(--status-hadir); }
-.stat-card .value.status-sakit { color: var(--status-sakit); }
-.stat-card .value.status-izin { color: var(--status-izin); }
-.stat-card .value.status-alpa { color: var(--status-alpa); }
-
-.quick-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-top: 8px;
-}
-
-.action-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  text-decoration: none;
-  transition: border-color 0.18s ease, background 0.18s ease;
-  cursor: pointer;
-}
-
-.action-card:hover {
-  border-color: var(--accent-border);
-  background: var(--surface-2);
-}
-
-.action-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius);
-  background: var(--accent-dim);
-  border: 1px solid var(--accent-border);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.action-icon svg { width: 21px; height: 21px; }
-
-.action-card h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0;
-}
-
-.action-card p {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin: 0;
+@media (max-width: 900px) {
+  .dash-cols { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-  .quick-actions { grid-template-columns: 1fr; }
+  .dash-hero { flex-direction: column; gap: 18px; padding: 20px; }
+  .dash-hero-value { font-size: 38px; }
+  .dash-hero-stats { grid-template-columns: repeat(2, 1fr); }
 }

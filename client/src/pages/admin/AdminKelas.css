@@ -256,7 +256,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 .jam-info-desc code {
   background: var(--surface-2);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
   color: var(--accent);
   font-family: inherit;

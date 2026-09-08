@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import {
   UploadSimple,
   Info,
@@ -262,9 +263,9 @@ function Absensi({ user, onLogout }) {
             <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Mengirim...' : 'Kirim Absensi'}
             </button>
-            <a href="/" className="btn btn-secondary">
+            <Link to="/" className="btn btn-secondary">
               Kembali
-            </a>
+            </Link>
           </div>
         </form>
       </div>

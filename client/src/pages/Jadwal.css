@@ -16,9 +16,16 @@
 .jadwal-search input { width: 100%; padding: 10px 12px 10px 36px; font-size: 14px; }
 
 .jadwal-kode {
-  display: inline-block; min-width: 34px; text-align: center;
-  padding: 2px 8px; border-radius: 6px; background: var(--accent-dim);
-  color: var(--accent); font-size: 12px; font-weight: 600; font-family: inherit;
+  display: inline-block;
+  min-width: 34px;
+  text-align: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
 }
 .jadwal-type { font-size: 13px; color: var(--text-muted); }
 
@@ -31,7 +38,7 @@
 .page-header .jw-toggle input { accent-color: var(--accent); }
 .jw-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
 .jw-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.jw-scroll { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.jw-scroll { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
 .jw-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 620px; }
 .jw-table th, .jw-table td {
   border-bottom: 1px solid var(--border);
@@ -52,7 +59,7 @@
 .jw-cells { display: flex; flex-direction: column; gap: 6px; }
 .jw-cell {
   padding: 6px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   transition: background 0.14s ease;
 }
 .jw-cell + .jw-cell { margin-top: 4px; }
