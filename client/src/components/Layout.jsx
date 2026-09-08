@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Gauge,
@@ -14,6 +14,7 @@ import {
   ListBullets,
   ShieldCheck,
   TreeStructure,
+  List,
 } from '@phosphor-icons/react'
 import { useTheme } from '../ThemeContext'
 import logo from '../assets/logo-sidebar.jpg'
@@ -25,6 +26,7 @@ import logo from '../assets/logo-sidebar.jpg'
 function Layout({ user, onLogout, role = 'guru', active, children }) {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const handleLogout = () => {
     onLogout()
@@ -87,6 +89,14 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 {theme === 'light' ? <Moon weight="duotone" /> : <Sun weight="duotone" />}
               </button>
               <button
+                className="mobile-menu-btn"
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
+                aria-expanded={menuOpen}
+              >
+                <List weight="bold" />
+              </button>
+              <button
                 className="mobile-logout"
                 onClick={handleLogout}
                 aria-label="Keluar"
@@ -102,7 +112,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
           </div>
         </div>
 
-        <nav className="sidebar-menu" aria-label="Navigasi utama">
+        <nav className={`sidebar-menu ${menuOpen ? 'open' : ''}`} aria-label="Navigasi utama">
           <span className="sidebar-section-label">Menu</span>
           {menu.map((item) => {
             const Icon = item.icon
@@ -111,6 +121,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 key={item.key}
                 to={item.to}
                 className={active === item.key ? 'active' : ''}
+                onClick={() => setMenuOpen(false)}
               >
                 <Icon weight={active === item.key ? 'bold' : 'regular'} />
                 {item.label}

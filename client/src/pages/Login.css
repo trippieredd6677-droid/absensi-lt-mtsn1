@@ -1,10 +1,94 @@
+/* Login — komposisi asimetris:
+   kiri: brand panel (sidebar ink-green + motif ledger besar),
+   kanan: form. Bukan kotak centered generik. */
+
 .login-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.login-brand {
+  flex: 1 1 46%;
+  max-width: 560px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-fg);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-brand-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.login-brand-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.login-brand-mid {
+  margin: auto 0;
+  padding: 40px 0;
+}
+
+.login-brand-kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #7ed69a;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.login-brand-title {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 14px;
+}
+
+.login-brand-sub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--sidebar-fg-muted);
+  margin: 0;
+  max-width: 380px;
+}
+
+.login-brand-foot {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--sidebar-fg-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.login-form-side {
+  flex: 1 1 54%;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  background: var(--bg);
+  padding: 40px 24px;
 }
 
 .login-box {
@@ -18,35 +102,7 @@
 }
 
 .login-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.login-logo {
-  width: 84px;
-  height: 84px;
-  border-radius: 16px;
-  object-fit: contain;
-  border: 1px solid var(--accent-border);
-  box-shadow: var(--shadow-sm);
-  background: #fff;
-  padding: 6px;
-}
-
-.login-brand-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: var(--accent-dim);
-  border: 1px solid var(--accent-border);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-bottom: 26px;
 }
 
 .login-header h1 {
@@ -54,16 +110,16 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text);
-  margin: 0;
+  margin: 0 0 6px;
 }
 
 .login-header p {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 13.5px;
   margin: 0;
 }
 
-.login-form { margin-bottom: 24px; }
+.login-form { margin-bottom: 20px; }
 
 /* Wrap input password + tombol lihat/sembunyikan */
 .password-wrap { position: relative; }
@@ -96,14 +152,13 @@
 
 .login-footer {
   text-align: center;
-  padding-top: 18px;
+  padding-top: 16px;
   border-top: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 13px;
 }
 
 .login-footer p { margin: 4px 0; }
-
 .login-footer strong { color: var(--accent); font-weight: 600; }
 
 .login-footer .login-note {
@@ -126,6 +181,10 @@
   transition: color 0.18s ease;
 }
 .forgot-link:hover { color: var(--accent); text-decoration: underline; }
+
+@media (max-width: 860px) {
+  .login-brand { display: none; }
+}
 
 @media (max-width: 480px) {
   .login-box { padding: 28px 20px; }

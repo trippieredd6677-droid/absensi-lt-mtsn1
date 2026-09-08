@@ -55,12 +55,28 @@ function Login({ onLogin }) {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <div className="login-header">
-          <img src={logo} alt="Logo MTsN 1 Kebumen" className="login-logo" />
-          <h1>Absensi LT</h1>
-          <p>MTsN 1 Kebumen</p>
+      <aside className="login-brand">
+        <div className="login-brand-top">
+          <img src={logo} alt="Logo MTsN 1 Kebumen" className="login-brand-logo" />
+          <span className="login-brand-name">Absensi LT</span>
         </div>
+        <div className="login-brand-mid">
+          <span className="login-brand-kicker">Sistem Absensi Layanan Terpadu</span>
+          <h2 className="login-brand-title">Catat kehadiran guru,<br />satu lembar digital.</h2>
+          <p className="login-brand-sub">
+            Rekap harian, histori bulanan, dan jadwal layanan dalam satu tempat.
+            Data per guru, rapi, dan bisa diverifikasi kapan saja.
+          </p>
+        </div>
+        <div className="login-brand-foot">MTsN 1 Kebumen · 2026</div>
+      </aside>
+
+      <div className="login-form-side">
+        <div className="login-box">
+          <div className="login-header">
+            <h1>Masuk</h1>
+            <p>Gunakan akun yang diberikan sekolah.</p>
+          </div>
 
         <form onSubmit={handleSubmit} className="login-form">
           {error && (
@@ -119,6 +135,7 @@ function Login({ onLogin }) {
               Lupa password?
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

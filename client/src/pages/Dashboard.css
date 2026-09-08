@@ -1,8 +1,7 @@
-/* Dashboard guru — komposisi hierarki:
-   baris 1: hero kehadiran (focal, angka besar) + mini stats 2x2
-   baris 2: jadwal hari ini | absensi terbaru (grid 2 kolom asimetris)
-   Alasan (R-31): pertanyaan pertama guru = "kehadiran saya berapa %",
-   jadi itu focal point; sisanya supporting. */
+/* Dashboard guru — komposisi hierarki (v3 "Ledger"):
+   baris 1: hero kehadiran (focal, angka mono besar) + mini stats 2x2
+   baris 2: jadwal hari ini | absensi terbaru (grid asimetris 1fr/1.25fr)
+   Motif: angka = IBM Plex Mono (tabular, seperti lembar absensi). */
 
 .dash-hero {
   display: flex;
@@ -20,6 +19,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-right: 1px solid var(--border);
+  padding-right: 28px;
 }
 
 .dash-hero-label {
@@ -31,16 +32,17 @@
 }
 
 .dash-hero-value {
-  font-size: 46px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
   line-height: 1;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 
 .dash-hero-sub {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   color: var(--text-muted);
   font-size: 13px;
 }
@@ -72,9 +74,10 @@
 .dash-mini-label svg { width: 15px; height: 15px; }
 
 .dash-mini-value {
-  margin-top: 5px;
-  font-size: 23px;
-  font-weight: 700;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
@@ -94,12 +97,24 @@
   margin-top: 16px;
 }
 
+/* Grid item default min-width:auto = tidak bisa menyusut di bawah lebar konten
+   (tabel). Paksa 0 supaya tidak overflow viewport kecil. */
+.dash-cols > * { min-width: 0; }
+
 /* Kartu Jadwal Mingguan Saya */
 .dash-muted { color: var(--text-muted); font-size: 13px; }
 .dash-jadwal { display: flex; flex-direction: column; gap: 8px; }
 .dash-jadwal-day { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
 .dash-jadwal-day:last-child { border-bottom: none; }
-.dash-jadwal-hari { width: auto; min-width: 96px; font-weight: 400; font-size: 14px; color: var(--text); flex-shrink: 0; }
+.dash-jadwal-hari {
+  width: auto;
+  min-width: 110px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
 .dash-jadwal-items { display: flex; flex-wrap: wrap; gap: 6px; }
 .dash-jadwal-item {
   display: inline-flex;
@@ -115,7 +130,7 @@
 .dash-jadwal-item strong { color: var(--accent); font-weight: 700; }
 .dash-jadwal-item em { font-style: normal; color: var(--text-muted); }
 
-.dash-table td { font-variant-numeric: tabular-nums; }
+.dash-table td:first-child { font-family: var(--font-mono); font-size: 12.5px; }
 
 @media (max-width: 900px) {
   .dash-cols { grid-template-columns: 1fr; }
@@ -123,6 +138,7 @@
 
 @media (max-width: 768px) {
   .dash-hero { flex-direction: column; gap: 18px; padding: 20px; }
-  .dash-hero-value { font-size: 38px; }
+  .dash-hero-main { border-right: none; padding-right: 0; }
+  .dash-hero-value { font-size: 42px; }
   .dash-hero-stats { grid-template-columns: repeat(2, 1fr); }
 }
