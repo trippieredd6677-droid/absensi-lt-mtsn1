@@ -604,6 +604,7 @@ h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; 
   font-size: 13px;
   font-weight: 600;
 }
+.form-group .required-mark { color: var(--accent); }
 
 .form-group input,
 .form-group select,

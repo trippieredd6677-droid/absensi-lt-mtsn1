@@ -12,6 +12,7 @@ router.post('/', verifyToken, isGuruOrAdmin, upload.single('foto_kegiatan'), [
   body('shift').notEmpty().withMessage('Shift wajib diisi'),
   body('kelas').notEmpty().withMessage('Kelas wajib diisi'),
   body('status').isIn(['hadir', 'sakit', 'izin', 'alpa']).withMessage('Status tidak valid'),
+  body('catatan').trim().notEmpty().withMessage('Catatan wajib diisi'),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -72,6 +73,7 @@ router.post('/admin-create', verifyToken, isAdmin, upload.single('foto_kegiatan'
   body('tanggal').isISO8601().withMessage('Format tanggal tidak valid'),
   body('shift').notEmpty().withMessage('Shift wajib diisi'),
   body('kelas').notEmpty().withMessage('Kelas wajib diisi'),
+  body('catatan').trim().notEmpty().withMessage('Catatan wajib diisi'),
   body('status').isIn(['hadir', 'sakit', 'izin', 'alpa']).withMessage('Status tidak valid'),
 ], async (req, res) => {
   const errors = validationResult(req);

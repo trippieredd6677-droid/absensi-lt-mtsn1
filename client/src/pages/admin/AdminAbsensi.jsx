@@ -521,12 +521,16 @@ function AdminAbsensi({ user, onLogout }) {
                   </select>
                 </div>
               </div>
-              <label className="form-label" style={{ marginTop: 12 }}>Catatan</label>
+              <label className="form-label" style={{ marginTop: 12 }}>
+                Catatan <span style={{ color: 'var(--accent)' }}>*</span>
+              </label>
               <textarea
                 className="form-input"
                 rows="2"
                 value={manualForm.catatan}
                 onChange={(e) => setManualForm({ ...manualForm, catatan: e.target.value })}
+                required
+                placeholder="Tuliskan kegiatan yang dilakukan"
               />
               <div className="modal-actions">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowManual(false)}>Batal</button>

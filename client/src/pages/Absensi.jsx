@@ -96,6 +96,10 @@ function Absensi({ user, onLogout }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!formData.catatan.trim()) {
+      setToast({ open: true, message: 'Catatan wajib diisi sebelum mengirim absensi.', type: 'error' })
+      return
+    }
     setLoading(true)
 
     try {
@@ -233,14 +237,17 @@ function Absensi({ user, onLogout }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="catatan">Catatan</label>
+            <label htmlFor="catatan">
+              Catatan <span className="required-mark" title="Wajib diisi">*</span>
+            </label>
             <textarea
               id="catatan"
               name="catatan"
               value={formData.catatan}
               onChange={handleChange}
-              placeholder="Masukkan catatan (opsional)"
+              placeholder="Tuliskan kegiatan yang dilakukan"
               rows="5"
+              required
               disabled={loading}
             ></textarea>
           </div>
