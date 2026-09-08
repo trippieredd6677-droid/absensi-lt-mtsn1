@@ -18,6 +18,9 @@ router.post('/', verifyToken, isGuruOrAdmin, upload.single('foto_kegiatan'), [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+  if (!req.file) {
+    return res.status(400).json({ message: 'Foto kegiatan wajib diunggah' });
+  }
 
   try {
     const { tanggal, shift, kelas, status, catatan } = req.body;

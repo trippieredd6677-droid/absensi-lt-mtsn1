@@ -100,6 +100,10 @@ function Absensi({ user, onLogout }) {
       setToast({ open: true, message: 'Catatan wajib diisi sebelum mengirim absensi.', type: 'error' })
       return
     }
+    if (!formData.foto_kegiatan) {
+      setToast({ open: true, message: 'Foto kegiatan wajib diunggah sebelum mengirim absensi.', type: 'error' })
+      return
+    }
     setLoading(true)
 
     try {
@@ -219,7 +223,9 @@ function Absensi({ user, onLogout }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="foto">Unggah Foto Kegiatan</label>
+            <label htmlFor="foto">
+              Unggah Foto Kegiatan <span className="required-mark" title="Wajib diisi">*</span>
+            </label>
             <label htmlFor="foto" className="file-input-wrapper">
               <input
                 id="foto"
@@ -227,6 +233,7 @@ function Absensi({ user, onLogout }) {
                 accept="image/*"
                 onChange={handleFileChange}
                 disabled={loading}
+                required={!formData.foto_kegiatan}
               />
               <span className={`file-label ${formData.foto_kegiatan ? 'has-file' : ''}`}>
                 <UploadSimple weight="duotone" />
@@ -245,7 +252,7 @@ function Absensi({ user, onLogout }) {
               name="catatan"
               value={formData.catatan}
               onChange={handleChange}
-              placeholder="Tuliskan kegiatan yang dilakukan"
+              placeholder="Masukkan catatan"
               rows="5"
               required
               disabled={loading}
