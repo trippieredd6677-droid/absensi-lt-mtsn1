@@ -363,14 +363,14 @@ function AdminAbsensi({ user, onLogout }) {
                         <div className="action-buttons">
                           <button
                             onClick={() => openEdit(abs)}
-                            className="btn-delete"
+                            className="btn-action btn-edit"
                             title="Ubah Status"
                           >
                             <PencilSimple weight="regular" />
                           </button>
                           <button
                             onClick={() => handleDelete(abs.id)}
-                            className="btn-delete"
+                            className="btn-action btn-delete"
                             title="Hapus"
                           >
                             <Trash weight="regular" />

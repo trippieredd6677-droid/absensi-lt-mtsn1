@@ -65,27 +65,6 @@
   text-align: center;
 }
 
-.btn-delete {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 9px;
-  border: 1px solid var(--status-alpa-bg);
-  background: var(--surface-2);
-  color: var(--status-alpa);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-}
-
-.btn-delete svg { width: 18px; height: 18px; }
-
-.btn-delete:hover:not(:disabled) {
-  color: var(--status-alpa);
-  border-color: var(--status-alpa);
-  background: var(--status-alpa-bg);
-}
-
 .stats-card {
   background: var(--surface);
   border: 1px solid var(--border);

@@ -21,49 +21,6 @@
   gap: 8px;
 }
 
-.btn-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 9px;
-  border: 1px solid var(--border-strong);
-  background: var(--surface-2);
-  color: var(--text-muted);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-}
-
-.btn-action svg { width: 18px; height: 18px; }
-
-.btn-action:hover:not(:disabled) {
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-
-.btn-action:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.btn-edit:hover:not(:disabled) {
-  color: var(--accent);
-  border-color: var(--accent-border);
-  background: var(--accent-dim);
-}
-
-.btn-warn:hover:not(:disabled) {
-  color: var(--status-sakit);
-  border-color: var(--status-sakit);
-  background: var(--status-sakit-bg);
-}
-
-.btn-delete:hover:not(:disabled) {
-  color: var(--status-alpa);
-  border-color: var(--status-alpa);
-  background: var(--status-alpa-bg);
-}
-
 /* Modal */
 .modal-overlay {
   position: fixed;

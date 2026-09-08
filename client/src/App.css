@@ -635,6 +635,45 @@ html[data-theme="dark"] .form-group input[type="date"]::-webkit-calendar-picker-
 .btn-sm { padding: 7px 13px; font-size: 13px; gap: 6px; border-radius: var(--radius); height: 40px; }
 .btn-sm svg { width: 16px; height: 16px; }
 
+/* ============ Icon buttons (satu sistem utk semua halaman) ============ */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-radius: var(--radius);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.btn-action svg { width: 18px; height: 18px; }
+.btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-action.btn-sm { width: 36px; height: 36px; }
+.btn-action.btn-sm svg { width: 18px; height: 18px; }
+
+.btn-edit:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-dim);
+}
+.btn-warn { color: var(--status-sakit); border-color: var(--status-sakit); border-width: 2px; }
+.btn-warn:hover:not(:disabled) {
+  color: var(--status-sakit);
+  border-color: var(--status-sakit);
+  background: var(--status-sakit-bg);
+}
+.btn-delete { color: var(--status-alpa); border-color: var(--status-alpa); border-width: 2px; }
+.btn-delete:hover:not(:disabled) {
+  color: var(--status-alpa);
+  border-color: var(--status-alpa);
+  background: var(--status-alpa-bg);
+}
+
 .btn-primary {
   background: var(--accent);
   color: #fff;

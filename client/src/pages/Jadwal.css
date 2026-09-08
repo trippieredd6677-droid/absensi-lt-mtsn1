@@ -2,7 +2,7 @@
 .jadwal-tabs { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
 .jadwal-tab {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 9px 16px; background: var(--surface-2); border: 1px solid var(--border-strong);
+  padding: 0 16px; height: 40px; background: var(--surface-2); border: 1px solid var(--border-strong);
   border-radius: var(--radius); color: var(--text-muted); font-weight: 600; font-size: 14px;
   cursor: pointer; transition: background .18s ease, color .18s ease, border-color .18s ease;
 }
@@ -27,7 +27,20 @@
 
 .jadwal-search { position: relative; flex: 1; min-width: 220px; max-width: 420px; }
 .jadwal-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); width: 16px; height: 16px; }
-.jadwal-search input { width: 100%; padding: 10px 12px 10px 36px; font-size: 14px; }
+.jadwal-search input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.jadwal-search input:hover { border-color: var(--accent-border); }
+.jadwal-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+.jadwal-search input::placeholder { color: var(--text-faint); }
 
 /* ---- Tabel daftar guru: disiplin lebar kolom, tidak ada teks terpotong ---- */
 .jadwal-guru { overflow-x: auto; -webkit-overflow-scrolling: touch; }

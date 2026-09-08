@@ -77,7 +77,7 @@
   gap: 10px;
   margin-top: 0;
 }
-.confirm-actions .btn { flex: 1; min-height: 42px; }
+.confirm-actions .btn { flex: 1; min-height: 40px; }
 
 @media (max-width: 768px) {
   .confirm-overlay {

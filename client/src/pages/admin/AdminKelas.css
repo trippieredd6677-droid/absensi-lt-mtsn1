@@ -32,7 +32,7 @@
   flex: 1;
   min-width: 220px;
   max-width: 360px;
-  height: 42px;
+  height: 40px;
   color: var(--text-muted);
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
@@ -49,6 +49,7 @@
   font-size: 14px;
   color: var(--text);
   min-width: 0;
+  height: 100%;
 }
 .kelas-search input::placeholder { color: var(--text-faint); }
 
@@ -57,11 +58,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  height: 42px;
+  height: 40px;
   color: var(--text-muted);
 }
 .kelas-filter select {
-  height: 42px;
+  height: 40px;
   padding: 0 36px 0 var(--space-3);
   background: var(--surface);
   border: 1px solid var(--border-strong);
@@ -84,7 +85,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  height: 42px;
+  height: 40px;
   padding: 0 var(--space-4);
   font-weight: 600;
   font-size: 14px;
@@ -115,7 +116,7 @@
 }
 .kelas-add-field select,
 .kelas-add-field input {
-  height: 42px;
+  height: 40px;
   padding: 0 var(--space-3);
   background: var(--surface-2);
   border: 1px solid var(--border-strong);
@@ -135,7 +136,7 @@
   align-self: end;
 }
 .kelas-preview {
-  height: 42px;
+  height: 40px;
   display: flex;
   align-items: center;
   padding: 0 var(--space-3);
@@ -157,7 +158,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  height: 42px;
+  height: 40px;
   padding: 0 var(--space-3);
   font-weight: 600;
   font-size: 14px;
@@ -221,18 +222,6 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 
 .kelas-paralel { color: var(--text-muted); font-size: 13px; font-family: inherit; }
 
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: var(--space-12) var(--space-4);
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-}
-.empty-state p { margin: 0; font-size: 14px; }
-.empty-state svg { color: var(--text-faint); }
 
 /* ============================================================
  * JamLTPanel — slot waktu Layanan Tambahan (jam_lt)
@@ -357,23 +346,13 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 }
 .kelas-actions .btn svg { width: 18px; height: 18px; }
 
-.btn-sm {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3);
-  font-size: 13px;
-  min-height: 40px;
-  border-radius: var(--radius);
-}
 
 .empty { text-align: center; color: var(--text-muted); padding: var(--space-8) 0; font-size: 13px; }
 
 .kelas-tabs { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
 .kelas-tab {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  padding: var(--space-2) var(--space-4); background: var(--surface); border: 1px solid var(--border-strong);
+  padding: 0 var(--space-4); height: 40px; background: var(--surface); border: 1px solid var(--border-strong);
   border-radius: var(--radius); color: var(--text-muted); font-weight: 600; font-size: 14px;
   cursor: pointer; transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
@@ -383,13 +362,6 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 
 .kelas-panel .alert { margin-bottom: var(--space-4); }
 
-/* Table refinements */
-.table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.table th, .table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
-.table thead th { background: var(--surface-2); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; color: var(--text-faint); text-transform: uppercase; }
-.table tbody tr:hover td { background: var(--surface-2); }
-.table tbody tr:last-child td { border-bottom: none; }
-.table td { color: var(--text); }
 
 /* Inline edit form-control inside table */
 .kelas-actions input.form-control {
@@ -432,8 +404,6 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   .th-actions { width: auto; }
   .kelas-actions { gap: var(--space-1); }
   .kelas-actions input { width: 100%; max-width: none; }
-  .table { font-size: 13px; }
-  .table th, .table td { padding: var(--space-2) var(--space-2); }
   .kelas-actions .btn { min-width: 44px; height: 44px; padding: 0 var(--space-2); }
   .kelas-actions .btn svg { width: 18px; height: 18px; }
   .kelas-group-header h3 { font-size: 11px; }
