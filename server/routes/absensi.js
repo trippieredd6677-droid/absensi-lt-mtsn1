@@ -7,7 +7,16 @@ const upload = require('../middleware/upload');
 const router = express.Router();
 
 // Create absensi (guru)
-router.post('/', verifyToken, isGuruOrAdmin, upload.single('foto_kegiatan'), [
+// Nama guru utk nama file foto (JWT cuma bawa id) — dipasang sebelum multer
+const attachGuruName = async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT full_name FROM users WHERE id = $1', [req.user.id]);
+    req._guruName = rows[0]?.full_name;
+  } catch (e) { /* fallback: unknown */ }
+  next();
+};
+
+router.post('/', verifyToken, isGuruOrAdmin, attachGuruName, upload.single('foto_kegiatan'), [
   body('tanggal').isISO8601().withMessage('Format tanggal tidak valid'),
   body('shift').notEmpty().withMessage('Shift wajib diisi'),
   body('kelas').notEmpty().withMessage('Kelas wajib diisi'),
@@ -71,7 +80,7 @@ router.post('/', verifyToken, isGuruOrAdmin, upload.single('foto_kegiatan'), [
 });
 
 // Admin: input absensi manual atas nama guru (backfill tanggal apa saja)
-router.post('/admin-create', verifyToken, isAdmin, upload.single('foto_kegiatan'), [
+router.post('/admin-create', verifyToken, isAdmin, attachGuruName, upload.single('foto_kegiatan'), [
   body('user_id').isInt().withMessage('user_id wajib'),
   body('tanggal').isISO8601().withMessage('Format tanggal tidak valid'),
   body('shift').notEmpty().withMessage('Shift wajib diisi'),
@@ -267,7 +276,7 @@ router.get('/:id', verifyToken, isGuruOrAdmin, async (req, res) => {
 });
 
 // Update absensi (ADMIN ONLY — guru read-only, tidak bisa ubah/hapus)
-router.put('/:id', verifyToken, isAdmin, upload.single('foto_kegiatan'), [
+router.put('/:id', verifyToken, isAdmin, attachGuruName, upload.single('foto_kegiatan'), [
   body('status').isIn(['hadir', 'sakit', 'izin', 'alpa']).withMessage('Invalid status'),
 ], async (req, res) => {
   const errors = validationResult(req);

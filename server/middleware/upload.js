@@ -14,8 +14,17 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    const slug = (s) => String(s || '')
+      .normalize('NFKD').replace(/[^\w\s-]/g, '')
+      .trim().replace(/\s+/g, '-').toLowerCase()
+      .slice(0, 30) || 'unknown';
+    const namaGuru = slug(req._guruName);
+    const kelas = slug(req.body && req.body.kelas);
+    const shift = slug(req.body && req.body.shift);
+    const tanggal = slug(req.body && req.body.tanggal) || 'tanpa-tanggal';
+    const stamp = Date.now();
+    cb(null, `${tanggal}-${shift}_${namaGuru}_kelas-${kelas}_${stamp}${ext}`);
   },
 });
 
