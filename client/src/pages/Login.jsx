@@ -81,7 +81,7 @@ function Login({ onLogin }) {
         <form onSubmit={handleSubmit} className="login-form">
           {error && (
             <div className="alert alert-error" role="alert">
-              <WarningCircle weight="duotone" />
+              <WarningCircle weight="regular" />
               <span>{error}</span>
             </div>
           )}
@@ -119,7 +119,7 @@ function Login({ onLogin }) {
                 aria-label={showPassword ? 'Sembunyikan password' : 'Lihat password'}
                 tabIndex={-1}
               >
-                {showPassword ? <EyeSlash weight="duotone" /> : <Eye weight="duotone" />}
+                {showPassword ? <EyeSlash weight="regular" /> : <Eye weight="regular" />}
               </button>
             </div>
           </div>

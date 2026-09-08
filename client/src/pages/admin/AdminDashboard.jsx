@@ -67,31 +67,31 @@ function AdminDashboard({ user, onLogout }) {
       </div>
 
       <div className="stats-grid">
-        <div className="stat-card accent-brand">
+        <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Total Guru</span>
-            <span className="stat-chip"><Users weight="duotone" /></span>
+            <span className="stat-chip"><Users weight="regular" /></span>
           </div>
           <div className="stat-value">{stats.totalGuru || 0}</div>
         </div>
-        <div className="stat-card accent-brand">
+        <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Belum Input</span>
-            <span className="stat-chip"><Warning weight="duotone" /></span>
+            <span className="stat-chip"><Warning weight="regular" /></span>
           </div>
           <div className="stat-value">{bdSummary.belum ?? notSubmitted.length}</div>
         </div>
-        <div className="stat-card accent-brand">
+        <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Absensi Hari Ini</span>
-            <span className="stat-chip"><ClockCounterClockwise weight="duotone" /></span>
+            <span className="stat-chip"><ClockCounterClockwise weight="regular" /></span>
           </div>
           <div className="stat-value">{today.total || 0}</div>
         </div>
-        <div className="stat-card accent-warn">
+        <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Terlambat</span>
-            <span className="stat-chip"><Alarm weight="duotone" /></span>
+            <span className="stat-chip"><Alarm weight="regular" /></span>
           </div>
           <div className="stat-value">{bdSummary.terlambat || 0}</div>
         </div>
@@ -120,7 +120,7 @@ function AdminDashboard({ user, onLogout }) {
             ))}
           </div>
           <h2 style={{ marginTop: '22px' }}>
-            <ClockCounterClockwise weight="duotone" /> Aktivitas Terbaru
+            <ClockCounterClockwise weight="regular" /> Aktivitas Terbaru
           </h2>
           <div className="recent-feed">
             {recent.length === 0 ? (
@@ -139,7 +139,7 @@ function AdminDashboard({ user, onLogout }) {
 
         <div className="card dash-panel">
           <h2>
-            <Warning weight="duotone" /> Guru Belum Input ({bdSummary.belum ?? notSubmitted.length})
+            <Warning weight="regular" /> Guru Belum Input ({bdSummary.belum ?? notSubmitted.length})
           </h2>
           {notSubmitted.length > 0 ? (
             <ul className="not-submitted">
@@ -159,7 +159,7 @@ function AdminDashboard({ user, onLogout }) {
           {lateList.length > 0 && (
             <>
               <h2 style={{ marginTop: '22px' }}>
-                <Alarm weight="duotone" /> Terlambat ({lateList.length})
+                <Alarm weight="regular" /> Terlambat ({lateList.length})
               </h2>
               <ul className="late-list">
                 {lateList.map((g) => (
@@ -176,36 +176,36 @@ function AdminDashboard({ user, onLogout }) {
 
       <div className="admin-actions">
         <div className="adm-quick" onClick={() => navigate('/admin/users')}>
-          <div className="adm-quick-icon"><Users weight="duotone" /></div>
+          <div className="adm-quick-icon"><Users weight="regular" /></div>
           <div className="adm-quick-text">
             <h3>Manajemen Guru</h3>
             <p>Kelola akun guru dan data pribadi</p>
           </div>
-          <ArrowRight weight="bold" className="adm-quick-arrow" />
+          <ArrowRight weight="regular" className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/absensi')}>
-          <div className="adm-quick-icon"><ClipboardText weight="duotone" /></div>
+          <div className="adm-quick-icon"><ClipboardText weight="regular" /></div>
           <div className="adm-quick-text">
             <h3>Data Absensi</h3>
             <p>Lihat dan kelola data absensi</p>
           </div>
-          <ArrowRight weight="bold" className="adm-quick-arrow" />
+          <ArrowRight weight="regular" className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/kelas')}>
-          <div className="adm-quick-icon"><ListBullets weight="duotone" /></div>
+          <div className="adm-quick-icon"><ListBullets weight="regular" /></div>
           <div className="adm-quick-text">
             <h3>Kelola Kelas</h3>
             <p>Atur kelas &amp; shift untuk input absensi</p>
           </div>
-          <ArrowRight weight="bold" className="adm-quick-arrow" />
+          <ArrowRight weight="regular" className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/audit')}>
-          <div className="adm-quick-icon"><ShieldCheck weight="duotone" /></div>
+          <div className="adm-quick-icon"><ShieldCheck weight="regular" /></div>
           <div className="adm-quick-text">
             <h3>Audit Log</h3>
             <p>Jejak aktivitas pengguna</p>
           </div>
-          <ArrowRight weight="bold" className="adm-quick-arrow" />
+          <ArrowRight weight="regular" className="adm-quick-arrow" />
         </div>
       </div>
     </Layout>

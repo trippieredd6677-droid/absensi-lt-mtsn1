@@ -408,10 +408,10 @@ function Jadwal({ user, onLogout, role }) {
         <>
           <div className="jadwal-tabs">
             <button className={tab === 'guru' ? 'jadwal-tab active' : 'jadwal-tab'} onClick={() => setTab('guru')}>
-              <TreeStructure weight="duotone" /> Guru & Jenis Layanan
+              <TreeStructure weight="regular" /> Guru & Jenis Layanan
             </button>
             <button className={tab === 'grid' ? 'jadwal-tab active' : 'jadwal-tab'} onClick={() => setTab('grid')}>
-              <CalendarBlank weight="duotone" /> Jadwal Kelas
+              <CalendarBlank weight="regular" /> Jadwal Kelas
             </button>
           </div>
         </>
@@ -423,14 +423,14 @@ function Jadwal({ user, onLogout, role }) {
           <div className="card">
             <div className="jadwal-filter">
               <div className="jadwal-search">
-                <MagnifyingGlass weight="duotone" />
+                <MagnifyingGlass weight="regular" />
                 <input type="text" placeholder="Cari guru / kode / jenis layanan…" value={qRaw} onChange={e => setQRaw(e.target.value)} />
               </div>
               <select className="filter-select" value={filterLayanan} onChange={e => setFilterLayanan(e.target.value)}>
                 <option value="">Semua Jenis Layanan</option>
                 {types.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
-              <button className="btn btn-secondary btn-sm" onClick={openAddGuru}><Plus weight="duotone" /> Tambah</button>
+              <button className="btn btn-secondary btn-sm" onClick={openAddGuru}><Plus weight="regular" /> Tambah</button>
             </div>
             <table className="table">
               <thead>
@@ -455,9 +455,9 @@ function Jadwal({ user, onLogout, role }) {
                       <td className="center-col">
                         <div className="btn-wrap">
                           <button className="btn-action" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
-                            <PencilSimple weight="duotone" />
+                            <PencilSimple weight="regular" />
                           </button>
-                          <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="duotone" /></button>
+                          <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="regular" /></button>
                         </div>
                       </td>
                     </tr>
@@ -573,8 +573,8 @@ function Jadwal({ user, onLogout, role }) {
                         {(r.keterangan || r.jenis_layanan) && <span className="jadwal-sub"> ({r.keterangan || r.jenis_layanan})</span>}
                       </div>
                       <div className="jadwal-item-actions">
-                        <button className="btn-action btn-sm" onClick={() => handleEditStaged(r, idx)} title="Edit baris"><PencilSimple weight="duotone" /></button>
-                        <button className="btn-action btn-sm btn-delete" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><Trash weight="duotone" /></button>
+                        <button className="btn-action btn-sm" onClick={() => handleEditStaged(r, idx)} title="Edit baris"><PencilSimple weight="regular" /></button>
+                        <button className="btn-action btn-sm btn-delete" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><Trash weight="regular" /></button>
                       </div>
                     </div>
                   ))}
@@ -658,7 +658,7 @@ function Jadwal({ user, onLogout, role }) {
               </div>
             </form>
             <a href="#" className="btn btn-outline btn-sm" style={{ marginTop: 10 }} onClick={(e) => { e.preventDefault(); downloadTemplate() }}>
-              <DownloadSimple weight="duotone" /> Download Template
+              <DownloadSimple weight="regular" /> Download Template
             </a>
           </div>
         </div>

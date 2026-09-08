@@ -291,11 +291,11 @@ function AdminAbsensi({ user, onLogout }) {
           </div>
 
           <button className="btn btn-secondary btn-sm" onClick={exportFull} disabled={absensi.length === 0}>
-            <DownloadSimple weight="duotone" /> Ekspor Lengkap
+            <DownloadSimple weight="regular" /> Ekspor Lengkap
           </button>
 
           <button className="btn btn-primary btn-sm" onClick={() => setShowManual(true)}>
-            <PlusCircle weight="duotone" /> Input Manual
+            <PlusCircle weight="regular" /> Input Manual
           </button>
         </div>
 
@@ -303,7 +303,7 @@ function AdminAbsensi({ user, onLogout }) {
           <div className="bulk-bar">
             <span>{selected.size} dipilih</span>
             <button className="btn btn-danger btn-sm" onClick={handleBulkDelete}>
-              <Trash weight="duotone" /> Hapus Terpilih
+              <Trash weight="regular" /> Hapus Terpilih
             </button>
             <button className="btn btn-secondary btn-sm" onClick={() => setSelected(new Set())}>Batal</button>
           </div>
@@ -355,7 +355,7 @@ function AdminAbsensi({ user, onLogout }) {
                       <td>
                         {abs.foto_kegiatan ? (
                           <a href={`/uploads/${abs.foto_kegiatan}`} target="_blank" rel="noopener noreferrer" className="photo-icon" title="Lihat foto">
-                            <Image weight="duotone" />
+                            <Image weight="regular" />
                           </a>
                         ) : <span className="photo-none">-</span>}
                       </td>
@@ -366,14 +366,14 @@ function AdminAbsensi({ user, onLogout }) {
                             className="btn-delete"
                             title="Ubah Status"
                           >
-                            <PencilSimple weight="duotone" />
+                            <PencilSimple weight="regular" />
                           </button>
                           <button
                             onClick={() => handleDelete(abs.id)}
                             className="btn-delete"
                             title="Hapus"
                           >
-                            <Trash weight="duotone" />
+                            <Trash weight="regular" />
                           </button>
                         </div>
                       </td>
@@ -389,7 +389,7 @@ function AdminAbsensi({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={page === 1}
               >
-                <CaretLeft weight="bold" /> Sebelumnya
+                <CaretLeft weight="regular" /> Sebelumnya
               </button>
               <span className="page-info">Halaman {page}</span>
               <button
@@ -397,7 +397,7 @@ function AdminAbsensi({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={absensi.length < 30}
               >
-                Berikutnya <CaretRight weight="bold" />
+                Berikutnya <CaretRight weight="regular" />
               </button>
             </div>
           </>
@@ -413,7 +413,7 @@ function AdminAbsensi({ user, onLogout }) {
             const SumIcon = s.icon
             return (
               <div className="summary-item" key={s.label}>
-                <span className="label"><SumIcon weight="duotone" /> {s.label}</span>
+                <span className="label"><SumIcon weight="regular" /> {s.label}</span>
                 <span className="value">{s.value}</span>
               </div>
             )

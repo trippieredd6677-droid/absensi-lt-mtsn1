@@ -77,7 +77,7 @@ function Dashboard({ user, onLogout }) {
             const Icon = c.icon
             return (
               <div className="dash-mini" key={c.key}>
-                <span className="dash-mini-label"><Icon weight="duotone" /> {c.label}</span>
+                <span className="dash-mini-label"><Icon weight="regular" /> {c.label}</span>
                 <div className={`dash-mini-value ${c.cls}`}>{stats ? stats[c.key] : 0}</div>
               </div>
             )

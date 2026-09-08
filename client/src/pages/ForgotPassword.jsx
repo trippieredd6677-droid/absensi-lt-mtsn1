@@ -105,11 +105,11 @@ function ForgotPassword() {
     <div className="login-container">
       <div className="login-box forgot-box">
         <Link to="/login" className="back-link">
-          <ArrowLeft weight="duotone" /> Kembali ke Login
+          <ArrowLeft weight="regular" /> Kembali ke Login
         </Link>
 
         <div className="login-header">
-          <div className="login-brand-icon"><Key weight="duotone" /></div>
+          <div className="login-brand-icon"><Key weight="regular" /></div>
           <h1>Lupa Password</h1>
           <p>{step === 1 ? 'Masukkan email terdaftar kamu' : step === 2 ? 'Masukkan kode OTP' : 'Atur password baru'}</p>
         </div>
@@ -119,7 +119,7 @@ function ForgotPassword() {
           <div className="step-indicator">
             {steps.map((s) => (
               <div key={s.n} className={`step-item ${step === s.n ? 'active' : ''} ${step > s.n ? 'done' : ''}`}>
-                <span className="step-dot">{step > s.n ? <CheckCircle weight="duotone" /> : s.n}</span>
+                <span className="step-dot">{step > s.n ? <CheckCircle weight="regular" /> : s.n}</span>
                 <span className="step-label">{s.label}</span>
               </div>
             ))}
@@ -128,13 +128,13 @@ function ForgotPassword() {
 
         {error && (
           <div className="alert alert-error" role="alert">
-            <WarningCircle weight="duotone" />
+            <WarningCircle weight="regular" />
             <span>{error}</span>
           </div>
         )}
         {info && (
           <div className="alert alert-info" role="status">
-            <ArrowsLeftRight weight="duotone" />
+            <ArrowsLeftRight weight="regular" />
             <span>{info}</span>
           </div>
         )}
@@ -143,7 +143,7 @@ function ForgotPassword() {
           <form onSubmit={requestOtp} className="login-form">
             <div className="form-group">
               <label htmlFor="email">
-                <EnvelopeSimple weight="duotone" /> Email
+                <EnvelopeSimple weight="regular" /> Email
               </label>
               <input
                 id="email"
@@ -165,7 +165,7 @@ function ForgotPassword() {
           <form onSubmit={verifyOtp} className="login-form">
             <div className="form-group">
               <label htmlFor="otp">
-                <Key weight="duotone" /> Kode OTP
+                <Key weight="regular" /> Kode OTP
               </label>
               <input
                 id="otp"
@@ -192,7 +192,7 @@ function ForgotPassword() {
         {step === 3 && (
           <form onSubmit={doReset} className="login-form">
             <div className="form-group">
-              <label htmlFor="password"><LockKey weight="duotone" /> Password Baru</label>
+              <label htmlFor="password"><LockKey weight="regular" /> Password Baru</label>
               <input
                 id="password"
                 type="password"
@@ -204,7 +204,7 @@ function ForgotPassword() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="confirm"><LockKey weight="duotone" /> Konfirmasi Password</label>
+              <label htmlFor="confirm"><LockKey weight="regular" /> Konfirmasi Password</label>
               <input
                 id="confirm"
                 type="password"

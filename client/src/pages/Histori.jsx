@@ -94,7 +94,7 @@ function Histori({ user, onLogout }) {
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary btn-sm" onClick={exportReportFile} disabled={absensi.length === 0}>
-            <DownloadSimple weight="duotone" /> Ekspor Laporan
+            <DownloadSimple weight="regular" /> Ekspor Laporan
           </button>
         </div>
       </div>
@@ -106,7 +106,7 @@ function Histori({ user, onLogout }) {
             const StatIcon = s.icon
             return (
               <div className="stat-card" key={s.label}>
-                <h3><StatIcon weight="duotone" /> {s.label}</h3>
+                <h3><StatIcon weight="regular" /> {s.label}</h3>
                 <div className={`value ${s.cls || ''}`}>{s.value}</div>
               </div>
             )
@@ -169,7 +169,7 @@ function Histori({ user, onLogout }) {
                       <td>
                         {abs.foto_kegiatan ? (
                           <a href={`/uploads/${abs.foto_kegiatan}`} target="_blank" rel="noopener noreferrer" className="photo-icon" title="Lihat foto">
-                            <Image weight="duotone" />
+                            <Image weight="regular" />
                           </a>
                         ) : '-'}
                       </td>
@@ -185,7 +185,7 @@ function Histori({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={page === 1}
               >
-                <CaretLeft weight="bold" /> Sebelumnya
+                <CaretLeft weight="regular" /> Sebelumnya
               </button>
               <span className="page-info">Halaman {page}</span>
               <button
@@ -193,7 +193,7 @@ function Histori({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={absensi.length < 20}
               >
-                Berikutnya <CaretRight weight="bold" />
+                Berikutnya <CaretRight weight="regular" />
               </button>
             </div>
           </>

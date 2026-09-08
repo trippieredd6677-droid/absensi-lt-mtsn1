@@ -86,7 +86,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 title={theme === 'light' ? 'Aktifkan mode gelap' : 'Aktifkan mode terang'}
                 aria-label="Ganti tema"
               >
-                {theme === 'light' ? <Moon weight="duotone" /> : <Sun weight="duotone" />}
+                {theme === 'light' ? <Moon weight="regular" /> : <Sun weight="regular" />}
               </button>
               <button
                 className="mobile-menu-btn"
@@ -94,7 +94,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
                 aria-expanded={menuOpen}
               >
-                <List weight="bold" />
+                <List weight="regular" />
               </button>
               <button
                 className="mobile-logout"
@@ -102,7 +102,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 aria-label="Keluar"
                 title="Keluar"
               >
-                <SignOut weight="bold" />
+                <SignOut weight="regular" />
               </button>
             </div>
           </div>
@@ -139,7 +139,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
             </div>
           </div>
           <button onClick={handleLogout} className="btn btn-danger logout-btn">
-            <SignOut weight="bold" />
+            <SignOut weight="regular" />
             Keluar
           </button>
         </div>

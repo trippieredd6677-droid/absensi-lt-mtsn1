@@ -465,18 +465,18 @@ function AdminUsers({ user, onLogout }) {
                       </td>
                       <td>
                         <div className="action-buttons">
-                          <button onClick={() => openEdit(u)} className="btn-action btn-edit" title="Ubah Data"><PencilSimple weight="duotone" /></button>
-                          <button onClick={() => { setResetUserId(u.id); setShowResetForm(true); }} className="btn-action btn-edit" title="Atur Ulang Password"><Key weight="duotone" /></button>
+                          <button onClick={() => openEdit(u)} className="btn-action btn-edit" title="Ubah Data"><PencilSimple weight="regular" /></button>
+                          <button onClick={() => { setResetUserId(u.id); setShowResetForm(true); }} className="btn-action btn-edit" title="Atur Ulang Password"><Key weight="regular" /></button>
                           {u.status === 'active' ? (
-                            <button onClick={() => handleDeactivate(u.id)} className="btn-action btn-warn" title="Nonaktifkan" disabled={u.id === user?.id}><Prohibit weight="duotone" /></button>
+                            <button onClick={() => handleDeactivate(u.id)} className="btn-action btn-warn" title="Nonaktifkan" disabled={u.id === user?.id}><Prohibit weight="regular" /></button>
                           ) : (
-                            <button onClick={() => handleActivate(u.id)} className="btn-action btn-edit" title="Aktifkan"><ArrowClockwise weight="duotone" /></button>
+                            <button onClick={() => handleActivate(u.id)} className="btn-action btn-edit" title="Aktifkan"><ArrowClockwise weight="regular" /></button>
                           )}
-                          <button onClick={() => openLink(u)} className="btn-action btn-edit" title="Link Guru Map"><LinkIcon weight="duotone" /></button>
+                          <button onClick={() => openLink(u)} className="btn-action btn-edit" title="Link Guru Map"><LinkIcon weight="regular" /></button>
                           {u.role === 'guru' && (
-                            <button onClick={() => handleImpersonate(u)} className="btn-action btn-edit" title="Login Sebagai"><UserSwitch weight="duotone" /></button>
+                            <button onClick={() => handleImpersonate(u)} className="btn-action btn-edit" title="Login Sebagai"><UserSwitch weight="regular" /></button>
                           )}
-                          <button onClick={() => handleDelete(u)} className="btn-action btn-delete" title="Hapus Permanen" disabled={u.id === user?.id}><Trash weight="duotone" /></button>
+                          <button onClick={() => handleDelete(u)} className="btn-action btn-delete" title="Hapus Permanen" disabled={u.id === user?.id}><Trash weight="regular" /></button>
                         </div>
                       </td>
                     </tr>
@@ -487,11 +487,11 @@ function AdminUsers({ user, onLogout }) {
             {!onlyOrphan && (
               <div className="pagination" style={{ marginTop: '20px' }}>
                 <button onClick={() => setPage(Math.max(1, page - 1))} className="btn btn-secondary" disabled={page === 1}>
-                  <CaretLeft weight="bold" /> Sebelumnya
+                  <CaretLeft weight="regular" /> Sebelumnya
                 </button>
                 <span className="page-info">Halaman {page} / {pages} ({total})</span>
                 <button onClick={() => setPage(page + 1)} className="btn btn-secondary" disabled={page >= pages}>
-                  Berikutnya <CaretRight weight="bold" />
+                  Berikutnya <CaretRight weight="regular" />
                 </button>
               </div>
             )}

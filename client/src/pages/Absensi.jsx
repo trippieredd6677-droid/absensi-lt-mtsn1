@@ -236,7 +236,7 @@ function Absensi({ user, onLogout }) {
                 required={!formData.foto_kegiatan}
               />
               <span className={`file-label ${formData.foto_kegiatan ? 'has-file' : ''}`}>
-                <UploadSimple weight="duotone" />
+                <UploadSimple weight="regular" />
                 {formData.foto_kegiatan ? (formData.foto_kegiatan.name || 'Foto siap diunggah') : 'Pilih berkas atau seret ke sini'}
               </span>
             </label>
@@ -271,12 +271,12 @@ function Absensi({ user, onLogout }) {
       </div>
 
       <div className="info-card">
-        <h3><Info weight="duotone" /> Informasi Penting</h3>
+        <h3><Info weight="regular" /> Informasi Penting</h3>
         <ul>
-          <li><CheckCircle weight="duotone" /> Pastikan semua data yang Anda isi sudah benar sebelum mengirim</li>
-          <li><CheckCircle weight="duotone" /> Setiap tanggal dan shift hanya boleh diisi satu kali</li>
-          <li><CheckCircle weight="duotone" /> Anda hanya bisa melihat riwayat absensi; koreksi data ditangani admin</li>
-          <li><CheckCircle weight="duotone" /> Unggah foto kegiatan untuk mendokumentasikan aktivitas Anda</li>
+          <li><CheckCircle weight="regular" /> Pastikan semua data yang Anda isi sudah benar sebelum mengirim</li>
+          <li><CheckCircle weight="regular" /> Setiap tanggal dan shift hanya boleh diisi satu kali</li>
+          <li><CheckCircle weight="regular" /> Anda hanya bisa melihat riwayat absensi; koreksi data ditangani admin</li>
+          <li><CheckCircle weight="regular" /> Unggah foto kegiatan untuk mendokumentasikan aktivitas Anda</li>
         </ul>
       </div>
     </Layout>

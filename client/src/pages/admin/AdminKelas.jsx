@@ -80,10 +80,10 @@ function AdminKelas({ user, onLogout }) {
 
       <div className="kelas-tabs">
         <button className={tab === 'kelas' ? 'kelas-tab active' : 'kelas-tab'} onClick={() => setTab('kelas')}>
-          <ListBullets weight="duotone" /> Kelas
+          <ListBullets weight="regular" /> Kelas
         </button>
         <button className={tab === 'shift' ? 'kelas-tab active' : 'kelas-tab'} onClick={() => setTab('shift')}>
-          <Calendar weight="duotone" /> Jam LT
+          <Calendar weight="regular" /> Jam LT
         </button>
       </div>
 
@@ -262,7 +262,7 @@ function KelasPanel({ user, onLogout }) {
       <div className="kelas-toolbar">
         <div className="kelas-toolbar-left">
           <div className="kelas-search">
-            <MagnifyingGlass size={18} weight="bold" />
+            <MagnifyingGlass size={18} weight="regular" />
             <input
               type="text"
               placeholder="Cari kelas..."
@@ -271,7 +271,7 @@ function KelasPanel({ user, onLogout }) {
             />
           </div>
           <div className="kelas-filter">
-            <Funnel size={16} weight="bold" />
+            <Funnel size={16} weight="regular" />
             <select value={filterProgram} onChange={(e) => setFilterProgram(e.target.value)}>
               <option value="ALL">Semua Program</option>
               {PROGRAM_LIST.map(p => (
@@ -283,7 +283,7 @@ function KelasPanel({ user, onLogout }) {
           </div>
         </div>
         <button className="btn btn-primary" onClick={() => setShowAddForm(v => !v)}>
-          <Plus weight="bold" /> Tambah Kelas
+          <Plus weight="regular" /> Tambah Kelas
         </button>
       </div>
 
@@ -324,10 +324,10 @@ function KelasPanel({ user, onLogout }) {
             </label>
             <div className="kelas-add-actions">
               <button type="submit" className="btn btn-primary" disabled={c.busy}>
-                <Check weight="bold" /> Simpan
+                <Check weight="regular" /> Simpan
               </button>
               <button type="button" className="btn btn-secondary" onClick={() => setShowAddForm(false)}>
-                <X weight="bold" /> Batal
+                <X weight="regular" /> Batal
               </button>
             </div>
           </div>
@@ -339,7 +339,7 @@ function KelasPanel({ user, onLogout }) {
         <div className="loading">Loading...</div>
       ) : grouped.length === 0 ? (
         <div className="card empty-state">
-          <Stack size={40} weight="duotone" />
+          <Stack size={40} weight="regular" />
           <p>Tidak ada kelas yang cocok dengan filter.</p>
         </div>
       ) : (
@@ -347,7 +347,7 @@ function KelasPanel({ user, onLogout }) {
           {grouped.map(([tingkatLabel, items]) => (
             <div className="kelas-group" key={tingkatLabel}>
               <div className="kelas-group-header">
-                <Stack size={18} weight="duotone" />
+                <Stack size={18} weight="regular" />
                 <h3>{tingkatLabel}</h3>
                 <span className="kelas-group-count">{items.length} kelas</span>
               </div>
@@ -388,19 +388,19 @@ function KelasPanel({ user, onLogout }) {
                           {c.editId === k.id ? (
                             <div className="kelas-actions">
                               <button className="btn btn-sm btn-primary" onClick={() => submitEdit(k.id)} disabled={c.busy} title="Simpan">
-                                <Check weight="bold" />
+                                <Check weight="regular" />
                               </button>
                               <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal">
-                                <X weight="bold" />
+                                <X weight="regular" />
                               </button>
                             </div>
                           ) : (
                             <div className="kelas-actions">
                               <button className="btn-action btn-edit" onClick={() => { c.setEditId(k.id); c.setEditNama(k.nama) }} title="Ubah">
-                                <PencilSimple weight="duotone" />
+                                <PencilSimple weight="regular" />
                               </button>
                               <button className="btn-action btn-delete" onClick={() => c.del(k)} disabled={c.busy} title="Hapus">
-                                <Trash weight="duotone" />
+                                <Trash weight="regular" />
                               </button>
                             </div>
                           )}
@@ -529,7 +529,7 @@ function JamLTPanel({ user, onLogout }) {
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
 
       <div className="jam-info">
-        <Calendar size={20} weight="duotone" />
+        <Calendar size={20} weight="regular" />
         <div>
           <p className="jam-info-title">Slot Jam Layanan Tambahan</p>
           <p className="jam-info-desc">
@@ -551,7 +551,7 @@ function JamLTPanel({ user, onLogout }) {
             required
           />
           <button type="submit" className="btn btn-primary" disabled={c.busy}>
-            <Plus weight="bold" /> Tambah
+            <Plus weight="regular" /> Tambah
           </button>
         </form>
         {availableSuggestions.length > 0 && (
@@ -609,13 +609,13 @@ function JamLTPanel({ user, onLogout }) {
                   <td className="th-actions">
                     {c.editId === j.id ? (
                       <div className="kelas-actions">
-                        <button className="btn btn-sm btn-primary" onClick={c.saveEdit} disabled={c.busy} title="Simpan"><Check weight="bold" /></button>
-                        <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal"><X weight="bold" /></button>
+                        <button className="btn btn-sm btn-primary" onClick={c.saveEdit} disabled={c.busy} title="Simpan"><Check weight="regular" /></button>
+                        <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal"><X weight="regular" /></button>
                       </div>
                     ) : (
                       <div className="kelas-actions">
-                        <button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><PencilSimple weight="duotone" /></button>
-                        <button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><Trash weight="duotone" /></button>
+                        <button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><PencilSimple weight="regular" /></button>
+                        <button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><Trash weight="regular" /></button>
                       </div>
                     )}
                   </td>

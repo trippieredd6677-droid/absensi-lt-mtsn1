@@ -142,10 +142,10 @@ function AdminAuditLog({ user, onLogout }) {
           </div>
           <div className="filter-group filter-actions">
             <button className="btn btn-primary btn-sm" onClick={applyFilter}>
-              <FunnelSimple weight="bold" /> Filter
+              <FunnelSimple weight="regular" /> Filter
             </button>
             <button className="btn btn-secondary btn-sm" onClick={resetFilter}>
-              <X weight="bold" /> Reset
+              <X weight="regular" /> Reset
             </button>
           </div>
         </div>
@@ -186,17 +186,17 @@ function AdminAuditLog({ user, onLogout }) {
             </table>
           </div>
         ) : (
-          <p className="audit-loading"><ShieldCheck weight="duotone" /> Belum ada aktivitas tercatat.</p>
+          <p className="audit-loading"><ShieldCheck weight="regular" /> Belum ada aktivitas tercatat.</p>
         )}
 
         {total > limit && (
           <div className="pagination" style={{ marginTop: '20px' }}>
             <button onClick={() => setPage(Math.max(1, page - 1))} className="btn btn-secondary" disabled={page === 1}>
-              <CaretLeft weight="bold" /> Sebelumnya
+              <CaretLeft weight="regular" /> Sebelumnya
             </button>
             <span className="page-info">Halaman {page} dari {pages}</span>
             <button onClick={() => setPage(page + 1)} className="btn btn-secondary" disabled={page >= pages}>
-              Berikutnya <CaretRight weight="bold" />
+              Berikutnya <CaretRight weight="regular" />
             </button>
           </div>
         )}

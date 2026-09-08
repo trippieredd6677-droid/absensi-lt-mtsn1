@@ -17,9 +17,9 @@ function Toast({ open, message, type = 'success', onClose, duration = 3200 }) {
   const Icon = ICONS[type] || Info
   return (
     <div className={`toast toast-${type}`} role="status">
-      <Icon weight="duotone" className="toast-icon" />
+      <Icon weight="regular" className="toast-icon" />
       <span className="toast-msg">{message}</span>
-      <button className="toast-close" onClick={onClose} aria-label="Tutup"><X weight="bold" /></button>
+      <button className="toast-close" onClick={onClose} aria-label="Tutup"><X weight="regular" /></button>
     </div>
   )
 }

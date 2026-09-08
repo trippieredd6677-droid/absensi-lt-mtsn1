@@ -42,10 +42,10 @@ function ConfirmModal({
           aria-label="Tutup"
           onClick={onClose}
         >
-          <X weight="bold" />
+          <X weight="regular" />
         </button>
         <div className="confirm-icon-wrap">
-          <WarningCircle weight="duotone" className="confirm-icon" />
+          <WarningCircle weight="regular" className="confirm-icon" />
         </div>
         <h2 className="confirm-title">{title}</h2>
         {message ? <p className="confirm-message">{message}</p> : null}

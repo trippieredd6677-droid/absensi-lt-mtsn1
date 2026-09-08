@@ -202,11 +202,11 @@ function Profil({ user, onLogout, onUpdateUser }) {
           <div className="profile-photo-preview">
             {profil.foto_profil
               ? <img src={`/uploads/${profil.foto_profil}`} alt="Foto profil" />
-              : <div className="profile-photo-placeholder"><UserCircle weight="duotone" /></div>}
+              : <div className="profile-photo-placeholder"><UserCircle weight="regular" /></div>}
           </div>
           <div className="profile-photo-actions">
             <label className="btn btn-secondary">
-              <UploadSimple weight="duotone" /> Unggah Foto Profil
+              <UploadSimple weight="regular" /> Unggah Foto Profil
               <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden onChange={handlePhotoChange} />
             </label>
             <span className="upload-note">JPG, PNG, GIF, WebP · Maks 5MB</span>
@@ -303,7 +303,7 @@ function Profil({ user, onLogout, onUpdateUser }) {
           )}
 
           <div className="section-header">
-            <div className="section-icon"><Key weight="duotone" /></div>
+            <div className="section-icon"><Key weight="regular" /></div>
             <div className="section-text">
               <h2>Ganti Password</h2>
               <p>Buat password baru yang kuat dan unik</p>
@@ -374,7 +374,7 @@ function Profil({ user, onLogout, onUpdateUser }) {
       {!showChangePassword && (
         <div className="card profil-card">
           <div className="section-header">
-            <div className="section-icon"><ShieldCheck weight="duotone" /></div>
+            <div className="section-icon"><ShieldCheck weight="regular" /></div>
             <div className="section-text">
               <h2>Keamanan</h2>
               <p>Kelola pengaturan keamanan akun Anda</p>
@@ -394,7 +394,7 @@ function Profil({ user, onLogout, onUpdateUser }) {
         <div className="modal-overlay crop-overlay" onClick={handleCropCancel}>
           <div className="modal-content crop-modal" onClick={(e) => e.stopPropagation()}>
             <div className="crop-header">
-              <h2><ArrowsOutLineVertical weight="duotone" /> Sesuaikan Foto</h2>
+              <h2><ArrowsOutLineVertical weight="regular" /> Sesuaikan Foto</h2>
               <p>Geser atau zoom untuk memilih bagian foto yang jadi profil</p>
             </div>
             <div className="crop-area">
