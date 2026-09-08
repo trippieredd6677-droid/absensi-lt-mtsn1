@@ -3,7 +3,7 @@
 .table th:nth-child(2), .table td:nth-child(2) { max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .table th:nth-child(4), .table td:nth-child(4) { white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
 .audit-loading svg { width: 20px; height: 20px; color: var(--accent); }
-.table td.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.table td.audit-time { white-space: nowrap; color: var(--text-muted); font-size: 12px; font-family: inherit; }
 .audit-ip { color: var(--text-faint); font-size: 12px; }
 .audit-badge {
   display: inline-block;
@@ -40,7 +40,7 @@
 }
 .audit-filter .filter-actions { flex-direction: row; gap: 8px; min-width: 0; }
 .audit-detail { font-size: 12px; color: var(--text-muted); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.audit-change { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; }
+.audit-change { font-family: inherit; font-size: 12px; }
 
 @media (max-width: 768px) {
   .audit-filter { flex-direction: column; align-items: stretch; }

@@ -18,7 +18,7 @@
 .jadwal-kode {
   display: inline-block; min-width: 34px; text-align: center;
   padding: 2px 8px; border-radius: 6px; background: var(--accent-dim);
-  color: var(--accent); font-size: 12px; font-weight: 600; font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  color: var(--accent); font-size: 12px; font-weight: 600; font-family: inherit;
 }
 .jadwal-type { font-size: 13px; color: var(--text-muted); }
 
@@ -44,7 +44,7 @@
 /* Kolom jam fixed biar kolom hari cukup & nama hari tidak terpotong */
 .jw-table th:first-child, .jw-table td:first-child { width: 96px; min-width: 96px; white-space: nowrap; background: var(--surface-2); }
 .jw-table th:nth-child(n+2), .jw-table td:nth-child(n+2) { min-width: 74px; }
-.jw-table td.jw-slot { font-size: 12px; color: var(--text-muted); white-space: nowrap; font-weight: 600; font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace; }
+.jw-table td.jw-slot { font-size: 12px; color: var(--text-muted); white-space: nowrap; font-weight: 600; font-family: inherit; }
 .jw-empty { color: var(--text-faint); opacity: .55; font-weight: 400; }
 .jw-slot-head { white-space: nowrap; }
 .jw-empty { color: var(--text-faint); }

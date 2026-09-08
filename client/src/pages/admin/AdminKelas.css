@@ -145,7 +145,7 @@
   border-radius: var(--radius);
   font-weight: 600;
   font-size: 14px;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  font-family: inherit;
   min-width: 140px;
 }
 .kelas-add-actions {
@@ -219,7 +219,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 .kelas-badge-th,
 .kelas-badge-thf { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); font-weight: 600; }
 
-.kelas-paralel { color: var(--text-muted); font-size: 13px; font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace; }
+.kelas-paralel { color: var(--text-muted); font-size: 13px; font-family: inherit; }
 
 /* Empty state */
 .empty-state {
@@ -259,7 +259,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   border-radius: 4px;
   font-size: 12px;
   color: var(--accent);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  font-family: inherit;
   border: 1px solid var(--border);
 }
 
@@ -290,7 +290,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 500;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  font-family: inherit;
   cursor: pointer;
   transition: all 0.16s ease;
 }
@@ -313,13 +313,13 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  font-family: inherit;
 }
 .jam-name {
   font-weight: 600;
   font-size: 14px;
   color: var(--text);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  font-family: inherit;
   letter-spacing: 0.01em;
 }
 .kelas-add { margin-bottom: var(--space-5); }
