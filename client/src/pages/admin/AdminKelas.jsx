@@ -396,11 +396,11 @@ function KelasPanel({ user, onLogout }) {
                             </div>
                           ) : (
                             <div className="kelas-actions">
-                              <button className="btn btn-sm btn-secondary" onClick={() => { c.setEditId(k.id); c.setEditNama(k.nama) }} title="Ubah">
-                                <PencilSimple weight="bold" />
+                              <button className="btn-action btn-edit" onClick={() => { c.setEditId(k.id); c.setEditNama(k.nama) }} title="Ubah">
+                                <PencilSimple weight="duotone" />
                               </button>
-                              <button className="btn btn-sm btn-danger" onClick={() => c.del(k)} disabled={c.busy} title="Hapus">
-                                <Trash weight="bold" />
+                              <button className="btn-action btn-delete" onClick={() => c.del(k)} disabled={c.busy} title="Hapus">
+                                <Trash weight="duotone" />
                               </button>
                             </div>
                           )}
@@ -614,8 +614,8 @@ function JamLTPanel({ user, onLogout }) {
                       </div>
                     ) : (
                       <div className="kelas-actions">
-                        <button className="btn btn-sm btn-secondary" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><PencilSimple weight="bold" /></button>
-                        <button className="btn btn-sm btn-danger" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><Trash weight="bold" /></button>
+                        <button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><PencilSimple weight="duotone" /></button>
+                        <button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><Trash weight="duotone" /></button>
                       </div>
                     )}
                   </td>

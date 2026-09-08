@@ -82,7 +82,7 @@
 
 .btn-delete:hover:not(:disabled) {
   color: var(--status-alpa);
-  border-color: var(--status-alpa-bg);
+  border-color: var(--status-alpa);
   background: var(--status-alpa-bg);
 }
 
