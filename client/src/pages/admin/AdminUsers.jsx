@@ -126,15 +126,13 @@ function AdminUsers({ user, onLogout }) {
       .replace(/\s+/g, ' ')
     if (!clean) return ''
     const words = clean.split(' ').filter(Boolean)
-    let result
-    if (words.length === 1) result = words[0]
-    else {
-      result = words[0] + '.' + words[words.length - 1]
-      if (result.replace(/\./g, '').length < 6 && words.length >= 3) {
-        result = words.slice(0, 3).join('.')
-      }
-    }
-    return result.slice(0, 18).replace(/\.$/, '')
+    if (words.length === 1) return words[0].slice(0, 18)
+    // maks 2 bagian: kata pertama + kata terakhir; inisial (<=2 huruf) digabung kata tetangga
+    let first = words[0]
+    if (first.length <= 2 && words.length >= 3) first = words[0] + words[1]
+    let last = words[words.length - 1]
+    if (last.length <= 2 && words.length >= 3) last = words[words.length - 2]
+    return (first + '.' + last).slice(0, 18).replace(/\.$/, '')
   }
 
   const handleFormChange = (e) => {
