@@ -617,7 +617,7 @@ function Jadwal({ user, onLogout, role }) {
             <table className="jw-table">
               <thead>
                 <tr>
-                  <th className="jw-slot-head">Jam \\ Hari</th>
+                  <th className="jw-slot-head">Jam / Hari</th>
                   {HARI_ORDER.map(h => <th key={h}>{h}</th>)}
                 </tr>
               </thead>

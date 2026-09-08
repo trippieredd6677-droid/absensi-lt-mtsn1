@@ -31,37 +31,36 @@
 .page-header .jw-toggle input { accent-color: var(--accent); }
 .jw-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
 .jw-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.jw-table { width: 100%; border-collapse: collapse; min-width: 620px; }
+.jw-scroll { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.jw-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 620px; }
 .jw-table th, .jw-table td {
-  border: 1px solid var(--border); padding: 9px; font-size: 12px; vertical-align: top; text-align: left;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 10px; font-size: 12px; vertical-align: top; text-align: left;
 }
-.jw-table thead th { background: var(--surface-2); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: .04em; color: var(--text-faint); text-align: center; }
+.jw-table th:last-child, .jw-table td:last-child { border-right: 0; }
+.jw-table tbody tr:last-child th, .jw-table tbody tr:last-child td { border-bottom: 0; }
+.jw-table thead th { background: var(--surface-2); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .06em; color: var(--text-muted); text-align: center; border-bottom: 1px solid var(--border-strong); }
 /* Kolom jam fixed biar kolom hari cukup & nama hari tidak terpotong */
-.jw-table th:first-child, .jw-table td:first-child { width: 96px; min-width: 96px; white-space: nowrap; }
+.jw-table th:first-child, .jw-table td:first-child { width: 96px; min-width: 96px; white-space: nowrap; background: var(--surface-2); }
 .jw-table th:nth-child(n+2), .jw-table td:nth-child(n+2) { min-width: 74px; }
-.jw-table td.jw-slot { font-size: 13px; color: var(--text-muted); white-space: nowrap; font-weight: 600; font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace; }
+.jw-table td.jw-slot { font-size: 12px; color: var(--text-muted); white-space: nowrap; font-weight: 600; font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace; }
+.jw-empty { color: var(--text-faint); opacity: .55; font-weight: 400; }
 .jw-slot-head { white-space: nowrap; }
 .jw-empty { color: var(--text-faint); }
 .jw-cell-wrapper { cursor: default; }
 .jw-cells { display: flex; flex-direction: column; gap: 6px; }
 .jw-cell {
-  padding: 5px 8px 5px 10px;
-  border-radius: var(--radius);
-  background: var(--surface-2);
-  border: 1px solid transparent;
-  border-left: 2px solid var(--border-strong);
-  transition: border-color 0.14s ease, background 0.14s ease;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.14s ease;
 }
-.jw-cell-mine {
-  background: var(--accent-dim);
-  border-left-color: var(--accent);
-}
-.jw-cell:hover {
-  border-left-color: var(--accent-border);
-  background: var(--surface-2);
-}
-.jw-cell strong { display: block; font-size: 12px; color: var(--text); font-weight: 700; letter-spacing: .01em; }
-.jw-sub { font-size: 12px; color: var(--text-muted); display: block; margin-top: 1px; }
+.jw-cell + .jw-cell { margin-top: 4px; }
+.jw-cell-mine { background: var(--accent-dim); }
+.jw-cell:hover { background: var(--surface-2); }
+.jw-cell-mine:hover { background: var(--accent-dim); }
+.jw-cell strong { display: block; font-size: 12px; line-height: 1.35; color: var(--text); font-weight: 700; letter-spacing: .01em; }
+.jw-sub { font-size: 12px; line-height: 1.4; color: var(--text-muted); display: block; margin-top: 2px; }
 .jw-activity { font-style: normal; color: var(--text); font-weight: 600; }
 
 .jw-tag {
@@ -76,9 +75,6 @@
 }
 .jw-putra { background: rgba(15, 111, 176, 0.08); color: #0f6fb0; border: 1px solid rgba(15, 111, 176, 0.18); }
 .jw-putri { background: rgba(166, 61, 94, 0.08); color: #a63d5e; border: 1px solid rgba(166, 61, 94, 0.16); }
-
-html[data-theme="dark"] .jw-cell { background: rgba(255,255,255,0.04); }
-html[data-theme="dark"] .jw-cell-mine { background: var(--accent-dim); }
 
 html[data-theme="dark"] .jw-putra { background: rgba(110, 168, 201, 0.12); color: #6ea8c9; border-color: rgba(110, 168, 201, 0.25); }
 html[data-theme="dark"] .jw-putri { background: rgba(224, 140, 140, 0.12); color: #e08c8c; border-color: rgba(224, 140, 140, 0.25); }
