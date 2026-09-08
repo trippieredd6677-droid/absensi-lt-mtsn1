@@ -286,12 +286,13 @@ async function runMigrations() {
   const guruPw = process.env.GURU_DEFAULT_PASSWORD;
   if (guruPw && guruPw.length >= 8) {
     const { loadSource } = require('./sync-jadwal');
+    const { genUsername } = require('./username-generator');
     const GURU_MAP = loadSource().master_teachers.map((t) => [t.code, t.name]);
     const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
     let created = 0;
     for (const [kode, nama] of GURU_MAP) {
       const namaBersih = nama.split(',')[0].trim();
-      const uname = slug(namaBersih) || ('guru.' + kode.toLowerCase());
+      const uname = genUsername(namaBersih) || slug(namaBersih) || ('guru.' + kode.toLowerCase());
       const exists = await pool.query('SELECT id FROM users WHERE guru_map_kode = $1', [kode]);
       if (exists.rowCount > 0) continue;
       const hashed = await bcrypt.hash(guruPw, 10);

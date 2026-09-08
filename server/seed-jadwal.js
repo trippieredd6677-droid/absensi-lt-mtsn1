@@ -70,15 +70,23 @@ async function seed() {
     console.log('⚠️ GURU_DEFAULT_PASSWORD belum di-set (min 8 karakter) — akun guru SKIP. Data jadwal tetap masuk.');
   } else {
     const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
+    const { genUsername } = require('./username-generator');
     for (const [kode, nama] of plan.guru_map) {
       const namaBersih = nama.split(',')[0].trim();
-      const uname = slug(namaBersih) || ('guru.' + kode.toLowerCase());
+      const uname = genUsername(namaBersih) || slug(namaBersih) || ('guru.' + kode.toLowerCase());
       const email = `${uname}@mtsn1kebumen.id`;
       const sudah = await pool.query('SELECT id, username, email, full_name FROM users WHERE guru_map_kode = $1', [kode]);
       if (sudah.rowCount > 0) {
         const user = sudah.rows[0];
-        if (user.username !== uname || user.email !== email || user.full_name !== namaBersih) {
-          await pool.query('UPDATE users SET username = $1, email = $2, full_name = $3 WHERE guru_map_kode = $4', [uname, email, namaBersih, kode]);
+        // Edit dari web admin TIDAK ditimpa seed. Sinkron cuma isi field yang kosong.
+        const patch = {};
+        if (!user.username) patch.username = uname;
+        if (!user.email) patch.email = email;
+        if (!user.full_name) patch.full_name = namaBersih;
+        if (Object.keys(patch).length) {
+          const sets = Object.keys(patch).map((k, i) => `${k} = $${i + 1}`).join(', ');
+          await pool.query(`UPDATE users SET ${sets} WHERE guru_map_kode = $${Object.keys(patch).length + 1}`,
+            [...Object.values(patch), kode]);
         }
         continue;
       }
