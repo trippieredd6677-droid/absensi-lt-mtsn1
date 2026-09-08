@@ -642,24 +642,6 @@ router.get('/guru-breakdown', verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// Send reminder (mock — log only; real WA/email integration via integration cluster) — admin only
-router.post('/remind/:id', verifyToken, isAdmin, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { rows } = await pool.query('SELECT id, full_name, username, no_hp, email FROM users WHERE id = $1 AND role = $2', [id, 'guru']);
-    if (rows.length === 0) return res.status(404).json({ message: 'Guru tidak ditemukan' });
-    const g = rows[0];
-    const msg = `Halo ${g.full_name}, mohon segera input absensi hari ini. — Absensi LT MTsN 1 Kebumen`;
-    // ponytail: integrasi WA via Fonnte/email via mailer saat kredensial tersedia
-    console.log(`[REMIND] → ${g.full_name} (${g.no_hp || g.email || '-'}): ${msg}`);
-    await auditLog('REMIND', 'users', id, {}, { channel: 'log' }, req);
-    res.json({ message: `Reminder tercatat untuk ${g.full_name} (mode log)`, target: g.no_hp || g.email || '-' });
-  } catch (err) {
-    console.error('Remind error:', err);
-    res.status(500).json({ message: 'Kesalahan server' });
-  }
-});
-
 // Get admin dashboard (monitoring) — admin only
 router.get('/dashboard', verifyToken, isAdmin, async (req, res) => {
   try {

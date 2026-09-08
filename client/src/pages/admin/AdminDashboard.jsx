@@ -10,7 +10,6 @@ import {
   ListBullets,
   ShieldCheck,
   Alarm,
-  PaperPlaneTilt,
 } from '@phosphor-icons/react'
 import api from '../../api'
 import Layout from '../../components/Layout'
@@ -21,7 +20,6 @@ function AdminDashboard({ user, onLogout }) {
   const [recent, setRecent] = useState([])
   const [breakdown, setBreakdown] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [remindMsg, setRemindMsg] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -42,16 +40,6 @@ function AdminDashboard({ user, onLogout }) {
     } catch (err) {
       console.error('Error fetching dashboard:', err)
       setLoading(false)
-    }
-  }
-
-  const sendRemind = async (guruId, name) => {
-    try {
-      await api.post(`/admin/remind/${guruId}`)
-      setRemindMsg(`Reminder tercatat untuk ${name}`)
-      setTimeout(() => setRemindMsg(''), 3000)
-    } catch (err) {
-      setRemindMsg('Gagal mengirim reminder')
     }
   }
 
@@ -161,13 +149,6 @@ function AdminDashboard({ user, onLogout }) {
                     <span className="ns-name">{g.full_name || g.username}</span>
                     {g.username && <span className="ns-user">@{g.username}</span>}
                   </span>
-                  <button
-                    className="btn btn-ghost btn-xs"
-                    title="Kirim reminder"
-                    onClick={() => sendRemind(g.id, g.full_name || g.username)}
-                  >
-                    <PaperPlaneTilt weight="duotone" />
-                  </button>
                 </li>
               ))}
             </ul>
@@ -192,8 +173,6 @@ function AdminDashboard({ user, onLogout }) {
           )}
         </div>
       </div>
-
-      {remindMsg && <div className="alert alert-success" style={{ marginTop: 16 }}>{remindMsg}</div>}
 
       <div className="admin-actions">
         <div className="adm-quick" onClick={() => navigate('/admin/users')}>

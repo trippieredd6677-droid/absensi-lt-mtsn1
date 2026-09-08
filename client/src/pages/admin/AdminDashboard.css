@@ -103,23 +103,6 @@
 .ns-user { font-size: 11px; color: var(--text-faint); white-space: nowrap; flex-shrink: 0; }
 .ns-empty { color: var(--text-muted); }
 
-.btn-ghost {
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  color: var(--text-muted);
-  border-radius: var(--radius);
-  padding: 4px 8px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.btn-ghost:hover { color: var(--accent); border-color: var(--accent-border); background: var(--accent-dim); }
-.btn-ghost svg { width: 16px; height: 16px; }
-.btn.btn-xs { font-size: 11px; padding: 3px 7px; }
-.not-submitted .btn-ghost { padding: 5px 9px; border-radius: 7px; }
-.not-submitted .btn-ghost svg { width: 14px; height: 14px; }
-
 .late-list { list-style: none; margin: 0; padding: 0; }
 .late-list li { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .late-list li:last-child { border-bottom: none; }

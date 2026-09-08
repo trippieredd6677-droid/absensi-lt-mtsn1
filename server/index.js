@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 // .env menang atas env lama dari shell (dotenv default tidak menimpa var yang sudah ada)
-require('dotenv').config({ override: true });
+require('dotenv').config({ override: true, path: require('path').resolve(__dirname, '../.env') });
 
 // Guard: jangan jalankan dengan secret placeholder / lemah
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 || /change_this|your_?jwt/i.test(process.env.JWT_SECRET)) {
