@@ -52,7 +52,7 @@
 }
 
 .admin-actions .adm-quick-text { flex: 1; min-width: 0; }
-.admin-actions .adm-quick-arrow { color: var(--text-faint); flex-shrink: 0; transition: transform 0.16s ease, color 0.16s ease; }
+.admin-actions .adm-quick-arrow { color: var(--text-faint); flex-shrink: 0; transition: transform 0.16s ease, color 0.16s ease }
 .action-card:hover .admin-actions .adm-quick-arrow { color: var(--accent); transform: translateX(2px); }
 
 .info-section {
@@ -88,11 +88,11 @@
 }
 .status-chip .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .status-chip .chip-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-.status-chip .chip-value { font-size: 15px; font-weight: 600; font-family: var(--font-mono); line-height: 1; margin-left: auto; }
+.status-chip .chip-value { font-size: 15px; font-weight: 600;  line-height: 1; margin-left: auto; }
 .trend-bars { display: flex; align-items: flex-end; gap: 8px; height: 240px; margin-top: 4px; }
 .trend-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; }
 .trend-value { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-.trend-bar { width: 100%; max-width: 26px; background: var(--accent); border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 6px; transition: background 0.2s ease; }
+.trend-bar { width: 100%; max-width: 26px; background: var(--accent); border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 6px; transition: background 0.16s ease; }
 .trend-bar:hover { background: var(--accent-strong); }
 .trend-label { font-size: 11px; color: var(--text-faint); white-space: nowrap; font-family: inherit; }
 .not-submitted { list-style: none; margin: 0; padding: 0; flex: 1; max-height: 464px; overflow-y: auto; scrollbar-width: thin; }
@@ -114,7 +114,7 @@
 .recent-item:last-child { border-bottom: none; }
 .recent-name { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
 .recent-meta { font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
-.recent-time { font-size: 11px; color: var(--text-faint); flex-shrink: 0; font-family: var(--font-mono); }
+.recent-time { font-size: 11px; color: var(--text-faint); flex-shrink: 0;  }
 @media (max-width: 768px) {
   .dash-cols { grid-template-columns: 1fr; }
   .status-chips { grid-template-columns: repeat(2, 1fr); }

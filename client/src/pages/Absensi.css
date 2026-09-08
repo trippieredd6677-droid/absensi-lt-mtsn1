@@ -20,7 +20,7 @@
   padding: 22px;
   text-align: center;
   background: var(--surface-2);
-  transition: border-color 0.18s ease, background 0.18s ease;
+  transition: border-color 0.16s ease, background 0.16s ease;
 }
 
 .file-input-wrapper:hover {

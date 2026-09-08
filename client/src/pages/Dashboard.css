@@ -1,7 +1,7 @@
 /* Dashboard guru — komposisi hierarki (v3 "Ledger"):
    baris 1: hero kehadiran (focal, angka mono besar) + mini stats 2x2
    baris 2: jadwal hari ini | absensi terbaru (grid asimetris 1fr/1.25fr)
-   Motif: angka = IBM Plex Mono (tabular, seperti lembar absensi). */
+   Motif: angka = satu keluarga font (tabular). */
 
 .dash-hero {
   display: flex;
@@ -32,7 +32,7 @@
 }
 
 .dash-hero-value {
-  font-family: var(--font-mono);
+  
   font-size: 52px;
   font-weight: 600;
   letter-spacing: -0.04em;
@@ -75,7 +75,7 @@
 
 .dash-mini-value {
   margin-top: 6px;
-  font-family: var(--font-mono);
+  
   font-size: 24px;
   font-weight: 600;
   line-height: 1;
@@ -109,8 +109,8 @@
 .dash-jadwal-hari {
   width: auto;
   min-width: 110px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
+  
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   flex-shrink: 0;
@@ -130,7 +130,7 @@
 .dash-jadwal-item strong { color: var(--accent); font-weight: 700; }
 .dash-jadwal-item em { font-style: normal; color: var(--text-muted); }
 
-.dash-table td:first-child { font-family: var(--font-mono); font-size: 12.5px; }
+.dash-table td:first-child {  font-size: 12px; }
 
 @media (max-width: 900px) {
   .dash-cols { grid-template-columns: 1fr; }

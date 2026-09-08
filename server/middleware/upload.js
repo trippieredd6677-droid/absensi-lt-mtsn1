@@ -3,7 +3,13 @@ const path = require('path');
 const fs = require('fs');
 
 // Create upload directory if it doesn't exist
-const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, '../../uploads');
+// ponytail: UPLOAD_DIR relatif harus resolve dari project root, bukan cwd proses
+// (cwd beda = file kesimpen di tempat lain / ENOENT). Upgrade path: pindahkan
+// nilai UPLOAD_DIR di .env jadi path absolut saat deploy.
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
+const uploadDir = process.env.UPLOAD_DIR
+  ? path.resolve(PROJECT_ROOT, process.env.UPLOAD_DIR)
+  : path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
