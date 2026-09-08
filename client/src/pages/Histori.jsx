@@ -79,7 +79,7 @@ function Histori({ user, onLogout }) {
   ]
 
   const stats = [
-    { label: 'Total', value: absensi.length, icon: ClipboardText, cls: 'accent' },
+    { label: 'Total', value: absensi.length, icon: ClipboardText },
     { label: 'Hadir', value: absensi.filter(a => a.status === 'hadir').length, icon: CheckCircle },
     { label: 'Sakit', value: absensi.filter(a => a.status === 'sakit').length, icon: FirstAidKit },
     { label: 'Izin', value: absensi.filter(a => a.status === 'izin').length, icon: HandWaving },

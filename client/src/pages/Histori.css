@@ -109,7 +109,6 @@
   line-height: 1.05;
 }
 
-.histori-stats-grid .stat-card .value.accent { color: var(--accent); }
 
 @media (max-width: 1024px) {
   .histori-stats-grid { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
