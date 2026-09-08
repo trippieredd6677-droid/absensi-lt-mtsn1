@@ -10,10 +10,37 @@
 .jadwal-tab:hover { color: var(--accent); border-color: var(--accent-border); }
 .jadwal-tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
 
-.jadwal-filter { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.jadwal-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.jadwal-filter .btn { flex-shrink: 0; }
+.jadwal-filter .filter-select { width: auto; min-width: 190px; }
+/* tinggi kontrol seragam: search / select / button = 40px */
+.jadwal-filter input,
+.jadwal-filter select,
+.jadwal-filter .btn { height: 40px; box-sizing: border-box; }
+.jadwal-filter .btn-sm { padding-top: 0; padding-bottom: 0; }
+
 .jadwal-search { position: relative; flex: 1; min-width: 220px; max-width: 420px; }
 .jadwal-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); width: 16px; height: 16px; }
 .jadwal-search input { width: 100%; padding: 10px 12px 10px 36px; font-size: 14px; }
+
+/* ---- Tabel daftar guru: disiplin lebar kolom, tidak ada teks terpotong ---- */
+.jadwal-guru { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.jadwal-guru table { min-width: 780px; table-layout: fixed; }
+.jadwal-guru th:nth-child(1) { width: 88px; }
+.jadwal-guru th:nth-child(2) { width: auto; }
+.jadwal-guru th:nth-child(3) { width: 236px; }
+.jadwal-guru th:nth-child(4) { width: 176px; }
+.jadwal-guru th:nth-child(5) { width: 116px; }
+.jadwal-guru td { vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.jadwal-guru td.jadwal-kelas { white-space: normal !important; overflow: visible; text-overflow: clip; line-height: 1.45; }
+.jadwal-guru td.center-col { overflow: visible; }
+.jadwal-guru .center-col .btn-wrap { gap: 6px; }
 
 .jadwal-kode {
   display: inline-block;
@@ -21,13 +48,15 @@
   text-align: center;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
-  background: var(--accent-dim);
-  color: var(--accent);
+  background: var(--surface-2);
+  color: var(--text-muted);
   font-size: 12px;
   font-weight: 600;
-  font-family: inherit;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
 }
 .jadwal-type { font-size: 13px; color: var(--text-muted); }
+.jadwal-kelas { font-size: 13px; color: var(--text); font-variant-numeric: tabular-nums; }
 
 /* Grid mingguan */
 .page-header .jw-toggle {
@@ -36,39 +65,37 @@
 }
 .page-header .jw-toggle svg { width: 16px; height: 16px; }
 .page-header .jw-toggle input { accent-color: var(--accent); }
+/* ---- Grid mingguan ---- */
 .jw-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
-.jw-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.jw-scroll { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
-.jw-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 620px; }
+.jw-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.jw-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; min-width: 660px; }
 .jw-table th, .jw-table td {
   border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  padding: 10px; font-size: 12px; vertical-align: top; text-align: left;
+  padding: 10px 12px; font-size: 12.5px; vertical-align: top; text-align: left;
 }
-.jw-table th:last-child, .jw-table td:last-child { border-right: 0; }
-.jw-table tbody tr:last-child th, .jw-table tbody tr:last-child td { border-bottom: 0; }
-.jw-table thead th { background: var(--surface-2); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .06em; color: var(--text-muted); text-align: center; border-bottom: 1px solid var(--border-strong); }
-/* Kolom jam fixed biar kolom hari cukup & nama hari tidak terpotong */
-.jw-table th:first-child, .jw-table td:first-child { width: 96px; min-width: 96px; white-space: nowrap; background: var(--surface-2); }
-.jw-table th:nth-child(n+2), .jw-table td:nth-child(n+2) { min-width: 74px; }
-.jw-table td.jw-slot { font-size: 12px; color: var(--text-muted); white-space: nowrap; font-weight: 600; font-family: inherit; }
-.jw-empty { color: var(--text-faint); opacity: .55; font-weight: 400; }
+.jw-table tbody tr:last-child td { border-bottom: 0; }
+.jw-table thead th {
+  background: var(--surface-2); border-bottom: 1px solid var(--border-strong);
+  font-weight: 600; font-size: 12px; color: var(--text-muted); text-align: left;
+  letter-spacing: 0; text-transform: none; padding: 11px 12px;
+}
+.jw-table thead th:not(.jw-slot-head) { text-align: center; }
+/* kolom jam cukup lebar utk rentang waktu mono → tabel gak melebar/scroll */
+.jw-table th.jw-slot-head, .jw-table td.jw-slot { width: 128px; }
+.jw-table td.jw-slot {
+  font-size: 12.5px; color: var(--text); white-space: nowrap;
+  font-weight: 500; font-family: var(--font-mono); background: var(--surface-2);
+  font-variant-numeric: tabular-nums;
+}
+.jw-empty { color: var(--text-faint); opacity: .45; font-weight: 400; }
 .jw-slot-head { white-space: nowrap; }
-.jw-empty { color: var(--text-faint); }
 .jw-cell-wrapper { cursor: default; }
-.jw-cells { display: flex; flex-direction: column; gap: 6px; }
-.jw-cell {
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  transition: background 0.14s ease;
-}
-.jw-cell + .jw-cell { margin-top: 4px; }
-.jw-cell-mine { background: var(--accent-dim); }
-.jw-cell:hover { background: var(--surface-2); }
-.jw-cell-mine:hover { background: var(--accent-dim); }
-.jw-cell strong { display: block; font-size: 12px; line-height: 1.35; color: var(--text); font-weight: 700; letter-spacing: .01em; }
-.jw-sub { font-size: 12px; line-height: 1.4; color: var(--text-muted); display: block; margin-top: 2px; }
-.jw-activity { font-style: normal; color: var(--text); font-weight: 600; }
+.jw-cells { display: flex; flex-direction: column; gap: 8px; }
+.jw-cell { padding: 7px 9px; border-radius: var(--radius-sm); border: 1px solid transparent; }
+.jw-cell-mine { background: var(--accent-dim); border-color: var(--accent-border); }
+.jw-cell strong { display: block; font-size: 13px; line-height: 1.3; color: var(--text); font-weight: 600; letter-spacing: 0; }
+.jw-sub { font-size: 12px; line-height: 1.45; color: var(--text-muted); display: block; margin-top: 1px; }
+.jw-activity { font-style: normal; color: var(--text); font-weight: 500; }
 
 .jw-tag {
   display: inline-block;
@@ -100,7 +127,4 @@ html[data-theme="dark"] .jw-putri { background: rgba(224, 140, 140, 0.12); color
 .center-col .btn-action svg { width: 18px; height: 18px; }
 .jadwal-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
 .modal-sm { max-width: 500px; }
-.jadwal-filter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
-.jadwal-filter .btn { flex-shrink: 0; }
-.jadwal-filter .filter-select { width: auto; }
 

@@ -432,40 +432,42 @@ function Jadwal({ user, onLogout, role }) {
               </select>
               <button className="btn btn-secondary btn-sm" onClick={openAddGuru}><Plus weight="regular" /> Tambah</button>
             </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Kode</th>
-                  <th>Guru</th>
-                  <th>Jenis Layanan</th>
-                  <th>Kelas</th>
-                  <th className="center-col" style={{width:100}}>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredGuru.map(g => {
-                  const kelasSet = guruKelasMap.get(g.kode)
-                  const kelasArray = kelasSet ? Array.from(kelasSet).sort().join(', ') : '-'
-                  return (
-                    <tr key={g.kode}>
-                      <td><strong className="jadwal-kode">{g.kode}</strong></td>
-                      <td>{g.nama_guru}</td>
-                      <td><span className="jadwal-type">{g.jenis_layanan || '-'}</span></td>
-                      <td>{kelasArray}</td>
-                      <td className="center-col">
-                        <div className="btn-wrap">
-                          <button className="btn-action" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
-                            <PencilSimple weight="regular" />
-                          </button>
-                          <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="regular" /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-                {filteredGuru.length === 0 && <tr><td colSpan="5" className="empty">Tidak ditemukan.</td></tr>}
-              </tbody>
-            </table>
+            <div className="jadwal-guru">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Kode</th>
+                    <th>Guru</th>
+                    <th>Jenis Layanan</th>
+                    <th>Kelas</th>
+                    <th className="center-col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredGuru.map(g => {
+                    const kelasSet = guruKelasMap.get(g.kode)
+                    const kelasArray = kelasSet ? Array.from(kelasSet).sort().join(', ') : '-'
+                    return (
+                      <tr key={g.kode}>
+                        <td><span className="jadwal-kode">{g.kode}</span></td>
+                        <td className="cell-trunc" title={g.nama_guru}>{g.nama_guru}</td>
+                        <td><span className="jadwal-type">{g.jenis_layanan || '-'}</span></td>
+                        <td className="cell-trunc jadwal-kelas" title={kelasArray}>{kelasArray}</td>
+                        <td className="center-col">
+                          <div className="btn-wrap">
+                            <button className="btn-action" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
+                              <PencilSimple weight="regular" />
+                            </button>
+                            <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="regular" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                  {filteredGuru.length === 0 && <tr><td colSpan="5" className="empty">Tidak ditemukan.</td></tr>}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Modal: Edit Guru (add/edit guru) */}
