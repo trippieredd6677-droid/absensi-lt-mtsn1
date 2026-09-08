@@ -123,10 +123,8 @@ function Jadwal({ user, onLogout, role }) {
     if (items.length === 0) return <span className="jw-empty">–</span>
     return <div className="jw-cells">{items.map((it, i) => (
       <div key={i} className={`jw-cell ${it.mine ? 'jw-cell-mine' : ''}`}>
-        <strong>{it.kelas}</strong>
-        {it.ket && <span className="jw-sub jw-activity">{it.ket}</span>}
-        {it.jenis && !it.ket && <span className="jw-sub">{it.jenis}</span>}
-        {it.gender && it.gender !== 'Campur' && <span className={`jw-tag jw-${it.gender.toLowerCase()}`}>{it.gender}</span>}
+        <strong>{it.kelas}{it.gender && it.gender !== 'Campur' ? <span className={`jw-tag jw-${it.gender.toLowerCase()}`}>{it.gender}</span> : null}</strong>
+        {(it.ket || it.jenis) && <span className="jw-sub jw-activity">{it.ket || it.jenis}</span>}
         {it.guru && <span className="jw-sub jw-guru">{it.guru}</span>}
       </div>
     ))}</div>
