@@ -368,7 +368,7 @@ a { color: var(--accent); }
   flex-shrink: 0;
 }
 
-.photo-icon svg { width: 19px; height: 19px; }
+.photo-icon svg { width: 20px; height: 20px; }
 
 /* Thumbnail foto absensi */
 .photo-thumb {
@@ -533,6 +533,7 @@ h1, h2, h3, h4 {
 .form-group input,
 .form-group select,
 .form-group textarea,
+.form-input,
 .search-input,
 .filter-group select {
   width: 100%;
@@ -545,6 +546,24 @@ h1, h2, h3, h4 {
   border-radius: var(--radius);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+
+/* Semua kontrol satu-baris punya tinggi sama persis (40px) */
+.form-group input:not([type="checkbox"]),
+.form-group select,
+.form-input:not(textarea),
+.search-input,
+.filter-select,
+.filter-group select,
+.jadwal-search input {
+  height: 40px;
+  line-height: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+textarea.form-input { resize: vertical; font-family: inherit; }
+.form-input:hover { border-color: var(--accent-border); }
+.form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
 
 .form-group input:hover,
 .form-group select:hover,
@@ -613,7 +632,7 @@ html[data-theme="dark"] .form-group input[type="date"]::-webkit-calendar-picker-
 .btn:hover:not(:disabled) { box-shadow: var(--shadow-sm); }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
 
-.btn-sm { padding: 7px 13px; font-size: 13px; gap: 6px; border-radius: var(--radius); }
+.btn-sm { padding: 7px 13px; font-size: 13px; gap: 6px; border-radius: var(--radius); height: 40px; }
 .btn-sm svg { width: 16px; height: 16px; }
 
 .btn-primary {
@@ -752,7 +771,7 @@ html[data-theme="dark"] .form-group input[type="date"]::-webkit-calendar-picker-
   border-radius: var(--radius-pill);
 }
 
-.stat-card .stat-chip svg { width: 19px; height: 19px; }
+.stat-card .stat-chip svg { width: 13px; height: 13px; vertical-align: -2px; }
 
 .stat-card .value,
 .stat-card .stat-value {

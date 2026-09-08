@@ -262,7 +262,7 @@ function KelasPanel({ user, onLogout }) {
       <div className="kelas-toolbar">
         <div className="kelas-toolbar-left">
           <div className="kelas-search">
-            <MagnifyingGlass size={18} weight="regular" />
+            <MagnifyingGlass size={16} weight="regular" />
             <input
               type="text"
               placeholder="Cari kelas..."

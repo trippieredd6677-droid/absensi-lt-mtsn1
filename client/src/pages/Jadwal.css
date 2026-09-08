@@ -132,4 +132,45 @@ html[data-theme="dark"] .jw-putri { background: rgba(224, 140, 140, 0.12); color
 .center-col .btn-action svg { width: 18px; height: 18px; }
 .jadwal-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
 .modal-sm { max-width: 500px; }
+.modal-lg { max-width: 720px; }
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.modal-header h2 { margin-bottom: 0; }
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.modal-close svg { width: 16px; height: 16px; }
+.modal-close:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-3); }
+.jadwal-form-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.jadwal-form-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.jadwal-form-card-head span { font-size: 13px; font-weight: 700; color: var(--text); }
+.jadwal-item-editing { border-color: var(--accent-border) !important; background: var(--accent-dim); }
 

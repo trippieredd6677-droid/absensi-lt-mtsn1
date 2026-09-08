@@ -27,8 +27,8 @@
 
 .admin-actions .adm-quick-icon {
   flex-shrink: 0;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius);
   background: var(--surface-2);
   border: 1px solid var(--border);

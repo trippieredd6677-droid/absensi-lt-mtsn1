@@ -8,6 +8,7 @@ import {
   CaretLeft,
   CaretRight,
   UserCircle,
+  Plus,
   Link as LinkIcon,
   UserSwitch,
 } from '@phosphor-icons/react'
@@ -404,7 +405,7 @@ function AdminUsers({ user, onLogout }) {
             Hanya orphan (belum ter-link)
           </label>
           <button onClick={openCreate} className="btn btn-primary">
-            + Tambah Guru
+            <Plus size={16} weight="regular" /> Tambah Guru
           </button>
         </div>
 

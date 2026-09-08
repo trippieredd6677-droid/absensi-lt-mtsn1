@@ -506,14 +506,14 @@ function Jadwal({ user, onLogout, role }) {
               <div className="modal-content modal-lg" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
                   <h2>Jadwal untuk {selectedGuru.nama_guru} ({selectedGuru.kode})</h2>
-                  <button className="btn btn-sm" onClick={handleTutupModal}>&times;</button>
+                  <button className="modal-close" onClick={handleTutupModal} aria-label="Tutup"><X weight="regular" /></button>
                 </div>
                 {toastMsg && <div className="alert alert-success" style={{ margin: '10px 0' }}>{toastMsg}</div>}
                 
                 {/* Form Input: Tambah / Edit baris kelas ke daftar lokal */}
-                <form onSubmit={handleTambahKelas} style={{ background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: 8, marginBottom: 20 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                    <span style={{ fontWeight: 600, fontSize: 13 }}>
+                <form onSubmit={handleTambahKelas} className="jadwal-form-card">
+                  <div className="jadwal-form-card-head">
+                    <span>
                       {editIdx !== null ? `Edit Baris Jadwal ke-${editIdx + 1}` : 'Form Kelas / Jam / Hari'}
                     </span>
                     {editIdx !== null && (
@@ -561,7 +561,7 @@ function Jadwal({ user, onLogout, role }) {
                       disabled={!newHari || !newJam || !newKelas}
                       title="Tambah kelas ini ke daftar jadwal guru"
                     >
-                      {editIdx !== null ? 'Perbarui Baris Ini' : '+ Tambah Kelas'}
+                      {editIdx !== null ? 'Perbarui Baris Ini' : <><Plus size={15} weight="regular" /> Tambah Kelas</>}
                     </button>
                   </div>
                 </form>
@@ -569,7 +569,7 @@ function Jadwal({ user, onLogout, role }) {
                 {/* List staged jadwal for this guru */}
                 <div className="jadwal-list">
                   {stagedJadwal.map((r, idx) => (
-                    <div key={r.id || r._tempId || idx} className="jadwal-item" style={editIdx === idx ? { border: '1px solid var(--accent, #3b82f6)' } : {}}>
+                    <div key={r.id || r._tempId || idx} className={`jadwal-item${editIdx === idx ? ' jadwal-item-editing' : ''}`}>
                       <div>
                         <strong>{r.hari}</strong>, {r.jam} &bull; <strong>{r.kelas}</strong>
                         {(r.keterangan || r.jenis_layanan) && <span className="jadwal-sub"> ({r.keterangan || r.jenis_layanan})</span>}

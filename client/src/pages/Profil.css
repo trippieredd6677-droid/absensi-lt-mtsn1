@@ -71,8 +71,8 @@
   flex-wrap: wrap;
 }
 .section-icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius);
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);
@@ -82,7 +82,7 @@
   justify-content: center;
   flex-shrink: 0;
 }
-.section-icon svg { width: 22px; height: 22px; }
+.section-icon svg { width: 20px; height: 20px; }
 .section-text { flex: 1; min-width: 0; }
 .section-text h2 { font-size: 15px; font-weight: 700; margin: 0 0 3px; }
 .section-text p { font-size: 13px; color: var(--text-muted); margin: 0; }
