@@ -107,7 +107,7 @@
 }
 .kelas-add-field { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
 .kelas-add-field > span {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -197,7 +197,7 @@
 .kelas-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: var(--radius-pill);
@@ -251,7 +251,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   color: var(--text);
 }
 .jam-info svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-.jam-info-title { margin: 0 0 var(--space-1) 0; font-size: 14px; font-weight: 700; color: var(--text); }
+.jam-info-title { margin: 0 0 var(--space-1) 0; font-size: 15px; font-weight: 700; color: var(--text); }
 .jam-info-desc { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 .jam-info-desc code {
   background: var(--surface-2);
@@ -273,7 +273,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   max-width: 600px;
 }
 .jam-suggestions-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-faint);
   text-transform: uppercase;
@@ -310,8 +310,8 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-muted);
   font-family: ui-monospace, SFMono-Regular, monospace;
 }
@@ -386,7 +386,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 /* Table refinements */
 .table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .table th, .table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
-.table thead th { background: var(--surface-2); font-weight: 600; font-size: 11px; letter-spacing: 0.06em; color: var(--text-faint); text-transform: uppercase; }
+.table thead th { background: var(--surface-2); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; color: var(--text-faint); text-transform: uppercase; }
 .table tbody tr:hover td { background: var(--surface-2); }
 .table tbody tr:last-child td { border-bottom: none; }
 .table td { color: var(--text); }
