@@ -30,28 +30,29 @@ function Absensi({ user, onLogout }) {
   const [kelasList, setKelasList] = useState([])
   const [shiftList, setShiftList] = useState([])
 
-  // Ambil shift dari DB; kelas pilihan = kelas yang ada di jadwal milik guru (dari data jadwal),
-  // biar pilihan tidak semua kelas. Fallback ke semua kelas kalau guru belum punya jadwal.
+  // Sinkron dengan jadwal: kelas & jam hari ini saja
   useEffect(() => {
+    const todayName = new Date().toLocaleDateString('id-ID', { weekday: 'long' })
+    const capToday = todayName.charAt(0).toUpperCase() + todayName.slice(1)
     api.get('/jadwal/saya')
       .then((res) => {
-        const kls = [...new Set((res.data || []).map((r) => r.kelas).filter(Boolean))]
-        if (kls.length > 0) {
-          setKelasList(kls.sort())
+        const data = res.data || []
+        const kls = [...new Set(data.map((r) => r.kelas).filter(Boolean))]
+        if (kls.length > 0) setKelasList(kls.sort())
+        else return api.get('/kelas').then((r2) => setKelasList((r2.data.kelas || []).map((k) => k.nama)))
+        const todayJams = [...new Set(data.filter((r) => r.hari === capToday).map((r) => r.jam).filter(Boolean))].sort()
+        if (todayJams.length > 0) {
+          setShiftList(todayJams)
+          setFormData((prev) => ({ ...prev, shift: prev.shift || todayJams[0] }))
         } else {
-          return api.get('/kelas').then((r2) => setKelasList((r2.data.kelas || []).map((k) => k.nama)))
+          setShiftList([])
+          setFormData((prev) => ({ ...prev, shift: '' }))
         }
       })
-      .catch(() => api.get('/kelas')
-        .then((r2) => setKelasList((r2.data.kelas || []).map((k) => k.nama)))
-        .catch(() => setKelasList([])))
-    api.get('/shift/jam-lt')
-      .then((res) => {
-        const list = (res.data.jam_lt || []).map((s) => s.nama)
-        setShiftList(list)
-        if (list.length > 0) setFormData((prev) => ({ ...prev, shift: prev.shift || list[0] }))
+      .catch(() => {
+        api.get('/kelas').then((r2) => setKelasList((r2.data.kelas || []).map((k) => k.nama))).catch(() => setKelasList([]))
+        setShiftList([])
       })
-      .catch(() => setShiftList([]))
   }, [])
 
   const klasesList = kelasList
@@ -197,7 +198,7 @@ function Absensi({ user, onLogout }) {
                 required
                 disabled={loading || shiftList.length === 0}
               >
-                {shiftList.length === 0 ? <option value="">{loading ? 'Memuat...' : 'Tidak ada jam'}</option> : shiftList.map(s => (
+                {shiftList.length === 0 ? <option value="">Tidak ada jadwal hari ini</option> : shiftList.map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
