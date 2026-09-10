@@ -12,6 +12,7 @@ import AdminUsers from './pages/admin/AdminUsers'
 import AdminAbsensi from './pages/admin/AdminAbsensi'
 import AdminKelas from './pages/admin/AdminKelas'
 import AdminAuditLog from './pages/admin/AdminAuditLog'
+import Error from './pages/Error'
 import './App.css'
 import api from './api'
 import { useTheme } from './ThemeContext'
@@ -73,7 +74,7 @@ function App() {
           <>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="*" element={<Error code={404} />} />
           </>
         ) : (
           <>
@@ -86,7 +87,7 @@ function App() {
                 <Route path="/admin/jadwal" element={<Jadwal user={user} onLogout={handleLogout} role="admin" />} />
                 <Route path="/admin/audit" element={<AdminAuditLog user={user} onLogout={handleLogout} />} />
                 <Route path="/profil" element={<Profil user={user} onLogout={handleLogout} onUpdateUser={handleUserUpdate} />} />
-                <Route path="*" element={<Navigate to="/admin" />} />
+                <Route path="*" element={<Error code={404} />} />
               </>
             ) : (
               <>
@@ -96,7 +97,7 @@ function App() {
                 <Route path="/absensi" element={<Absensi user={user} onLogout={handleLogout} />} />
                 <Route path="/histori" element={<Histori user={user} onLogout={handleLogout} />} />
                 <Route path="/jadwal" element={<Jadwal user={user} onLogout={handleLogout} role="guru" />} />
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="*" element={<Error code={404} />} />
               </>
             )}
           </>
