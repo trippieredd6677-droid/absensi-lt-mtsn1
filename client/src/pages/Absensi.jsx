@@ -178,12 +178,12 @@ function Absensi({ user, onLogout }) {
                 type="date"
                 name="tanggal"
                 value={formData.tanggal}
-                onChange={handleChange}
                 min={today}
                 max={today}
                 readOnly
-                required
-                disabled={loading}
+                disabled
+                tabIndex={-1}
+                style={{ background: 'var(--surface-2)', cursor: 'not-allowed', opacity: 0.9 }}
               />
             </div>
 
@@ -195,10 +195,10 @@ function Absensi({ user, onLogout }) {
                 value={formData.shift}
                 onChange={handleChange}
                 required
-                disabled={loading}
+                disabled={loading || shiftList.length === 0}
               >
-                {shiftList.map(s => (
-                  <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+                {shiftList.length === 0 ? <option value="">{loading ? 'Memuat...' : 'Tidak ada jam'}</option> : shiftList.map(s => (
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
