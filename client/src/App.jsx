@@ -74,6 +74,7 @@ function App() {
           <>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<Error code={404} />} />
           </>
         ) : (
