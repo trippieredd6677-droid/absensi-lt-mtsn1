@@ -1,133 +1,71 @@
 # Absensi LT — MTsN 1 Kebumen
 
-Sistem absensi guru / pegawai berbasis web dengan panel admin. Frontend React + Vite, backend Express (Node), database PostgreSQL.
+Sistem absensi guru ledger — panel guru & admin. Frontend React + Vite, backend Express, PostgreSQL.
 
 ## Tech Stack
+- **Frontend:** React 18, Vite 5, React Router 6, Phosphor Icons, Axios, exceljs
+- **Backend:** Node 18+, Express 4, PostgreSQL `pg`, JWT + refresh rotation, bcryptjs, Multer, Nodemailer (OTP)
+- **DB:** PostgreSQL 15+ — 7 tabel: `users, absensi, audit_log, kelas, shift, jadwal, jadwal_source, password_resets`
 
-- **Frontend:** React 18, Vite 5, React Router, Phosphor Icons, Axios
-- **Backend:** Node.js, Express, PostgreSQL (`pg`), JWT auth, bcrypt, Multer (upload foto), Nodemailer (OTP reset password)
-- **DB:** PostgreSQL 15+
-
----
+## Design
+`DESIGN.md` — ledger hangat: `bg #f5f5f3` kertas, `sidebar #0e2e1d` tinta, aksen sage `#3a7a55` satu saja. Zero gradient/glass/glow. Dial **E1/R2/M1** (calm/balanced/hover only).
 
 ## Prasyarat
+Node 18+, PostgreSQL 15+, npm. DB harus running.
 
-- Node.js **18+**
-- PostgreSQL **15+** (harus sudah running)
-- npm
-
----
-
-## 1. Setup Cepat (disarankan)
-
+## 1. Setup Cepat
 ```bash
-# 1. Buat file .env dari template, lalu isi nilainya
-cp .env.example .env
-#    ⚠️ Edit .env: isi DB_PASSWORD, JWT_SECRET, dan ADMIN_PASSWORD
-
-# 2. Install dependensi backend
+cp .env.example .env   # isi DB_PASSWORD, JWT_SECRET (32+ random), ADMIN_PASSWORD
 npm install
-
-# 3. Install dependensi frontend
 cd client && npm install && cd ..
-
-# 4. Setup database (buat DB, tabel, dan akun admin)
-npm run setup-db
-
-# 5. (Opsional) Isi data demo: guru + absensi + admin siap login
-#    node server/seed-demo.js
-
-# 6. Build frontend agar bisa dijalankan satu origin
-npm run build
-
-# 7. Jalankan server
-npm start
-#    → buka http://localhost:5001
+npm run setup-db       # buat DB absensi_mtsn1 + migrasi + seed 56 guru_map + jadwal (237)
+npm run build          # build client ke dist
+npm start              # → http://localhost:5001 (single origin)
+# login: admin / TempPass123!  atau sekar / (ADMIN_PASSWORD di .env)
 ```
 
-> ⚠️ **Akun demo (DEV/TEST SAJA — JANGAN dipakai produksi):**
-> - Admin demo: `admin` / `admin123` — **hanya** dibuat oleh `seed-demo.js` (opsional) & `setup-db.js` bila `ADMIN_PASSWORD` KOSONG.
-> - Guru demo: `guru.budi` / `Guru1234` (dan `guru.siti`, dst.) — hardcoded di `seed-demo.js`.
-> **WAJIB utk produksi:** set `ADMIN_PASSWORD` kuat (min 8, campur huruf+angka+simbol). Kalau di-set, admin TIDAK dibuat dengan `admin123` — password admin jadi `ADMIN_PASSWORD` kamu. Jangan pernah pakai akun demo di produksi; ganti semua password.
+`bash start.sh` — cek Node/Postgres, buat .env default, install, setup-db otomatis.
 
-> Alternatif: `bash start.sh` — script otomatis cek Node/PostgreSQL, buat `.env` default, install dependency, dan setup DB. Tetap wajib edit `.env` (DB_PASSWORD & buat akun admin).
-
----
-
-## 2. Mode Development (biar bisa edit-edit)
-
-Jalankan backend dan frontend terpisah:
-
+## 2. Mode Dev (edit)
 ```bash
-# Terminal 1 — backend (auto-restart)
-npm run dev
-
-# Terminal 2 — frontend (Vite, hot-reload)
-cd client && npm run dev
+# Terminal 1 — backend auto-restart
+npm run dev            # → http://localhost:5001
+# Terminal 2 — frontend hot-reload + proxy /api & /uploads ke 5001
+cd client && npm run dev  # → http://localhost:3001
 ```
 
-Frontend: `http://localhost:3000` (proksi `/api` ke backend). Backend: `http://localhost:5001`.
-
----
-
-## 3. Konfigurasi Environment (`.env`)
-
-| Variabel | Keterangan |
+## 3. Env (.env)
+| Var | Isi |
 |---|---|
-| `PORT` | Port server (default `5001`) |
-| `NODE_ENV` | `development` / `production` |
-| `CLIENT_URL` | Origin frontend yang diizinkan CORS (di produksi wajib diisi) |
-| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | Kredensial PostgreSQL |
-| `JWT_SECRET` | Kunci rahasia JWT (string acak panjang) |
-| `JWT_EXPIRE` | Masa berlaku token (contoh: `7d`) |
-| `ADMIN_USERNAME`, `ADMIN_PASSWORD` | Akun admin awal (dibuat oleh `setup-db.js` hanya jika `ADMIN_PASSWORD` diisi) |
-| `UPLOAD_DIR` | Folder penyimpanan upload |
-| `MAX_FILE_SIZE` | Ukuran maksimum file (byte) |
-| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM` | SMTP untuk email OTP reset password |
-| `MAIL_LOGGING` | `true` = OTP ditampilkan di layar/console (mode dev, tanpa SMTP asli) |
+| `PORT=5001`, `NODE_ENV`, `CLIENT_URL` | `http://localhost:3001` (dev) / `https://domain.or.id` (prod, CORS whitelist) |
+| `DB_HOST/PORT/NAME/USER/PASSWORD` atau `DATABASE_URL` | Neon/Render |
+| `JWT_SECRET` (≥32), `JWT_EXPIRE=2h` | `openssl rand -base64 32` |
+| `ADMIN_USERNAME/ADMIN_PASSWORD` | dibuat `setup-db` hanya jika `ADMIN_PASSWORD` diisi |
+| `GURU_DEFAULT_PASSWORD` | password awal 56 guru map |
+| `UPLOAD_DIR`, `MAX_FILE_SIZE` | default `uploads`, `5242880` |
+| `EMAIL_HOST/PORT/SECURE/USER/PASS/FROM`, `MAIL_LOGGING` | OTP; `MAIL_LOGGING=true` = tampil di console (dev) |
 
-> **Database via URL (opsional):** `DATABASE_URL` juga didukung (dipakai di hosting seperti Neon), menggantikan `DB_*`.
+## 4. Script
+`npm start` — prod single origin | `npm run dev` — nodemon | `npm run build` — vite build | `npm run setup-db` — migrasi | `npm run sync-jadwal -- --apply` — sync jadwal dari patokan
 
----
-
-## 4. Script npm
-
-| Script | Fungsi |
-|---|---|
-| `npm start` | Jalankan server produksi (serve API + `client/dist`) |
-| `npm run dev` | Jalankan server dengan nodemon (auto-restart) |
-| `npm run build` | Build frontend ke `client/dist` |
-| `npm run setup-db` | Buat database, tabel, index, dan akun admin awal |
-| `npm run client` | Jalankan Vite dev server |
-
----
-
-## 5. Struktur Folder
-
+## 5. Struktur
 ```
 absensi-lt-mtsn1/
-├── server/            # Backend Express (routes, middleware, db, migrasi, seed)
-├── client/            # Frontend React + Vite
-├── deploy/            # Konfigurasi deployment (PM2, dll)
-├── docs/              # Dokumentasi tambahan
-├── uploads/           # Foto upload (gitignored, jangan ikut repository)
-├── .env.example       # Template env
-├── render.yaml        # Blueprint deploy ke Render
-└── start.sh           # Script quick-start
+├── server/  index.js(:5001) db.js setup-db.js seed-jadwal.js
+│   ├── middleware/auth.js upload.js
+│   └── routes/auth.js absensi.js admin.js jadwal.js kelas.js shift.js
+├── client/  vite.config.js(:3001 proxy) src/App.jsx api.js
+│   └── src/pages/ Login, Dashboard, Absensi, Histori, Profil + admin/*
+├── uploads/  foto profil/kegiatan (gitignored) — nama file: budi-santoso_profil_<stamp>.jpg
+├── DESIGN.md  .env.example  render.yaml  start.sh  auto-setup.sh
 ```
 
----
+## 6. Alur Konfirmasi (anti double-submit)
+- Semua mutasi pakai `ConfirmModal` + `loading` lock + `isDirty`/`hasUnsavedChanges` guard. Contoh: `Profil Simpan` cek `isDirty` → confirm → `PUT /auth/me`; `Jadwal Simpan` → confirm `N jadwal akan diganti` → `PUT /by-guru`; `AdminUsers` create/edit/reset/link → confirm + `saving`.
+- Upload foto profil: crop modal 1:1 → `PUT /auth/me/photo` → nama file `slug(full_name)_profil_<ts>.jpg`
 
-## 6. Deployment
+## 7. Export
+`AdminAbsensi` & `Histori` → `exportXlsx` (exceljs) warna ledger `3A7A55`, `E9F1EB` etc selaras web — header hijau sage, status muted, border `E2E2DE`, owner hanya nama.
 
-- Repo ini mendukung deploy ke **Render** (lihat `render.yaml`) — satu web service yang build frontend lalu menjalankan backend (single origin).
-- `DATABASE_URL` (contoh: Neon) dipakai jika dideploy ke hosting Postgres.
-- Detail lengkap: lihat `DEPLOYMENT.md` dan `deploy/`.
-
----
-
-## Keamanan
-
-- `.env` **tidak pernah** di-commit (gitignored). Jangan pernah share `.env` berisi kredensial asli.
-- `uploads/` berisi foto kegiatan (privasi) — jangan ikut tersebar.
-- CI mengecek secret (Gitleaks) dan build frontend di setiap push/PR (lihat `.github/workflows/ci.yml`).
+## 8. Keamanan
+`.env` & `uploads/` tidak di-commit. Audit `audit_log`, bcrypt 10, parameterized queries, rate-limit, security headers, CORS whitelist, file whitelist JPG/PNG/WebP/GIF/PDF 8MB, OTP 6-digit hash + 10m exp + 30s cooldown.

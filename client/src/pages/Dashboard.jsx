@@ -4,9 +4,12 @@ import {
   FirstAidKit,
   HandWaving,
   XCircle,
+  CalendarBlank,
+  ClipboardText,
 } from '@phosphor-icons/react'
 import api from '../api'
 import Layout from '../components/Layout'
+import EmptyState from '../components/EmptyState'
 import './Dashboard.css'
 
 const DAY_NAMES = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
@@ -89,7 +92,7 @@ function Dashboard({ user, onLogout }) {
         <div className="card">
           <h2>Jadwal Hari Ini · {todayName}</h2>
           {todayJadwal.length === 0 ? (
-            <p className="dash-muted">Tidak ada jadwal hari ini.</p>
+            <EmptyState icon={CalendarBlank} title="Libur hari ini" description="Tidak ada jadwal layanan untuk hari ini. Nikmati waktunya!" />
           ) : (
             <div className="dash-jadwal">
               {todayJadwal.map((j, i) => (
@@ -115,7 +118,7 @@ function Dashboard({ user, onLogout }) {
                 <thead>
                   <tr>
                     <th>Tanggal</th>
-                    <th>Shift</th>
+                    <th>Jam LT</th>
                     <th>Kelas</th>
                     <th>Status</th>
                   </tr>
@@ -137,7 +140,7 @@ function Dashboard({ user, onLogout }) {
               </table>
             </div>
           ) : (
-            <p className="dash-muted">Belum ada data absensi</p>
+            <EmptyState icon={ClipboardText} title="Belum ada absensi" description="Belum ada data absensi. Isi absensi pertama di menu Absensi." action={<a href="/absensi" className="btn btn-primary btn-sm">Isi Absensi</a>} />
           )}
         </div>
       </div>

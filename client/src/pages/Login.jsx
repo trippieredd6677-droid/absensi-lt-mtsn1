@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { WarningCircle, Eye, EyeSlash } from '@phosphor-icons/react'
+import { IconAlertCircle, IconEye, IconEyeOff, IconLink } from '@tabler/icons-react'
 import api from '../api'
 import './Login.css'
 
@@ -62,26 +63,29 @@ function Login({ onLogin }) {
         </div>
         <div className="login-brand-mid">
           <span className="login-brand-kicker">Sistem Absensi Layanan Terpadu</span>
-          <h2 className="login-brand-title">Catat kehadiran guru,<br />satu lembar digital.</h2>
+          <h2 className="login-brand-title">Catat & dokumetasi kegiatan <br />Siswa dan Guru.</h2>
           <p className="login-brand-sub">
-            Rekap harian, histori bulanan, dan jadwal layanan dalam satu tempat.
-            Data per guru, rapi, dan bisa diverifikasi kapan saja.
+            Kelola presensi guru lebih praktis, rapi, dan terintegrasi.
           </p>
         </div>
         <div className="login-brand-foot">MTsN 1 Kebumen · 2026</div>
       </aside>
 
       <div className="login-form-side">
-        <div className="login-box">
-          <div className="login-header">
-            <h1>Masuk</h1>
-            <p>Gunakan akun yang diberikan sekolah.</p>
+        <div className="login-box" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div className="login-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', textAlign: 'center', marginBottom: 0 }}>
+            <img src={logo} alt="Logo MTsN 1 Kebumen" style={{ width: 56, height: 56, borderRadius: '14px', objectFit: 'cover', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }} />
+            <div>
+              <h1 style={{ fontSize: 22 }}>Masuk</h1>
+              <p>Silahkan isi username dan password.</p>
+            </div>
           </div>
+          <div style={{ height: 1, background: 'var(--border)', width: '100%' }} />
 
         <form onSubmit={handleSubmit} className="login-form">
           {error && (
             <div className="alert alert-error" role="alert">
-              <WarningCircle weight="regular" />
+              <IconAlertCircle size={16} stroke={1.8} />
               <span>{error}</span>
             </div>
           )}
@@ -119,7 +123,7 @@ function Login({ onLogin }) {
                 aria-label={showPassword ? 'Sembunyikan password' : 'Lihat password'}
                 tabIndex={-1}
               >
-                {showPassword ? <EyeSlash weight="regular" /> : <Eye weight="regular" />}
+                {showPassword ? <IconEyeOff size={16} stroke={1.8} /> : <IconEye size={16} stroke={1.8} />}
               </button>
             </div>
           </div>

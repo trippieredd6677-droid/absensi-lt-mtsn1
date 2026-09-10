@@ -1,103 +1,44 @@
-/* Absensi (form isi absensi) */
-
-.absensi-form-card {
-  max-width: none;
-}
-/* Konten form dibatasi biar tidak melar di layar lebar (card tetap full-width) */
+.absensi-form-card { max-width: none; }
 .absensi-form-card form,
-.info-card ul {
-  max-width: 880px;
-  margin-left: auto;
-  margin-right: auto;
+.info-card ul { max-width: 880px; margin-left: auto; margin-right: auto; }
+
+.dropzone {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: 18px 16px; border: 1.5px dashed var(--border-strong); border-radius: var(--radius);
+  background: var(--surface); cursor: pointer; transition: border-color var(--ease), background var(--ease), box-shadow var(--ease);
 }
-
-.file-input-wrapper {
-  position: relative;
-  display: block;
-  cursor: pointer;
-  border: 1.5px dashed var(--border-strong);
-  border-radius: var(--radius);
-  padding: 22px;
-  text-align: center;
-  background: var(--surface-2);
-  transition: border-color 0.16s ease, background 0.16s ease;
-}
-
-.file-input-wrapper:hover {
-  border-color: var(--accent-border);
-  background: var(--accent-dim);
-}
-
-.file-input-wrapper input[type="file"] {
-  display: none;
-}
-
-.file-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 14px;
-  pointer-events: none;
-}
-
-.file-label svg { color: var(--accent); width: 20px; height: 20px; }
-
-.file-label.has-file { color: var(--accent); }
-
-.form-hint {
-  color: var(--text-faint);
-  font-size: 12px;
-  margin-top: 8px;
-}
+.dropzone:hover { border-color: var(--accent-border); background: var(--accent-dim); }
+.dropzone.drag-over { border-color: var(--accent); background: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-dim); }
+.dropzone.has-file { border-style: solid; border-color: var(--accent-border); background: var(--accent-dim); }
+.dropzone-inner { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.dropzone-inner svg { color: var(--accent); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0; }
+.dropzone-text { font-size: var(--text-md); color: var(--text); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dropzone.has-file .dropzone-text { color: var(--accent); }
+.dropzone-hint { display: block; font-size: var(--text-sm); color: var(--text-faint); font-weight: 400; margin-top: 2px; }
+.form-hint { color: var(--text-faint); font-size: var(--text-sm); margin-top: var(--space-2); }
 
 .info-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
-  margin-top: 4px;
+  padding: var(--space-5);
+  margin-top: var(--space-4);
   max-width: none;
 }
-
 .info-card h3 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text);
-  margin-bottom: 14px;
-  font-size: 14px;
-  font-weight: 600;
+  display: flex; align-items: center; gap: var(--space-2);
+  color: var(--text); margin-bottom: var(--space-4); font-size: var(--text-md); font-weight: 600;
 }
-
-.info-card h3 svg { color: var(--accent); width: 18px; height: 18px; }
-
-.info-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
+.info-card h3 svg { color: var(--accent); width: var(--icon-md); height: var(--icon-md); }
+.info-card ul { list-style: none; padding: 0; margin: 0; }
 .info-card li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  color: var(--text-muted); font-size: var(--text-base); margin-bottom: var(--space-3);
 }
-
-.info-card li svg {
-  flex-shrink: 0;
-  margin-top: 1px;
-  color: var(--accent);
-  width: 16px;
-  height: 16px;
-}
+.info-card li:last-child { margin-bottom: 0; }
+.info-card li svg { flex-shrink: 0; margin-top: 1px; color: var(--accent); width: var(--icon-sm); height: var(--icon-sm); }
 
 @media (max-width: 768px) {
-  .absensi-form-card,
-  .info-card {
-    max-width: 100%;
-  }
+  .absensi-form-card, .info-card { max-width: 100%; }
+  .file-input-wrapper { padding: var(--space-4); }
 }

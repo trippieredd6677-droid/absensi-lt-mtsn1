@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { CaretLeft, CaretRight, ShieldCheck, FunnelSimple, X } from '@phosphor-icons/react'
+import { IconChevronLeft, IconChevronRight, IconFilter, IconX } from '@tabler/icons-react'
+import EmptyState from '../../components/EmptyState'
 import api from '../../api'
 import Layout from '../../components/Layout'
 import './AdminAuditLog.css'
@@ -46,6 +48,60 @@ function fmtWaktu(iso) {
   return d.toLocaleString('id-ID', {
     day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
   })
+}
+
+function parseData(v) {
+  if (!v) return null
+  if (typeof v === 'string') { try { return JSON.parse(v) } catch { return v } }
+  return v
+}
+
+function fmtDetail(l) {
+  const nd = parseData(l.new_data ?? l.new_value)
+  const od = parseData(l.old_data)
+  const label = { email: 'email', username: 'username', full_name: 'nama', nip: 'NIP', kelas: 'kelas', jenis_layanan: 'jenis layanan', no_hp: 'HP', role: 'role', status: 'status', guru_map_kode: 'kode guru', nama_guru: 'nama guru', nama: 'nama', keterangan: 'keterangan', jam: 'jam', hari: 'hari', foto_profil: 'foto' }
+  const who = l.username || nd?.username || od?.username || (l.table_name === 'users' ? nd?.full_name || od?.full_name : '') || ''
+  switch (l.action) {
+    case 'LOGIN': return who ? `Masuk sebagai ${who}` : 'Masuk'
+    case 'LOGIN_FAILED': return who ? `Gagal login ${who}` : 'Gagal login'
+    case 'LOGIN_PENDING': return 'Login pending'
+    case 'LOGIN_INACTIVE': return 'Login ditolak'
+    case 'CREATE': return who ? `Tambah ${who}` : nd?.nama || nd?.full_name || 'Tambah data'
+    case 'UPDATE': {
+      if (nd && od) {
+        const diff = Object.keys({ ...nd, ...od }).filter(k => nd[k] !== od[k] && !(nd[k] == null && od[k] == null) && String(nd[k] ?? '').trim() !== String(od[k] ?? '').trim())
+        if (diff.length === 1) {
+          const k = diff[0]
+          const v = String(nd[k] ?? '').slice(0, 30)
+          return `${who ? who + ': ' : ''}ganti ${label[k] || k}${v ? ` → ${v}` : ''}`
+        }
+        if (diff.length > 1) return `${who ? who + ': ' : ''}ganti ${diff.length} field (${diff.slice(0, 2).map(k => label[k] || k).join(', ')})`
+      }
+      return who ? `Ubah ${who}` : 'Ubah data'
+    }
+    case 'DELETE': return who ? `Hapus ${who}` : nd?.nama || od?.nama || 'Hapus data'
+    case 'RESET_PASSWORD':
+    case 'CHANGE_PASSWORD': return who ? `Ganti password ${who}` : 'Ganti password'
+    case 'ACTIVATE': return who ? `Aktifkan ${who}` : 'Aktifkan'
+    case 'DEACTIVATE': return who ? `Nonaktifkan ${who}` : 'Nonaktifkan'
+    case 'BULK_STATUS': return `Bulk ${nd?.status === 'active' ? 'aktifkan' : 'nonaktifkan'}`
+    case 'BULK_RESET': return 'Bulk ganti password'
+    case 'BULK_DELETE': return 'Bulk hapus'
+    case 'LINK_GURU_MAP': return who ? `${nd?.guru_map_kode ? 'Link' : 'Lepas'} ${who}${nd?.guru_map_kode ? ` → ${nd.guru_map_kode}` : ''}` : nd?.guru_map_kode ? `Link ${nd.guru_map_kode}` : 'Lepas link'
+    case 'IMPERSONATE': return who ? `Impersonate ${who}` : 'Impersonate'
+    case 'ABSENSI_UPDATE':
+    case 'UPDATE_absensi': return `Ganti absensi ${nd?.kelas || ''}`
+    case 'DELETE_absensi':
+    case 'ABSENSI_DELETE': return `Hapus absensi ${od?.kelas || ''}`
+    case 'REMIND': return 'Reminder'
+    case 'REGISTER_PENDING': return `Registrasi ${who}`
+    case 'FORGOT_PASSWORD': return `Forgot ${who}`
+    case 'OTP_VERIFIED': return `OTP ${who}`
+    case 'OVERWRITE': return 'Overwrite jadwal'
+    case 'SYNC_GURU_JADWAL': return 'Sync jadwal'
+    case 'IMPORT_EXCEL': return 'Import jadwal'
+    default: return who ? `${l.action.toLowerCase()} ${who}` : l.action ? l.action.replace(/_/g, ' ').toLowerCase() : '-'
+  }
 }
 
 function AdminAuditLog({ user, onLogout }) {
@@ -142,10 +198,10 @@ function AdminAuditLog({ user, onLogout }) {
           </div>
           <div className="filter-group filter-actions">
             <button className="btn btn-primary btn-sm" onClick={applyFilter}>
-              <FunnelSimple weight="regular" /> Filter
+              <IconFilter size={16} stroke={1.8} /> Filter
             </button>
             <button className="btn btn-secondary btn-sm" onClick={resetFilter}>
-              <X weight="regular" /> Reset
+              <IconX size={16} stroke={1.8} /> Reset
             </button>
           </div>
         </div>
@@ -153,50 +209,34 @@ function AdminAuditLog({ user, onLogout }) {
         {loading ? (
           <p className="audit-loading">Memuat data...</p>
         ) : logs.length > 0 ? (
-          <div className="users-table-wrapper">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Waktu</th>
-                  <th>Pengguna</th>
-                  <th>Aksi</th>
-                  <th>Objek</th>
-                  <th>Detail</th>
-                  <th>IP</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map((l) => (
-                  <tr key={l.id}>
-                    <td className="audit-time">{fmtWaktu(l.created_at)}</td>
-                    <td><strong>{l.username || '-'}</strong></td>
-                    <td>
-                      <span className={`audit-badge audit-${ACTION_COLOR[l.action] || 'accent'}`}>
-                        {ACTION_LABEL[l.action] || l.action}
-                      </span>
-                    </td>
-                    <td><code>{l.table_name || '-'} #{l.record_id || '-'}</code></td>
-                    <td className="audit-detail">
-                      {l.new_value ? <span className="audit-change">{l.new_value}</span> : '-'}
-                    </td>
-                    <td className="audit-ip">{l.ip_address || '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="audit-timeline">
+            {logs.map((l) => (
+              <div key={l.id} className="audit-tl-item">
+                <span className="audit-tl-dot" style={{ background: `var(--${ACTION_COLOR[l.action] === 'danger' ? 'status-alpa' : ACTION_COLOR[l.action] === 'warn' ? 'status-sakit' : 'accent'})` }} />
+                <div>
+                  <div className="audit-tl-time">{fmtWaktu(l.created_at)}</div>
+                  <div className="audit-tl-user">{l.username || l.new_data?.username || l.old_data?.username || '-'}</div>
+                  <div className="audit-ip" style={{ fontSize: '11px' }}>{l.ip_address || '-'}</div>
+                </div>
+                <div>
+                  <span className={`audit-badge audit-${ACTION_COLOR[l.action] || 'accent'}`}>{ACTION_LABEL[l.action] || l.action}</span>
+                  <div className="audit-tl-detail" style={{ marginTop: 6 }}><span className="audit-change" title={JSON.stringify(l.new_data || l.old_data || '')}>{fmtDetail(l)}</span></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
-          <p className="audit-loading"><ShieldCheck weight="regular" /> Belum ada aktivitas tercatat.</p>
+          <EmptyState icon={ShieldCheck} title="Belum ada aktivitas" description="Audit log akan terisi setelah ada login, absensi, atau perubahan data." />
         )}
 
         {total > limit && (
           <div className="pagination" style={{ marginTop: '20px' }}>
             <button onClick={() => setPage(Math.max(1, page - 1))} className="btn btn-secondary" disabled={page === 1}>
-              <CaretLeft weight="regular" /> Sebelumnya
+              <IconChevronLeft size={16} stroke={1.8} /> Sebelumnya
             </button>
             <span className="page-info">Halaman {page} dari {pages}</span>
             <button onClick={() => setPage(page + 1)} className="btn btn-secondary" disabled={page >= pages}>
-              Berikutnya <CaretRight weight="regular" />
+              Berikutnya <IconChevronRight size={16} stroke={1.8} />
             </button>
           </div>
         )}

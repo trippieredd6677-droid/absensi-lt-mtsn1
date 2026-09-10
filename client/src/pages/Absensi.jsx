@@ -6,6 +6,7 @@ import {
   CheckCircle,
   XCircle,
 } from '@phosphor-icons/react'
+import { IconCircleCheck, IconInfoCircle, IconLink, IconUpload } from '@tabler/icons-react'
 import api from '../api'
 import Layout from '../components/Layout'
 import Toast from '../components/Toast'
@@ -44,9 +45,25 @@ function Absensi({ user, onLogout }) {
       .catch(() => api.get('/kelas')
         .then((r2) => setKelasList((r2.data.kelas || []).map((k) => k.nama)))
         .catch(() => setKelasList([])))
-    api.get('/shift')
-      .then((res) => setShiftList((res.data.shift || []).map((s) => s.nama)))
-      .catch(() => setShiftList([]))
+    api.get('/shift/jam-lt')
+      .then((res) => {
+        const list = (res.data.jam_lt || []).map((s) => s.nama)
+        if (list.length > 0) {
+          setShiftList(list)
+          setFormData((prev) => ({ ...prev, shift: list[0] }))
+        } else {
+          return api.get('/shift').then((r2) => {
+            const fallback = (r2.data.shift || []).map((s) => s.nama)
+            setShiftList(fallback)
+            if (fallback.length > 0) setFormData((prev) => ({ ...prev, shift: fallback[0] }))
+          })
+        }
+      })
+      .catch(() => api.get('/shift').then((r2) => {
+        const fallback = (r2.data.shift || []).map((s) => s.nama)
+        setShiftList(fallback)
+        if (fallback.length > 0) setFormData((prev) => ({ ...prev, shift: fallback[0] }))
+      }).catch(() => setShiftList([])))
   }, [])
 
   const klasesList = kelasList
@@ -56,6 +73,7 @@ function Absensi({ user, onLogout }) {
     setFormData({ ...formData, [name]: value })
   }
 
+  const [dragOver, setDragOver] = useState(false)
   const handleFileChange = async (e) => {
     const file = e.target.files[0]
     if (!file) return
@@ -64,7 +82,18 @@ function Absensi({ user, onLogout }) {
       e.target.value = ''
       return
     }
-    // Kompres & resize gambar di client biar upload cepat (kecil, bukan 5MB mentah)
+    const compressed = await compressImage(file)
+    setFormData({ ...formData, foto_kegiatan: compressed })
+  }
+  const handleDrop = async (e) => {
+    e.preventDefault()
+    setDragOver(false)
+    const file = e.dataTransfer.files?.[0]
+    if (!file) return
+    if (file.size > 8 * 1024 * 1024) {
+      setToast({ open: true, message: 'Foto terlalu besar (maks 8MB).', type: 'error' })
+      return
+    }
     const compressed = await compressImage(file)
     setFormData({ ...formData, foto_kegiatan: compressed })
   }
@@ -130,7 +159,7 @@ function Absensi({ user, onLogout }) {
       // Reset form
       setFormData({
         tanggal: new Date().toISOString().split('T')[0],
-        shift: 'siang',
+        shift: shiftList[0] || 'siang',
         kelas: '',
         status: 'hadir',
         catatan: '',
@@ -171,7 +200,7 @@ function Absensi({ user, onLogout }) {
             </div>
 
             <div className="form-group">
-              <label htmlFor="shift">Shift *</label>
+              <label htmlFor="shift">Jam LT *</label>
               <select
                 id="shift"
                 name="shift"
@@ -226,7 +255,13 @@ function Absensi({ user, onLogout }) {
             <label htmlFor="foto">
               Unggah Foto Kegiatan <span className="required-mark" title="Wajib diisi">*</span>
             </label>
-            <label htmlFor="foto" className="file-input-wrapper">
+            <div
+              className={`dropzone ${dragOver ? 'drag-over' : ''} ${formData.foto_kegiatan ? 'has-file' : ''}`}
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={handleDrop}
+              onClick={() => document.getElementById('foto')?.click()}
+            >
               <input
                 id="foto"
                 type="file"
@@ -234,13 +269,17 @@ function Absensi({ user, onLogout }) {
                 onChange={handleFileChange}
                 disabled={loading}
                 required={!formData.foto_kegiatan}
+                hidden
               />
-              <span className={`file-label ${formData.foto_kegiatan ? 'has-file' : ''}`}>
-                <UploadSimple weight="regular" />
-                {formData.foto_kegiatan ? (formData.foto_kegiatan.name || 'Foto siap diunggah') : 'Pilih berkas atau seret ke sini'}
-              </span>
-            </label>
-            <p className="form-hint">Format: JPG, PNG, GIF, WEBP</p>
+              <div className="dropzone-inner">
+                <IconUpload size={16} stroke={1.8} />
+                <span className="dropzone-text">
+                  {formData.foto_kegiatan ? (formData.foto_kegiatan.name || 'Foto siap diunggah ✓') : 'Seret foto ke sini atau klik untuk pilih'}
+                </span>
+                {!formData.foto_kegiatan && <span className="dropzone-hint">JPG, PNG, GIF, WEBP — maks 8MB, auto kompres</span>}
+              </div>
+              {formData.foto_kegiatan && <button type="button" className="btn btn-secondary btn-sm" onClick={(e) => { e.stopPropagation(); setFormData({ ...formData, foto_kegiatan: null }) }}>Ganti</button>}
+            </div>
           </div>
 
           <div className="form-group">
@@ -271,12 +310,12 @@ function Absensi({ user, onLogout }) {
       </div>
 
       <div className="info-card">
-        <h3><Info weight="regular" /> Informasi Penting</h3>
+        <h3><IconInfoCircle size={16} stroke={1.8} /> Informasi Penting</h3>
         <ul>
-          <li><CheckCircle weight="regular" /> Pastikan semua data yang Anda isi sudah benar sebelum mengirim</li>
-          <li><CheckCircle weight="regular" /> Setiap tanggal dan shift hanya boleh diisi satu kali</li>
-          <li><CheckCircle weight="regular" /> Anda hanya bisa melihat riwayat absensi; koreksi data ditangani admin</li>
-          <li><CheckCircle weight="regular" /> Unggah foto kegiatan untuk mendokumentasikan aktivitas Anda</li>
+          <li><IconCircleCheck size={16} stroke={1.8} /> Pastikan semua data yang Anda isi sudah benar sebelum mengirim</li>
+          <li><IconCircleCheck size={16} stroke={1.8} /> Setiap tanggal dan Jam LT hanya boleh diisi satu kali</li>
+          <li><IconCircleCheck size={16} stroke={1.8} /> Anda hanya bisa melihat riwayat absensi; koreksi data ditangani admin</li>
+          <li><IconCircleCheck size={16} stroke={1.8} /> Unggah foto kegiatan untuk mendokumentasikan aktivitas Anda</li>
         </ul>
       </div>
     </Layout>

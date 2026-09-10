@@ -1,44 +1,3 @@
-/* Admin Absensi */
-
-.filter-export-section {
-  display: flex;
-  align-items: flex-end;
-  gap: 15px;
-  margin-bottom: 18px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filter-group label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.filter-group select {
-  cursor: pointer;
-  min-width: 130px;
-  width: auto;
-}
-
-.filter-export-section .btn {
-  margin-left: auto;
-}
-
-.absensi-table-wrapper {
-  overflow-x: auto;
-  margin: 4px 0 8px;
-}
-
 .capitalize { text-transform: capitalize; }
 
 .catatan-col {
@@ -46,11 +5,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 13px;
+  font-size: var(--text-base);
   color: var(--text-muted);
 }
 
-/* Kolom Guru: jaga satu baris + ellipsis biar tinggi baris seragam */
 .absensi-table-wrapper .table th:nth-child(6),
 .absensi-table-wrapper .table td:nth-child(6) {
   white-space: nowrap;
@@ -58,106 +16,53 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* Kolom ikon (Foto & Aksi): ratakan tengah biar konsisten */
 .absensi-table-wrapper .table th:nth-child(9),
 .absensi-table-wrapper .table td:nth-child(9),
-.absensi-table-wrapper .table td:nth-child(10) {
-  text-align: center;
-}
+.absensi-table-wrapper .table td:nth-child(10) { text-align: center; }
 
 .stats-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
-  margin-top: 4px;
+  padding: var(--space-5);
+  margin-top: var(--space-4);
 }
+.stats-card h2 { font-size: 15px; font-weight: 700; margin-bottom: var(--space-4); }
 
-.stats-card h2 {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.stats-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 14px;
-}
+.stats-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-4); }
 
 .summary-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 16px;
+  padding: var(--space-4);
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-
 .summary-item .label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   color: var(--text-faint);
-  font-size: 12px;
+  font-size: var(--text-sm);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-
-.summary-item .label svg { width: 15px; height: 15px; color: var(--accent); }
-
-.summary-item .value {
-  color: var(--text);
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-@media (max-width: 768px) {
-  .filter-export-section {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-group select { min-width: 100%; width: 100%; }
-
-  .filter-export-section .btn { margin-left: 0; }
-
-  .stats-summary { grid-template-columns: repeat(2, 1fr); }
-}
-
-.col-check { width: 36px; text-align: center; padding: 0 !important; }
-.col-check input { width: 16px; height: 16px; cursor: pointer; }
-
-.bulk-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  background: var(--accent-dim);
-  border: 1px solid var(--accent-border);
-  border-radius: var(--radius);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent);
-}
-
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
+.summary-item .label svg { width: var(--icon-sm); height: var(--icon-sm); color: var(--accent); }
+.summary-item .value { color: var(--text); font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
 
 .form-label {
   display: block;
-  font-size: 12px;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 6px;
+}
+
+@media (max-width: 768px) {
+  .stats-summary { grid-template-columns: repeat(2, 1fr); }
 }

@@ -1,122 +1,25 @@
-╔════════════════════════════════════════════════════════════════════╗
-║     ABSENSI LT MTsN 1 KEBUMEN - SISTEM LENGKAP READY TO RUN       ║
-╚════════════════════════════════════════════════════════════════════╝
+ABSENSI LT MTsN 1 — QUICK START (ledger, 3 langkah)
 
-📊 PROJECT STATUS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Backend: Complete (27 files, 20 components)
-✅ Frontend: Complete (10+ React components)
-✅ Database: Schema ready (3 tables with indexes)
-✅ Security: JWT + bcrypt + validation implemented
-✅ Documentation: 4 guides included
-✅ Dependencies: Installed (237 packages)
-📊 Project Size: 64MB (with node_modules)
+STATUS: 58 users (2 admin sekar+admin, 56 guru real), 237 jadwal, 0 histori (sudah dikosongkan), build PASS
 
-🚀 QUICK START (3 STEPS)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1) POSTGRES (Mac)
+   brew install postgresql@15
+   brew services start postgresql@15
 
-1️⃣  INSTALL POSTGRESQL (Mac only)
-    $ brew install postgresql@15
-    $ brew services start postgresql@15
+2) SETUP DB
+   cd /Users/anm/Desktop/absensi-lt-mtsn1
+   cp .env.example .env   # isi DB_PASSWORD & JWT_SECRET & ADMIN_PASSWORD
+   npm install && cd client && npm install && cd ..
+   npm run setup-db       # 7 tabel + 56 guru_map + kelas 30
 
-2️⃣  SETUP DATABASE
-    $ cd /Users/anm/Desktop/absensi-lt-mtsn1
-    $ npm run setup-db
+3) JALAN
+   Terminal 1: npm run dev             # backend http://localhost:5001
+   Terminal 2: cd client && npm run dev # frontend http://localhost:3001
+   Browser: http://localhost:3001  login sekar / TempPass123!  atau admin / admin123 (jika seed demo)
+   Guru: mansyur.nurudin / KvRHw/AMJmFZYmpi  (GURU_DEFAULT_PASSWORD di .env)
 
-3️⃣  START SERVERS
-    Terminal 1: npm run dev          (Backend :5000)
-    Terminal 2: cd client && npm run dev  (Frontend :3000)
+STRUKTUR: server/:5001 routes auth/absensi/admin/jadwal/kelas/shift | client/:3001 proxy /api | uploads/ foto profil _profil_<ts>.jpg | DESIGN.md
 
-4️⃣  LOGIN
-    Browser: http://localhost:3000
-    Username: admin
-    Password: admin123
+FITUR: Guru Absensi/ Histori/ Jadwal/ Profil(isDirty+confirm) | Admin Dashboard/ Manajemen Guru/ Data Absensi/ Kelas/ Jadwal(confirm by-guru)/ Audit | Export XLSX warna sage ledger
 
-📁 PROJECT STRUCTURE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-absensi-lt-mtsn1/
-├── server/                   # Node.js + Express Backend
-│   ├── routes/              # Auth, Absensi, Admin APIs
-│   ├── middleware/          # JWT, File Upload
-│   ├── index.js            # Main server (port 5000)
-│   └── setup-db.js         # Database initialization
-├── client/                   # React + Vite Frontend
-│   ├── src/pages/          # Login, Dashboard, Absensi, etc
-│   └── index.html          # Dark cinematic theme
-├── uploads/                 # File storage for photos
-├── .env                     # Environment config
-├── README.md               # Full documentation
-└── DEPLOYMENT.md           # Production guide (VPS setup)
-
-🔐 SECURITY FEATURES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ JWT Authentication (7 days expiry)
-✅ Password Hashing (bcryptjs, salt 10)
-✅ Role-Based Access (Admin vs Guru)
-✅ Input Validation (express-validator)
-✅ SQL Injection Protection (parameterized queries)
-✅ CORS Whitelist (configurable)
-✅ Security Headers (CSP, X-Frame-Options, HSTS)
-✅ File Upload Security (whitelist extensions, max 5MB)
-✅ Audit Logging (all actions tracked)
-
-✨ FEATURES IMPLEMENTED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-FOR GURU:
-✓ Login & Dashboard
-✓ Isi Absensi (shift, kelas, status, foto, catatan)
-✓ Riwayat Absensi (filter by month)
-✓ Edit Profil
-✓ Statistics & Analytics
-
-FOR ADMIN:
-✓ Admin Dashboard (4 KPI cards)
-✓ Manajemen Guru (list, edit, reset password, deactivate)
-✓ Data Absensi (view all, filter, export CSV)
-✓ Audit Logs (track all activities)
-
-DATABASE:
-✓ PostgreSQL (connection pooling)
-✓ 3 Tables: users, absensi, audit_log
-✓ Automatic indexes for performance
-✓ Default admin user pre-created
-
-⚠️  IMPORTANT FIRST TIME
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. After login, CHANGE ADMIN PASSWORD immediately!
-2. Update .env JWT_SECRET before production
-3. Update .env DB_PASSWORD for your PostgreSQL
-4. See DEPLOYMENT.md for production VPS setup
-
-📝 NEXT ACTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-□ Install PostgreSQL
-□ Run: npm run setup-db
-□ Start backend + frontend
-□ Test login (admin/admin123)
-□ Test guru registration & absensi submission
-□ Test admin features (user management, export)
-□ Read DEPLOYMENT.md for production
-
-📊 TECH STACK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Backend:  Node.js 18, Express.js, PostgreSQL, JWT, bcryptjs
-Frontend: React 18, Vite, React Router v6, Axios
-Styling:  Dark Cinematic CSS (responsive, no framework bloat)
-Deploy:   PM2, Nginx, Let's Encrypt (on VPS)
-
-📞 SUPPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Documentation Files:
-- README.md           → Main features & setup
-- PROJECT_STRUCTURE.md → Architecture details
-- POSTGRESQL_SETUP.md → Database installation
-- DEPLOYMENT.md       → Production deployment (VPS)
-
-═══════════════════════════════════════════════════════════════════════
-                    ✅ ALL FILES CREATED SUCCESSFULLY
-                         Ready for PostgreSQL setup
-═══════════════════════════════════════════════════════════════════════
-
-Location: /Users/anm/Desktop/absensi-lt-mtsn1
+PENTING: ganti ADMIN_PASSWORD sebelum prod, JWT_SECRET 32+ char, CLIENT_URL di prod

@@ -18,6 +18,7 @@ const adminRoutes = require('./routes/admin');
 const kelasRoutes = require('./routes/kelas');
 const shiftRoutes = require('./routes/shift');
 const jadwalRoutes = require('./routes/jadwal');
+const jenisLayananRoutes = require('./routes/jenis-layanan');
 const { runMigrations } = require('./migrations');
 
 const app = express();
@@ -102,6 +103,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/kelas', kelasRoutes);
 app.use('/api/shift', shiftRoutes);
 app.use('/api/jadwal', jadwalRoutes);
+app.use('/api/jenis-layanan', jenisLayananRoutes);
 
 // Serve frontend build (produksi) — single-origin deploy (Render/server host).
 const clientDist = path.join(__dirname, '../client/dist');

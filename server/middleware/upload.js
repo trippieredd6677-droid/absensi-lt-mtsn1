@@ -25,11 +25,16 @@ const storage = multer.diskStorage({
       .normalize('NFKD').replace(/[^\w\s-]/g, '')
       .trim().replace(/\s+/g, '-').toLowerCase()
       .slice(0, 30) || 'unknown';
+    const stamp = Date.now();
+    if (file.fieldname === 'photo') {
+      const profilName = slug(req._guruName || (req.user && req.user.username) || (req.user && String(req.user.id)) || 'user');
+      cb(null, `${profilName}_profil_${stamp}${ext}`);
+      return;
+    }
     const namaGuru = slug(req._guruName);
     const kelas = slug(req.body && req.body.kelas);
     const shift = slug(req.body && req.body.shift);
     const tanggal = slug(req.body && req.body.tanggal) || 'tanpa-tanggal';
-    const stamp = Date.now();
     cb(null, `${tanggal}-${shift}_${namaGuru}_kelas-${kelas}_${stamp}${ext}`);
   },
 });

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Plus, PencilSimple, Trash, Check, X, ListBullets, ClockClockwise, MagnifyingGlass, Funnel, Stack, Calendar } from '@phosphor-icons/react'
+import { PlusCircle, Check, X, ListBullets, ClockClockwise, MagnifyingGlass, Funnel, Stack, Calendar } from '@phosphor-icons/react'
+import { IconCalendar, IconCheck, IconCirclePlus, IconFilter, IconListDetails, IconPencil, IconSearch, IconStack2, IconTrash, IconX } from '@tabler/icons-react'
+import EmptyState from '../../components/EmptyState'
 import api from '../../api'
 import Layout from '../../components/Layout'
 import ConfirmModal from '../../components/ConfirmModal'
@@ -80,15 +82,19 @@ function AdminKelas({ user, onLogout }) {
 
       <div className="kelas-tabs">
         <button className={tab === 'kelas' ? 'kelas-tab active' : 'kelas-tab'} onClick={() => setTab('kelas')}>
-          <ListBullets weight="regular" /> Kelas
+          <IconListDetails size={16} stroke={1.8} /> Kelas
         </button>
         <button className={tab === 'shift' ? 'kelas-tab active' : 'kelas-tab'} onClick={() => setTab('shift')}>
-          <Calendar weight="regular" /> Jam LT
+          <IconCalendar size={16} stroke={1.8} /> Jam LT
+        </button>
+        <button className={tab === 'layanan' ? 'kelas-tab active' : 'kelas-tab'} onClick={() => setTab('layanan')}>
+          <IconStack2 size={16} stroke={1.8} /> Jenis Layanan
         </button>
       </div>
 
       {tab === 'kelas' && <KelasPanel user={user} onLogout={onLogout} />}
       {tab === 'shift' && <JamLTPanel user={user} onLogout={onLogout} />}
+      {tab === 'layanan' && <JenisLayananPanel user={user} onLogout={onLogout} />}
     </Layout>
   )
 }
@@ -262,7 +268,7 @@ function KelasPanel({ user, onLogout }) {
       <div className="kelas-toolbar">
         <div className="kelas-toolbar-left">
           <div className="kelas-search">
-            <MagnifyingGlass size={16} weight="regular" />
+            <IconSearch size={16} weight="regular" />
             <input
               type="text"
               placeholder="Cari kelas..."
@@ -271,7 +277,7 @@ function KelasPanel({ user, onLogout }) {
             />
           </div>
           <div className="kelas-filter">
-            <Funnel size={16} weight="regular" />
+            <IconFilter size={16} weight="regular" />
             <select value={filterProgram} onChange={(e) => setFilterProgram(e.target.value)}>
               <option value="ALL">Semua Program</option>
               {PROGRAM_LIST.map(p => (
@@ -283,7 +289,7 @@ function KelasPanel({ user, onLogout }) {
           </div>
         </div>
         <button className="btn btn-primary" onClick={() => setShowAddForm(v => !v)}>
-          <Plus weight="regular" /> Tambah Kelas
+          <IconCirclePlus size={16} stroke={1.8} /> Tambah Kelas
         </button>
       </div>
 
@@ -324,10 +330,10 @@ function KelasPanel({ user, onLogout }) {
             </label>
             <div className="kelas-add-actions">
               <button type="submit" className="btn btn-primary" disabled={c.busy}>
-                <Check weight="regular" /> Simpan
+                <IconCheck size={16} stroke={1.8} /> Simpan
               </button>
               <button type="button" className="btn btn-secondary" onClick={() => setShowAddForm(false)}>
-                <X weight="regular" /> Batal
+                <IconX size={16} stroke={1.8} /> Batal
               </button>
             </div>
           </div>
@@ -338,20 +344,17 @@ function KelasPanel({ user, onLogout }) {
       {c.loading ? (
         <div className="loading">Loading...</div>
       ) : grouped.length === 0 ? (
-        <div className="card empty-state">
-          <Stack size={40} weight="regular" />
-          <p>Tidak ada kelas yang cocok dengan filter.</p>
-        </div>
+        <EmptyState icon={Stack} title="Tidak ada kelas" description="Tidak ada kelas yang cocok dengan filter atau pencarian." />
       ) : (
         <div className="kelas-groups">
           {grouped.map(([tingkatLabel, items]) => (
-            <div className="kelas-group" key={tingkatLabel}>
+            <div className="card kelas-group" key={tingkatLabel}>
               <div className="kelas-group-header">
-                <Stack size={18} weight="regular" />
+                <IconStack2 size={18} weight="regular" />
                 <h3>{tingkatLabel}</h3>
                 <span className="kelas-group-count">{items.length} kelas</span>
               </div>
-              <div className="card kelas-group-card">
+              <div className="users-table-wrapper">
                 <table className="table">
                   <thead>
                     <tr>
@@ -386,21 +389,21 @@ function KelasPanel({ user, onLogout }) {
                         <td className="kelas-paralel">{k.parsed.paralel || '-'}</td>
                         <td className="th-actions">
                           {c.editId === k.id ? (
-                            <div className="kelas-actions">
+                            <div className="action-buttons">
                               <button className="btn btn-sm btn-primary" onClick={() => submitEdit(k.id)} disabled={c.busy} title="Simpan">
-                                <Check weight="regular" />
+                                <IconCheck size={16} stroke={1.8} />
                               </button>
                               <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal">
-                                <X weight="regular" />
+                                <IconX size={16} stroke={1.8} />
                               </button>
                             </div>
                           ) : (
-                            <div className="kelas-actions">
+                            <div className="action-buttons">
                               <button className="btn-action btn-edit" onClick={() => { c.setEditId(k.id); c.setEditNama(k.nama) }} title="Ubah">
-                                <PencilSimple weight="regular" />
+                                <IconPencil size={16} stroke={1.8} />
                               </button>
                               <button className="btn-action btn-delete" onClick={() => c.del(k)} disabled={c.busy} title="Hapus">
-                                <Trash weight="regular" />
+                                <IconTrash size={16} stroke={1.8} />
                               </button>
                             </div>
                           )}
@@ -515,6 +518,50 @@ function useJamLt(flash) {
   return { items, loading, busy, newJam, setNewJam, editId, editJam, setEditId, setEditJam, add, saveEdit, del, refresh: fetchAll, pendingDelete, setPendingDelete }
 }
 
+function JenisLayananPanel({ user, onLogout }) {
+  const [msg, setMsg] = useState(null)
+  const flash = (type, text) => { setMsg({ type, text }); setTimeout(() => setMsg(null), 3500) }
+  const c = useCrud('/jenis-layanan', 'jenis_layanan', flash)
+  return (
+    <div className="kelas-panel">
+      {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
+      <div className="jam-info">
+        <IconStack2 size={20} weight="regular" />
+        <div>
+          <p className="jam-info-title">Master Jenis Layanan</p>
+          <p className="jam-info-desc">Kelola daftar jenis layanan untuk profil & jadwal. Dipakai di dropdown Profil & Manajemen Guru.</p>
+        </div>
+      </div>
+      <div className="kelas-add">
+        <form onSubmit={c.add} className="kelas-add-form">
+          <input type="text" className="form-control" placeholder="contoh: Tahfidz / Hadits" value={c.newNama} onChange={(e) => c.setNewNama(e.target.value)} maxLength={120} required />
+          <button type="submit" className="btn btn-primary" disabled={c.busy}><IconCirclePlus size={16} stroke={1.8} /> Tambah</button>
+        </form>
+      </div>
+      <div className="card">
+        <div className="users-table-wrapper">
+          {c.loading ? <div className="loading">Loading...</div> : c.items.length === 0 ? <EmptyState icon={Stack} title="Belum ada jenis layanan" description="Tambah jenis layanan baru untuk dipakai di profil dan jadwal." /> : (
+            <table className="table">
+              <thead><tr><th>Nama Jenis Layanan</th><th className="th-actions">Aksi</th></tr></thead>
+              <tbody>{c.items.map((j) => (
+                <tr key={j.id}>
+                  <td>{c.editId === j.id ? <input type="text" className="form-control" value={c.editNama} onChange={(e) => c.setEditNama(e.target.value)} maxLength={120} autoFocus /> : <span className="kelas-name">{j.nama}</span>}</td>
+                  <td className="th-actions">{c.editId === j.id ? (
+                    <div className="action-buttons"><button className="btn btn-sm btn-primary" onClick={c.saveEdit} disabled={c.busy} title="Simpan"><IconCheck size={16} stroke={1.8} /></button><button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal"><IconX size={16} stroke={1.8} /></button></div>
+                  ) : (
+                    <div className="action-buttons"><button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditNama(j.nama) }} title="Ubah"><IconPencil size={16} stroke={1.8} /></button><button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><IconTrash size={16} stroke={1.8} /></button></div>
+                  )}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          )}
+        </div>
+      </div>
+      <ConfirmModal open={!!c.pendingDelete} title={c.pendingDelete?.title} message={c.pendingDelete?.message} confirmText={c.pendingDelete?.confirmText || 'Hapus'} danger={c.pendingDelete?.danger} onConfirm={() => c.pendingDelete?.onConfirm?.()} onClose={() => c.setPendingDelete(null)} />
+    </div>
+  )
+}
+
 function JamLTPanel({ user, onLogout }) {
   const [msg, setMsg] = useState(null)
   const flash = (type, text) => { setMsg({ type, text }); setTimeout(() => setMsg(null), 3500) }
@@ -529,7 +576,7 @@ function JamLTPanel({ user, onLogout }) {
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
 
       <div className="jam-info">
-        <Calendar size={20} weight="regular" />
+        <IconCalendar size={20} weight="regular" />
         <div>
           <p className="jam-info-title">Slot Jam Layanan Tambahan</p>
           <p className="jam-info-desc">
@@ -551,7 +598,7 @@ function JamLTPanel({ user, onLogout }) {
             required
           />
           <button type="submit" className="btn btn-primary" disabled={c.busy}>
-            <Plus weight="regular" /> Tambah
+            <IconCirclePlus size={16} stroke={1.8} /> Tambah
           </button>
         </form>
         {availableSuggestions.length > 0 && (
@@ -572,10 +619,11 @@ function JamLTPanel({ user, onLogout }) {
       </div>
 
       <div className="card">
+        <div className="users-table-wrapper">
         {c.loading ? (
           <div className="loading">Loading...</div>
         ) : c.items.length === 0 ? (
-          <div className="empty">Belum ada slot jam LT.</div>
+          <EmptyState icon={Calendar} title="Belum ada slot jam" description="Tambah slot jam LT untuk dipakai di jadwal mingguan." />
         ) : (
           <table className="table">
             <thead>
@@ -608,14 +656,14 @@ function JamLTPanel({ user, onLogout }) {
                   </td>
                   <td className="th-actions">
                     {c.editId === j.id ? (
-                      <div className="kelas-actions">
-                        <button className="btn btn-sm btn-primary" onClick={c.saveEdit} disabled={c.busy} title="Simpan"><Check weight="regular" /></button>
-                        <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal"><X weight="regular" /></button>
+                      <div className="action-buttons">
+                        <button className="btn btn-sm btn-primary" onClick={c.saveEdit} disabled={c.busy} title="Simpan"><IconCheck size={16} stroke={1.8} /></button>
+                        <button className="btn btn-sm btn-secondary" onClick={() => c.setEditId(null)} disabled={c.busy} title="Batal"><IconX size={16} stroke={1.8} /></button>
                       </div>
                     ) : (
-                      <div className="kelas-actions">
-                        <button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><PencilSimple weight="regular" /></button>
-                        <button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><Trash weight="regular" /></button>
+                      <div className="action-buttons">
+                        <button className="btn-action btn-edit" onClick={() => { c.setEditId(j.id); c.setEditJam(j.nama) }} title="Ubah"><IconPencil size={16} stroke={1.8} /></button>
+                        <button className="btn-action btn-delete" onClick={() => c.del(j)} disabled={c.busy} title="Hapus"><IconTrash size={16} stroke={1.8} /></button>
                       </div>
                     )}
                   </td>
@@ -624,6 +672,7 @@ function JamLTPanel({ user, onLogout }) {
             </tbody>
           </table>
         )}
+        </div>
       </div>
 
       <ConfirmModal

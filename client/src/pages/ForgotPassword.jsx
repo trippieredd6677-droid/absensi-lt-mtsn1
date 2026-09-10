@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { WarningCircle, ArrowsLeftRight, LockKey, EnvelopeSimple, Key, CheckCircle, ArrowLeft } from '@phosphor-icons/react'
+import { IconAlertCircle, IconArrowLeft, IconArrowsExchange, IconCircleCheck, IconKey, IconLink, IconLock, IconMail } from '@tabler/icons-react'
 import api from '../api'
 import './ForgotPassword.css'
 import './Login.css'
@@ -102,14 +103,15 @@ function ForgotPassword() {
   ]
 
   return (
-    <div className="login-container">
-      <div className="login-box forgot-box">
+    <div className="login-container" style={{ justifyContent: 'center' }}>
+      <div className="login-form-side" style={{ flex: '1 1 100%', maxWidth: '100%' }}>
+        <div className="login-box forgot-box">
         <Link to="/login" className="back-link">
-          <ArrowLeft weight="regular" /> Kembali ke Login
+          <IconArrowLeft size={16} stroke={1.8} /> Kembali ke Login
         </Link>
 
         <div className="login-header">
-          <div className="login-brand-icon"><Key weight="regular" /></div>
+          <div className="login-brand-icon"><IconKey size={16} stroke={1.8} /></div>
           <h1>Lupa Password</h1>
           <p>{step === 1 ? 'Masukkan email terdaftar kamu' : step === 2 ? 'Masukkan kode OTP' : 'Atur password baru'}</p>
         </div>
@@ -119,7 +121,7 @@ function ForgotPassword() {
           <div className="step-indicator">
             {steps.map((s) => (
               <div key={s.n} className={`step-item ${step === s.n ? 'active' : ''} ${step > s.n ? 'done' : ''}`}>
-                <span className="step-dot">{step > s.n ? <CheckCircle weight="regular" /> : s.n}</span>
+                <span className="step-dot">{step > s.n ? <IconCircleCheck size={16} stroke={1.8} /> : s.n}</span>
                 <span className="step-label">{s.label}</span>
               </div>
             ))}
@@ -128,13 +130,13 @@ function ForgotPassword() {
 
         {error && (
           <div className="alert alert-error" role="alert">
-            <WarningCircle weight="regular" />
+            <IconAlertCircle size={16} stroke={1.8} />
             <span>{error}</span>
           </div>
         )}
         {info && (
           <div className="alert alert-info" role="status">
-            <ArrowsLeftRight weight="regular" />
+            <IconArrowsExchange size={16} stroke={1.8} />
             <span>{info}</span>
           </div>
         )}
@@ -143,7 +145,7 @@ function ForgotPassword() {
           <form onSubmit={requestOtp} className="login-form">
             <div className="form-group">
               <label htmlFor="email">
-                <EnvelopeSimple weight="regular" /> Email
+                <IconMail size={16} stroke={1.8} /> Email
               </label>
               <input
                 id="email"
@@ -165,7 +167,7 @@ function ForgotPassword() {
           <form onSubmit={verifyOtp} className="login-form">
             <div className="form-group">
               <label htmlFor="otp">
-                <Key weight="regular" /> Kode OTP
+                <IconKey size={16} stroke={1.8} /> Kode OTP
               </label>
               <input
                 id="otp"
@@ -192,7 +194,7 @@ function ForgotPassword() {
         {step === 3 && (
           <form onSubmit={doReset} className="login-form">
             <div className="form-group">
-              <label htmlFor="password"><LockKey weight="regular" /> Password Baru</label>
+              <label htmlFor="password"><IconLock size={16} stroke={1.8} /> Password Baru</label>
               <input
                 id="password"
                 type="password"
@@ -204,7 +206,7 @@ function ForgotPassword() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="confirm"><LockKey weight="regular" /> Konfirmasi Password</label>
+              <label htmlFor="confirm"><IconLock size={16} stroke={1.8} /> Konfirmasi Password</label>
               <input
                 id="confirm"
                 type="password"
@@ -223,13 +225,14 @@ function ForgotPassword() {
 
         {step === 4 && (
           <div className="done-wrap">
-            <div className="done-icon"><CheckCircle weight="fill" /></div>
+            <div className="done-icon"><IconCircleCheck size={28} stroke={1.8} /></div>
             <p>Password berhasil diubah. Silakan masuk dengan password baru.</p>
             <button type="button" className="btn btn-primary btn-full" onClick={() => navigate('/login')}>
               Ke Halaman Login
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   )

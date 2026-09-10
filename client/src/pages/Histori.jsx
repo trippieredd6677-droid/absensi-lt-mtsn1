@@ -9,9 +9,12 @@ import {
   CaretLeft,
   CaretRight,
   Image,
+  CalendarBlank,
 } from '@phosphor-icons/react'
+import { IconChevronLeft, IconChevronRight, IconDownload, IconPhoto } from '@tabler/icons-react'
 import api from '../api'
 import Layout from '../components/Layout'
+import EmptyState from '../components/EmptyState'
 import { exportXlsx } from '../utils/export'
 import { NAMA_BULAN } from '../constants'
 
@@ -42,7 +45,7 @@ function Histori({ user, onLogout }) {
 
   const exportReportFile = () => {
     if (absensi.length === 0) return
-    const columns = ['Tanggal', 'Hari', 'Shift', 'Kelas', 'Status', 'Catatan']
+    const columns = ['Tanggal', 'Hari', 'Jam LT', 'Kelas', 'Status', 'Catatan']
     const rows = absensi.map(a => [
       new Date(a.tanggal).toLocaleDateString('id-ID'),
       a.hari,
@@ -94,7 +97,7 @@ function Histori({ user, onLogout }) {
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary btn-sm" onClick={exportReportFile} disabled={absensi.length === 0}>
-            <DownloadSimple weight="regular" /> Ekspor Laporan
+            <IconDownload size={16} stroke={1.8} /> Ekspor Laporan
           </button>
         </div>
       </div>
@@ -146,7 +149,7 @@ function Histori({ user, onLogout }) {
                   <tr>
                     <th>Tanggal</th>
                     <th>Hari</th>
-                    <th>Shift</th>
+                    <th>Jam LT</th>
                     <th>Kelas</th>
                     <th>Status</th>
                     <th className="hide-mobile">Catatan</th>
@@ -169,7 +172,7 @@ function Histori({ user, onLogout }) {
                       <td>
                         {abs.foto_kegiatan ? (
                           <a href={`/uploads/${abs.foto_kegiatan}`} target="_blank" rel="noopener noreferrer" className="photo-icon" title="Lihat foto">
-                            <Image weight="regular" />
+                            <IconPhoto size={16} stroke={1.8} />
                           </a>
                         ) : '-'}
                       </td>
@@ -185,7 +188,7 @@ function Histori({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={page === 1}
               >
-                <CaretLeft weight="regular" /> Sebelumnya
+                <IconChevronLeft size={16} stroke={1.8} /> Sebelumnya
               </button>
               <span className="page-info">Halaman {page}</span>
               <button
@@ -193,12 +196,17 @@ function Histori({ user, onLogout }) {
                 className="btn btn-secondary"
                 disabled={absensi.length < 20}
               >
-                Berikutnya <CaretRight weight="regular" />
+                Berikutnya <IconChevronRight size={16} stroke={1.8} />
               </button>
             </div>
           </>
         ) : (
-          <p style={{ color: 'var(--text-muted)', marginTop: '20px' }}>Tidak ada data absensi untuk periode ini</p>
+          <EmptyState
+            icon={CalendarBlank}
+            title="Belum ada absensi"
+            description={`Tidak ada data untuk ${NAMA_BULAN[bulan - 1]} ${tahun}. Isi absensi harian dulu, histori akan terisi otomatis.`}
+            action={<a href="/absensi" className="btn btn-primary btn-sm">Isi Absensi</a>}
+          />
         )}
       </div>
     </Layout>

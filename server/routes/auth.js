@@ -28,7 +28,7 @@ router.post('/register', [
   }
 
   try {
-    const { username, email, password, full_name, nip, kelas, jabatan, no_hp } = req.body;
+    const { username, email, password, full_name, nip, kelas, jenis_layanan, no_hp } = req.body;
 
     // Check if user exists
     const userExists = await pool.query(
@@ -45,10 +45,10 @@ router.post('/register', [
 
     // Insert user — status 'pending': butuh persetujuan admin sebelum bisa login
     const result = await pool.query(
-      `INSERT INTO users (username, email, password, full_name, nip, kelas, jabatan, no_hp, role, status)
+      `INSERT INTO users (username, email, password, full_name, nip, kelas, jenis_layanan, no_hp, role, status)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending')
        RETURNING id, username, email, full_name, role, status`,
-      [username, email, hashedPassword, full_name, nip, kelas, jabatan, no_hp, 'guru']
+      [username, email, hashedPassword, full_name, nip, kelas, jenis_layanan, no_hp, 'guru']
     );
 
     await auditLog('REGISTER_PENDING', 'users', result.rows[0].id, {}, result.rows[0], req);
@@ -202,7 +202,7 @@ router.post('/logout', async (req, res) => {
 router.get('/me', require('../middleware/auth').verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, email, full_name, nip, role, kelas, jabatan, no_hp, foto_profil, status, created_at FROM users WHERE id = $1',
+      'SELECT id, username, email, full_name, nip, role, kelas, jenis_layanan, no_hp, foto_profil, status, created_at, guru_map_kode FROM users WHERE id = $1',
       [req.user.id]
     );
 
@@ -217,11 +217,14 @@ router.get('/me', require('../middleware/auth').verifyToken, async (req, res) =>
   }
 });
 
-// Update current user profile (guru can edit own basic info + email)
+// Update current user profile (admin & guru — semua field bisa diedit)
 router.put('/me', require('../middleware/auth').verifyToken, [
+  body('username').optional().isLength({ min: 3 }).withMessage('Username minimal 3 karakter'),
   body('full_name').optional().notEmpty().withMessage('Full name cannot be empty'),
   body('email').optional().isEmail().withMessage('Email tidak valid'),
-  body('jabatan').optional(),
+  body('nip').optional(),
+  body('kelas').optional(),
+  body('jenis_layanan').optional(),
   body('no_hp').optional(),
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -230,14 +233,18 @@ router.put('/me', require('../middleware/auth').verifyToken, [
   }
 
   try {
-    const { full_name, email, jabatan, no_hp } = req.body;
+    let { username, full_name, email, nip, kelas, jenis_layanan, no_hp } = req.body;
+    if (Array.isArray(jenis_layanan)) jenis_layanan = jenis_layanan.join(', ');
 
     const existing = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
     if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     }
 
-    // Dupe-check email (kecuali diri sendiri)
+    if (username) {
+      const dupeU = await pool.query('SELECT id FROM users WHERE username = $1 AND id <> $2', [username, req.user.id]);
+      if (dupeU.rows.length > 0) return res.status(400).json({ message: 'Username sudah digunakan' });
+    }
     if (email) {
       const dupe = await pool.query(
         'SELECT id FROM users WHERE email = $1 AND id <> $2',
@@ -250,14 +257,17 @@ router.put('/me', require('../middleware/auth').verifyToken, [
 
     const result = await pool.query(
       `UPDATE users SET
-         full_name = COALESCE($1, full_name),
-         email = COALESCE($2, email),
-         jabatan = COALESCE($3, jabatan),
-         no_hp = COALESCE($4, no_hp),
+         username = COALESCE($1, username),
+         full_name = COALESCE($2, full_name),
+         email = COALESCE($3, email),
+         nip = COALESCE($4, nip),
+         kelas = COALESCE($5, kelas),
+         jenis_layanan = COALESCE($6, jenis_layanan),
+         no_hp = COALESCE($7, no_hp),
          updated_at = CURRENT_TIMESTAMP
-       WHERE id = $5
-       RETURNING id, username, email, full_name, nip, role, kelas, jabatan, no_hp, foto_profil, status`,
-      [full_name || null, (email ? String(email).toLowerCase().trim() : null), jabatan || null, no_hp || null, req.user.id]
+       WHERE id = $8
+       RETURNING id, username, email, full_name, nip, role, kelas, jenis_layanan, no_hp, foto_profil, status, guru_map_kode`,
+      [username || null, full_name || null, (email ? String(email).toLowerCase().trim() : null), nip || null, kelas || null, jenis_layanan || null, no_hp || null, req.user.id]
     );
 
     await auditLog('UPDATE', 'users', req.user.id, existing.rows[0], result.rows[0], req);
@@ -502,8 +512,16 @@ router.post('/reset-password', [
   }
 });
 
+const attachGuruName = async (req, _res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT full_name, username FROM users WHERE id = $1', [req.user?.id]);
+    req._guruName = rows[0]?.full_name || rows[0]?.username || req.user?.username;
+  } catch (e) {}
+  next();
+};
+
 // Upload / ganti foto profil sendiri (guru & admin)
-router.put('/me/photo', require('../middleware/auth').verifyToken, upload.single('photo'), async (req, res) => {
+router.put('/me/photo', require('../middleware/auth').verifyToken, attachGuruName, upload.single('photo'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'File tidak ditemukan. Pilih foto untuk diunggah.' });
@@ -511,7 +529,7 @@ router.put('/me/photo', require('../middleware/auth').verifyToken, upload.single
     const fotoProfil = req.file.filename;
 
     const result = await pool.query(
-      'UPDATE users SET foto_profil = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, username, email, full_name, nip, role, kelas, jabatan, no_hp, foto_profil',
+      'UPDATE users SET foto_profil = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, username, email, full_name, nip, role, kelas, jenis_layanan, no_hp, foto_profil, guru_map_kode',
       [fotoProfil, req.user.id]
     );
 

@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Cropper from 'react-easy-crop'
 import { UserCircle, UploadSimple, ShieldCheck, Key, X, Check, ArrowsOutLineVertical } from '@phosphor-icons/react'
+import { IconArrowsVertical, IconKey, IconShieldCheck, IconUpload, IconUserCircle } from '@tabler/icons-react'
 import api from '../api'
 import Layout from '../components/Layout'
+import ConfirmModal from '../components/ConfirmModal'
 import './Profil.css'
 
 // Potong gambar di canvas lalu balik sebagai Blob
@@ -26,23 +28,48 @@ function getCroppedImg(imageSrc, pixelCrop) {
 }
 
 function Profil({ user, onLogout, onUpdateUser }) {
-  const [profil, setProfil] = useState(user)
+  const [profil, setProfil] = useState(null)
+  const [originalProfil, setOriginalProfil] = useState(null)
+  const [profilLoading, setProfilLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
   const [showChangePassword, setShowChangePassword] = useState(false)
+  const [showConfirmSave, setShowConfirmSave] = useState(false)
   const [passwordForm, setPasswordForm] = useState({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   })
-  // Crop foto profil
   const [showCrop, setShowCrop] = useState(false)
   const [cropSrc, setCropSrc] = useState('')
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const [jenisList, setJenisList] = useState([])
+  const [jenisOpen, setJenisOpen] = useState(false)
+  const jenisRef = useRef(null)
+
+  useEffect(() => {
+    if (!jenisOpen) return
+    const onDown = (e) => { if (jenisRef.current && !jenisRef.current.contains(e.target)) setJenisOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [jenisOpen])
+
+  const isDirty = useMemo(() => {
+    if (!profil || !originalProfil) return false
+    return ['username', 'full_name', 'email', 'nip', 'jenis_layanan', 'no_hp'].some((k) => String(profil[k] || '') !== String(originalProfil[k] || ''))
+  }, [profil, originalProfil])
+
+  useEffect(() => {
+    api.get('/jenis-layanan').then((r) => {
+      const list = (r.data?.jenis_layanan || []).map((j) => j.nama).filter(Boolean).sort()
+      if (list.length) setJenisList(list)
+      else return api.get('/jadwal/guru-map').then((rr) => setJenisList([...new Set((rr.data || []).map((g) => g.jenis_layanan).filter(Boolean))].sort()))
+    }).catch(() => api.get('/jadwal/guru-map').then((rr) => setJenisList([...new Set((rr.data || []).map((g) => g.jenis_layanan).filter(Boolean))].sort())).catch(() => {}))
+  }, [])
 
   useEffect(() => {
     fetchProfil()
@@ -52,8 +79,14 @@ function Profil({ user, onLogout, onUpdateUser }) {
     try {
       const response = await api.get('/auth/me')
       setProfil(response.data.user)
+      setOriginalProfil(response.data.user)
+      if (onUpdateUser) onUpdateUser(response.data.user)
     } catch (err) {
       console.error('Error fetching profile:', err)
+      setProfil(user)
+      setOriginalProfil(user)
+    } finally {
+      setProfilLoading(false)
     }
   }
 
@@ -116,19 +149,27 @@ function Profil({ user, onLogout, onUpdateUser }) {
     setCropSrc('')
   }
 
-  const handleSubmit = async (e) => {
+  const handleRequestSave = (e) => {
     e.preventDefault()
+    if (!isDirty || loading) return
+    setShowConfirmSave(true)
+  }
+
+  const handleConfirmSave = async () => {
+    setShowConfirmSave(false)
     setLoading(true)
     setMessage('')
-
     try {
       const res = await api.put('/auth/me', {
+        username: profil.username,
         full_name: profil.full_name,
         email: profil.email,
-        jabatan: profil.jabatan,
+        nip: profil.nip,
+        jenis_layanan: profil.jenis_layanan,
         no_hp: profil.no_hp,
       })
       setProfil(res.data.user)
+      setOriginalProfil(res.data.user)
       if (onUpdateUser) onUpdateUser(res.data.user)
       setMessageType('success')
       setMessage('Profil berhasil diperbarui')
@@ -185,13 +226,29 @@ function Profil({ user, onLogout, onUpdateUser }) {
     }
   }
 
+  if (profilLoading) {
+    return (
+      <Layout user={user} onLogout={onLogout} role={user?.role} active="profil">
+        <div className="loading">Memuat profil...</div>
+      </Layout>
+    )
+  }
+
+  if (!profil) {
+    return (
+      <Layout user={user} onLogout={onLogout} role={user?.role} active="profil">
+        <div className="loading">Gagal memuat profil.</div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout user={user} onLogout={onLogout} role={user?.role} active="profil">
       <div className="page-header">
         <h1>Profil Saya</h1>
       </div>
 
-      <div className="card profil-card">
+      <div className="card profil-card" style={{ overflow: 'visible', position: 'relative', zIndex: jenisOpen ? 10 : 1 }}>
         {message && (
           <div className={`alert alert-${messageType}`}>
             {message}
@@ -202,11 +259,11 @@ function Profil({ user, onLogout, onUpdateUser }) {
           <div className="profile-photo-preview">
             {profil.foto_profil
               ? <img src={`/uploads/${profil.foto_profil}`} alt="Foto profil" />
-              : <div className="profile-photo-placeholder"><UserCircle weight="regular" /></div>}
+              : <div className="profile-photo-placeholder"><IconUserCircle size={16} stroke={1.8} /></div>}
           </div>
           <div className="profile-photo-actions">
             <label className="btn btn-secondary">
-              <UploadSimple weight="regular" /> Unggah Foto Profil
+              <IconUpload size={16} stroke={1.8} /> Unggah Foto Profil
               <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden onChange={handlePhotoChange} />
             </label>
             <span className="upload-note">JPG, PNG, GIF, WebP · Maks 5MB</span>
@@ -214,14 +271,16 @@ function Profil({ user, onLogout, onUpdateUser }) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRequestSave}>
           <div className="form-row">
             <div className="form-group">
               <label>Username</label>
               <input
                 type="text"
+                name="username"
                 value={profil.username || ''}
-                disabled
+                onChange={handleChange}
+                placeholder="Masukkan username"
               />
             </div>
 
@@ -253,22 +312,40 @@ function Profil({ user, onLogout, onUpdateUser }) {
               <label>NIP</label>
               <input
                 type="text"
+                name="nip"
                 value={profil.nip || ''}
-                disabled
+                onChange={handleChange}
+                placeholder="Masukkan NIP"
               />
             </div>
           </div>
 
           <div className="form-row">
-            <div className="form-group">
-              <label>Jabatan</label>
-              <input
-                type="text"
-                name="jabatan"
-                value={profil.jabatan || ''}
-                onChange={handleChange}
-                placeholder="Masukkan jabatan"
-              />
+            <div className="form-group" style={{ overflow: 'visible' }}>
+              <label>Jenis Layanan</label>
+              <div ref={jenisRef} style={{ position: 'relative', zIndex: jenisOpen ? 20 : 1 }}>
+                <button type="button" onClick={() => setJenisOpen((o) => !o)} style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', background: 'var(--surface)', border: '1px solid var(--border-strong)', borderRadius: 'var(--radius)', color: String(profil.jenis_layanan || '').trim() ? 'var(--text)' : 'var(--text-faint)', fontSize: '14px', cursor: 'pointer' }}>
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{String(profil.jenis_layanan || '').trim() ? String(profil.jenis_layanan).split(',').map((s) => s.trim()).filter(Boolean).join(', ') : 'Pilih Jenis Layanan'}</span>
+                  <span style={{ marginLeft: '8px', fontSize: '12px', color: 'var(--text-faint)' }}>▾</span>
+                </button>
+                {jenisOpen && (
+                  <div style={{ position: 'absolute', top: '44px', left: 0, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', boxShadow: 'var(--shadow-md)', zIndex: 20, maxHeight: '180px', overflowY: 'auto', padding: '4px' }}>
+                    {jenisList.length === 0 ? <span style={{ color: 'var(--text-faint)', fontSize: '13px', padding: '8px' }}>Memuat...</span> : jenisList.map((jl) => {
+                      const sel = String(profil.jenis_layanan || '').split(',').map((s) => s.trim()).filter(Boolean)
+                      const checked = sel.includes(jl)
+                      return (
+                        <div key={jl} onClick={() => {
+                          const cur = String(profil.jenis_layanan || '').split(',').map((s) => s.trim()).filter(Boolean)
+                          const next = cur.includes(jl) ? cur.filter((x) => x !== jl) : [...cur, jl]
+                          setProfil({ ...profil, jenis_layanan: next.join(', ') })
+                        }} style={{ padding: '9px 12px', borderRadius: '6px', cursor: 'pointer', background: checked ? 'var(--accent-dim)' : 'transparent', color: checked ? 'var(--accent)' : 'var(--text)', fontSize: '13px', fontWeight: checked ? 600 : 400 }}>
+                          {jl}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="form-group">
@@ -284,8 +361,8 @@ function Profil({ user, onLogout, onUpdateUser }) {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+            <button type="submit" className="btn btn-primary" disabled={loading || !isDirty}>
+              {loading ? 'Menyimpan...' : 'Simpan'}
             </button>
             <a href="/" className="btn btn-secondary">
               Kembali
@@ -303,7 +380,7 @@ function Profil({ user, onLogout, onUpdateUser }) {
           )}
 
           <div className="section-header">
-            <div className="section-icon"><Key weight="regular" /></div>
+            <div className="section-icon"><IconKey size={16} stroke={1.8} /></div>
             <div className="section-text">
               <h2>Ganti Password</h2>
               <p>Buat password baru yang kuat dan unik</p>
@@ -374,27 +451,37 @@ function Profil({ user, onLogout, onUpdateUser }) {
       {!showChangePassword && (
         <div className="card profil-card">
           <div className="section-header">
-            <div className="section-icon"><ShieldCheck weight="regular" /></div>
+            <div className="section-icon"><IconShieldCheck size={16} stroke={1.8} /></div>
             <div className="section-text">
               <h2>Keamanan</h2>
               <p>Kelola pengaturan keamanan akun Anda</p>
             </div>
             <button
               type="button"
-              className="btn btn-outline"
+              className="btn btn-primary"
               onClick={() => setShowChangePassword(true)}
             >
-              Ganti Password
+              <IconKey size={16} stroke={1.8} /> Ganti Password
             </button>
           </div>
         </div>
       )}
 
+      <ConfirmModal
+        open={showConfirmSave}
+        title="Simpan perubahan?"
+        message="Yakin ingin menyimpan perubahan profil? Data akan diperbarui."
+        confirmText="Simpan"
+        cancelText="Batal"
+        onConfirm={handleConfirmSave}
+        onClose={() => setShowConfirmSave(false)}
+      />
+
       {showCrop && (
         <div className="modal-overlay crop-overlay" onClick={handleCropCancel}>
           <div className="modal-content crop-modal" onClick={(e) => e.stopPropagation()}>
             <div className="crop-header">
-              <h2><ArrowsOutLineVertical weight="regular" /> Sesuaikan Foto</h2>
+              <h2><IconArrowsVertical size={16} stroke={1.8} /> Sesuaikan Foto</h2>
               <p>Geser atau zoom untuk memilih bagian foto yang jadi profil</p>
             </div>
             <div className="crop-area">

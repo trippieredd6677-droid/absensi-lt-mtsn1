@@ -19,14 +19,14 @@ const pool = new Pool({
 });
 
 const GURU_DEMO = [
-  { username: 'guru.budi', full_name: 'Budi Santoso, S.Pd', nip: '198501012010011001', kelas: '7A', jabatan: 'Guru Mapel Matematika', no_hp: '0812340001' },
-  { username: 'guru.siti', full_name: 'Siti Aminah, S.Pd.I', nip: '198702022010012002', kelas: '7B', jabatan: 'Guru Mapel Agama', no_hp: '0812340002' },
-  { username: 'guru.agus', full_name: 'Agus Priyanto, S.Pd', nip: '199003032011011003', kelas: '8A', jabatan: 'Guru Mapel IPA', no_hp: '0812340003' },
-  { username: 'guru.rina', full_name: 'Rina Marlina, M.Pd', nip: '199204042012012004', kelas: '8B', jabatan: 'Guru Mapel Bahasa', no_hp: '0812340004' },
-  { username: 'guru.joko', full_name: 'Joko Widodo, S.Pd', nip: '198806052008011005', kelas: '9A', jabatan: 'Guru Mapel IPS', no_hp: '0812340005' },
-  { username: 'guru.dewi', full_name: 'Dewi Anggraini, S.Pd', nip: '199105062009012006', kelas: '9B', jabatan: 'Guru Mapel Seni', no_hp: '0812340006' },
-  { username: 'guru.eko', full_name: 'Eko Prasetyo, S.Pd', nip: '198507072007011007', kelas: '7C', jabatan: 'Guru BK', no_hp: '0812340007' },
-  { username: 'guru.nur', full_name: 'Nur Hidayah, M.Pd', nip: '199308082013012008', kelas: '8C', jabatan: 'Guru Mapel PJOK', no_hp: '0812340008' },
+  { username: 'guru.budi', full_name: 'Budi Santoso, S.Pd', nip: '198501012010011001', kelas: '7A', jenis_layanan: 'Guru Mapel Matematika', no_hp: '0812340001' },
+  { username: 'guru.siti', full_name: 'Siti Aminah, S.Pd.I', nip: '198702022010012002', kelas: '7B', jenis_layanan: 'Guru Mapel Agama', no_hp: '0812340002' },
+  { username: 'guru.agus', full_name: 'Agus Priyanto, S.Pd', nip: '199003032011011003', kelas: '8A', jenis_layanan: 'Guru Mapel IPA', no_hp: '0812340003' },
+  { username: 'guru.rina', full_name: 'Rina Marlina, M.Pd', nip: '199204042012012004', kelas: '8B', jenis_layanan: 'Guru Mapel Bahasa', no_hp: '0812340004' },
+  { username: 'guru.joko', full_name: 'Joko Widodo, S.Pd', nip: '198806052008011005', kelas: '9A', jenis_layanan: 'Guru Mapel IPS', no_hp: '0812340005' },
+  { username: 'guru.dewi', full_name: 'Dewi Anggraini, S.Pd', nip: '199105062009012006', kelas: '9B', jenis_layanan: 'Guru Mapel Seni', no_hp: '0812340006' },
+  { username: 'guru.eko', full_name: 'Eko Prasetyo, S.Pd', nip: '198507072007011007', kelas: '7C', jenis_layanan: 'Guru BK', no_hp: '0812340007' },
+  { username: 'guru.nur', full_name: 'Nur Hidayah, M.Pd', nip: '199308082013012008', kelas: '8C', jenis_layanan: 'Guru Mapel PJOK', no_hp: '0812340008' },
 ];
 
 const STATUSES = ['hadir', 'hadir', 'hadir', 'hadir', 'hadir', 'hadir', 'hadir', 'sakit', 'izin', 'alpa'];
@@ -57,9 +57,9 @@ async function seed() {
 
     for (const g of GURU_DEMO) {
       const r = await client.query(
-        `INSERT INTO users (username, email, password, full_name, nip, role, kelas, jabatan, no_hp, status)
+        `INSERT INTO users (username, email, password, full_name, nip, role, kelas, jenis_layanan, no_hp, status)
          VALUES ($1,$2,$3,$4,$5,'guru',$6,$7,$8,'active') RETURNING id`,
-        [g.username, g.username + '@mtsn1kebumen.id', hashed, g.full_name, g.nip, g.kelas, g.jabatan, g.no_hp]
+        [g.username, g.username + '@mtsn1kebumen.id', hashed, g.full_name, g.nip, g.kelas, g.jenis_layanan, g.no_hp]
       );
       userIds.push(r.rows[0].id);
     }

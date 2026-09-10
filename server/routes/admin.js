@@ -20,7 +20,8 @@ router.post('/users', verifyToken, isAdmin, [
   }
 
   try {
-    const { username, email, password, full_name, nip, kelas, jabatan, no_hp, role } = req.body;
+    let { username, email, password, full_name, nip, kelas, jenis_layanan, no_hp, role } = req.body;
+    if (Array.isArray(jenis_layanan)) jenis_layanan = jenis_layanan.join(', ');
 
     const dupe = await pool.query(
       'SELECT id FROM users WHERE username = $1 OR email = $2',
@@ -33,10 +34,10 @@ router.post('/users', verifyToken, isAdmin, [
     const hashedPassword = await bcrypt.hash(password, 10);
     const targetRole = role === 'admin' ? 'admin' : 'guru';
     const result = await pool.query(
-      `INSERT INTO users (username, email, password, full_name, nip, kelas, jabatan, no_hp, role, status)
+      `INSERT INTO users (username, email, password, full_name, nip, kelas, jenis_layanan, no_hp, role, status)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'active')
        RETURNING id, username, email, full_name, nip, role, status`,
-      [username, email, hashedPassword, full_name, nip || null, kelas || null, jabatan || null, no_hp || null, targetRole]
+      [username, email, hashedPassword, full_name, nip || null, kelas || null, jenis_layanan || null, no_hp || null, targetRole]
     );
 
     await auditLog('CREATE', 'users', result.rows[0].id, {}, result.rows[0], req);
@@ -77,23 +78,23 @@ router.get('/users', verifyToken, isAdmin, async (req, res) => {
     const { role, status, q, page = 1, limit = 50 } = req.query;
     const offset = (page - 1) * limit;
 
-    let query = 'SELECT id, username, email, full_name, nip, role, kelas, jabatan, no_hp, status, created_at, guru_map_kode FROM users WHERE 1=1';
+    let query = 'SELECT u.id, u.username, u.email, u.full_name, u.nip, u.role, u.kelas, COALESCE(g.jenis_layanan, u.jenis_layanan) as jenis_layanan, u.no_hp, u.status, u.created_at, u.guru_map_kode FROM users u LEFT JOIN guru_map g ON g.kode = u.guru_map_kode WHERE 1=1';
     const params = [];
 
     if (role) {
-      query += ' AND role = $' + (params.length + 1);
+      query += ' AND u.role = $' + (params.length + 1);
       params.push(role);
     }
     if (status) {
-      query += ' AND status = $' + (params.length + 1);
+      query += ' AND u.status = $' + (params.length + 1);
       params.push(status);
     }
     if (q) {
-      query += ` AND (username ILIKE $${params.length + 1} OR email ILIKE $${params.length + 1} OR full_name ILIKE $${params.length + 1})`;
+      query += ` AND (u.username ILIKE $${params.length + 1} OR u.email ILIKE $${params.length + 1} OR u.full_name ILIKE $${params.length + 1})`;
       params.push('%' + q + '%');
     }
 
-    query += ' ORDER BY created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
+    query += ' ORDER BY u.created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
     params.push(limit, offset);
 
     const result = await pool.query(query, params);
@@ -131,7 +132,7 @@ router.get('/users/:id', verifyToken, isAdmin, async (req, res) => {
     const { id } = req.params;
 
     const result = await pool.query(
-      'SELECT id, username, email, full_name, nip, role, kelas, jabatan, no_hp, status, created_at FROM users WHERE id = $1',
+      'SELECT id, username, email, full_name, nip, role, kelas, jenis_layanan, no_hp, status, created_at FROM users WHERE id = $1',
       [id]
     );
 
@@ -152,7 +153,7 @@ router.put('/users/:id', verifyToken, isAdmin, [
   body('username').isLength({ min: 3 }).withMessage('Username minimal 3 karakter'),
   body('email').isEmail().withMessage('Email tidak valid'),
   body('kelas').optional(),
-  body('jabatan').optional(),
+  body('jenis_layanan').optional(),
   body('no_hp').optional(),
   body('role').optional().isIn(['guru', 'admin']).withMessage('Role tidak valid'),
 ], async (req, res) => {
@@ -162,8 +163,9 @@ router.put('/users/:id', verifyToken, isAdmin, [
   }
 
   try {
-    const { id } = req.params;
-    const { username, email, full_name, kelas, jabatan, no_hp, role, status } = req.body;
+    let { id } = req.params;
+    let { username, email, full_name, kelas, jenis_layanan, no_hp, role, status } = req.body;
+    if (Array.isArray(jenis_layanan)) jenis_layanan = jenis_layanan.join(', ');
 
     const existing = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
 
@@ -187,10 +189,10 @@ router.put('/users/:id', verifyToken, isAdmin, [
 
     const targetRole = role || existing.rows[0].role;
     const result = await pool.query(
-      `UPDATE users SET username = $1, email = $2, full_name = $3, kelas = $4, jabatan = $5, no_hp = $6, status = $7, role = $8, updated_at = CURRENT_TIMESTAMP
+      `UPDATE users SET username = $1, email = $2, full_name = $3, kelas = $4, jenis_layanan = $5, no_hp = $6, status = $7, role = $8, updated_at = CURRENT_TIMESTAMP
        WHERE id = $9
-       RETURNING id, username, email, full_name, nip, role, kelas, jabatan, no_hp, status, foto_profil`,
-      [username, email, full_name, kelas || null, jabatan || null, no_hp || null, status || 'active', targetRole, id]
+       RETURNING id, username, email, full_name, nip, role, kelas, jenis_layanan, no_hp, status, foto_profil`,
+      [username, email, full_name, kelas || null, jenis_layanan || null, no_hp || null, status || 'active', targetRole, id]
     );
 
     await auditLog('UPDATE', 'users', id, existing.rows[0], result.rows[0], req);
@@ -292,39 +294,17 @@ router.get('/stats/summary', verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// Get audit logs (admin only)
-router.get('/audit-logs', verifyToken, isAdmin, async (req, res) => {
+router.get('/audit-actions', verifyToken, isAdmin, async (req, res) => {
   try {
-    const { page = 1, limit = 50 } = req.query;
-    const offset = (page - 1) * limit;
-
-    const result = await pool.query(
-      `SELECT a.*, u.username FROM audit_log a
-       LEFT JOIN users u ON a.user_id = u.id
-       ORDER BY a.created_at DESC
-       LIMIT $1 OFFSET $2`,
-      [limit, offset]
-    );
-
-    const countResult = await pool.query('SELECT COUNT(*) FROM audit_log');
-    const total = parseInt(countResult.rows[0].count);
-
-    res.json({
-      logs: result.rows,
-      pagination: {
-        total,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        pages: Math.ceil(total / limit),
-      },
-    });
+    const { rows } = await pool.query('SELECT DISTINCT action FROM audit_log ORDER BY action');
+    res.json(rows.map((r) => r.action));
   } catch (err) {
-    console.error('Get audit logs error:', err);
+    console.error('Get audit actions error:', err);
     res.status(500).json({ message: 'Kesalahan server' });
   }
 });
 
-// Link / unlink user to guru_map by code (admin only) — perbaiki orphan account
+// Link / unlink user to guru_map by code (admin only) — perbaiki akun unmapped
 router.post('/users/:id/link-guru-map', verifyToken, isAdmin, [
   body('guru_map_kode').optional({ nullable: true }).isString(),
 ], async (req, res) => {
@@ -344,7 +324,7 @@ router.post('/users/:id/link-guru-map', verifyToken, isAdmin, [
     }
 
     const result = await pool.query(
-      'UPDATE users SET guru_map_kode = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, username, guru_map_kode',
+      'UPDATE users SET guru_map_kode = $1, jenis_layanan = COALESCE((SELECT jenis_layanan FROM guru_map WHERE kode = $1), jenis_layanan), updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, username, guru_map_kode, jenis_layanan',
       [code, id]
     );
     await auditLog('LINK_GURU_MAP', 'users', id, existing.rows[0], result.rows[0], req);
@@ -355,7 +335,18 @@ router.post('/users/:id/link-guru-map', verifyToken, isAdmin, [
   }
 });
 
-// List orphan guru users (belum ter-link guru_map) — admin only
+// List unmapped guru users (belum ter-link guru_map) — admin only
+router.get('/users-unmapped', verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, username, full_name, email, role, status FROM users WHERE role = 'guru' AND guru_map_kode IS NULL ORDER BY id"
+    );
+    res.json({ users: rows });
+  } catch (err) {
+    console.error('Get unmapped error:', err);
+    res.status(500).json({ message: 'Kesalahan server' });
+  }
+});
 router.get('/users-orphan', verifyToken, isAdmin, async (req, res) => {
   try {
     const { rows } = await pool.query(
@@ -535,18 +526,21 @@ router.put('/settings', verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// Get audit logs (admin only) — filter by action / user_id / date range
+// Get audit logs (admin only) — filter by action / username / user_id / date range
 router.get('/audit-logs', verifyToken, isAdmin, async (req, res) => {
   try {
-    const { page = 1, limit = 50, action, user_id, from, to } = req.query;
+    const { page = 1, limit = 50, action, username, user_id, date_from, date_to, from, to } = req.query;
     const offset = (page - 1) * limit;
 
     let where = 'WHERE 1=1';
     const params = [];
     if (action) { params.push(action); where += ` AND a.action = $${params.length}`; }
+    if (username) { params.push(`%${username}%`); where += ` AND (u.username ILIKE $${params.length} OR a.new_data->>'username' ILIKE $${params.length} OR a.old_data->>'username' ILIKE $${params.length})`; }
     if (user_id) { params.push(user_id); where += ` AND a.user_id = $${params.length}`; }
-    if (from) { params.push(from); where += ` AND a.created_at >= $${params.length}`; }
-    if (to) { params.push(to); where += ` AND a.created_at <= $${params.length}`; }
+    const fromDate = date_from || from;
+    const toDate = date_to || to;
+    if (fromDate) { params.push(fromDate); where += ` AND a.created_at >= $${params.length}`; }
+    if (toDate) { params.push(toDate); where += ` AND a.created_at <= $${params.length}::date + INTERVAL '1 day' - INTERVAL '1 second'`; }
 
     const result = await pool.query(
       `SELECT a.*, u.username FROM audit_log a
@@ -557,7 +551,7 @@ router.get('/audit-logs', verifyToken, isAdmin, async (req, res) => {
       [...params, limit, offset]
     );
 
-    const countResult = await pool.query(`SELECT COUNT(*) FROM audit_log a ${where}`, params);
+    const countResult = await pool.query(`SELECT COUNT(*) FROM audit_log a LEFT JOIN users u ON a.user_id = u.id ${where}`, params);
     const total = parseInt(countResult.rows[0].count);
 
     res.json({

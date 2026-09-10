@@ -38,7 +38,24 @@ async function runMigrations() {
     console.log('✓ Seed kelas default: ' + names.length);
   }
 
-  console.log('✓ Migrations ready (password_resets, kelas)');
+  // Tabel jenis_layanan (master, dikelola di Kelola Kelas > Jenis Layanan)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS jenis_layanan (
+      id SERIAL PRIMARY KEY,
+      nama VARCHAR(120) NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  const { rows: jl } = await pool.query('SELECT COUNT(*)::int AS c FROM jenis_layanan');
+  if (jl[0].c === 0) {
+    const { rows: distinct } = await pool.query('SELECT DISTINCT jenis_layanan FROM guru_map WHERE jenis_layanan IS NOT NULL AND jenis_layanan <> \'\'');
+    for (const r of distinct) {
+      await pool.query('INSERT INTO jenis_layanan (nama) VALUES ($1) ON CONFLICT (nama) DO NOTHING', [r.jenis_layanan]);
+    }
+    if (distinct.length) console.log('✓ Seed jenis_layanan dari guru_map: ' + distinct.length);
+  }
+
+  console.log('✓ Migrations ready (password_resets, kelas, jenis_layanan)');
 
   // Tabel shift (dinamis, dikelola admin)
   await pool.query(`
@@ -55,6 +72,15 @@ async function runMigrations() {
     console.log('✓ Seed shift default: siang, malam');
   }
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS jam_lt (
+      id SERIAL PRIMARY KEY,
+      nama VARCHAR(20) NOT NULL UNIQUE,
+      urutan INTEGER,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // ===== Tabel inti (users, absensi, audit_log) =====
   // Dibuat di sini juga (idempotent) supaya bisa jalan ke DATABASE_URL/hosted
   // tanpa harus pakai setup-db.js yang butuh DB_* + CREATE DATABASE.
@@ -68,7 +94,7 @@ async function runMigrations() {
       nip VARCHAR(20),
       role VARCHAR(20) NOT NULL DEFAULT 'guru',
       kelas VARCHAR(10),
-      jabatan VARCHAR(50),
+      jenis_layanan VARCHAR(50),
       no_hp VARCHAR(15),
       foto_profil VARCHAR(255),
       status VARCHAR(20) DEFAULT 'active',

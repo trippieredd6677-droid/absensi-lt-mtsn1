@@ -55,8 +55,11 @@ function App() {
   }
 
   const handleUserUpdate = (updatedUser) => {
-    localStorage.setItem('user', JSON.stringify(updatedUser))
-    setUser(updatedUser)
+    setUser((prev) => {
+      const merged = { ...(prev || {}), ...updatedUser }
+      localStorage.setItem('user', JSON.stringify(merged))
+      return merged
+    })
   }
 
   if (loading) {

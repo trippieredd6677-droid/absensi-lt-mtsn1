@@ -92,8 +92,8 @@ const deleteJam = async (req, res) => {
   }
 };
 
-// Endpoint admin: Jam LT — list & create (POST)
-router.get('/jam-lt', verifyToken, isAdmin, listJam);
+// Jam LT — list tersedia untuk semua user login (guru butuh untuk absensi)
+router.get('/jam-lt', verifyToken, isGuruOrAdmin, listJam);
 router.post('/jam-lt', verifyToken, isAdmin, createJam);
 router.put('/jam-lt/:id', verifyToken, isAdmin, updateJam);
 router.delete('/jam-lt/:id', verifyToken, isAdmin, deleteJam);

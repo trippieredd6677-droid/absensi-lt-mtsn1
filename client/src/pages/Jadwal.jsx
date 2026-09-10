@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import { CalendarBlank, MagnifyingGlass, TreeStructure, PencilSimple, Trash, Plus, UploadSimple, X, DownloadSimple } from '@phosphor-icons/react'
+import { CalendarBlank, MagnifyingGlass, TreeStructure, PlusCircle, UploadSimple, X, DownloadSimple, Users } from '@phosphor-icons/react'
+import { IconCalendar, IconCirclePlus, IconDownload, IconHierarchy2, IconPencil, IconSearch, IconTrash, IconX } from '@tabler/icons-react'
 import api from '../api'
 import Layout from '../components/Layout'
 import ConfirmModal from '../components/ConfirmModal'
+import EmptyState from '../components/EmptyState'
 import './Jadwal.css'
 
 const HARI_ORDER = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
@@ -217,21 +219,33 @@ function Jadwal({ user, onLogout, role }) {
     setHasUnsavedChanges(true)
   }
 
+  const handleRequestSimpan = () => {
+    if (!selectedGuru || saving || !hasUnsavedChanges) return
+    const n = stagedJadwal.length
+    setConfirmAction({
+      title: 'Simpan jadwal?',
+      message: `Yakin simpan ${n} jadwal untuk ${selectedGuru.nama_guru} (${selectedGuru.kode})? Jadwal lama guru ini akan diganti sepenuhnya.`,
+      confirmLabel: 'Simpan',
+      onConfirm: () => handleSimpanSemuaPerubahan(false),
+    })
+  }
+
   // ===== Handler: Simpan SEMUA perubahan ke database =====
   const handleSimpanSemuaPerubahan = async (replaceConflicts = false) => {
     if (!selectedGuru) return
+    const guruName = selectedGuru.nama_guru
     setSaving(true)
     try {
       await api.put(`/jadwal/by-guru/${selectedGuru.kode}`, {
         schedules: stagedJadwal,
         replace_conflicts: replaceConflicts
       })
-      await load(true)
-      setSelectedGuru(null)
-      setHasUnsavedChanges(false)
       setConfirmAction(null)
-      setToastMsg(`Semua perubahan jadwal untuk ${selectedGuru.nama_guru} berhasil disimpan dan disinkronkan!`)
+      await load(true)
+      setHasUnsavedChanges(false)
+      setToastMsg(`Semua perubahan jadwal untuk ${guruName} berhasil disimpan dan disinkronkan!`)
       setTimeout(() => setToastMsg(''), 5000)
+      setSelectedGuru(null)
     } catch (err) {
       const d = err.response?.data
       if (err.response?.status === 409 && (d?.occupant_id || d?.occupant)) {
@@ -403,15 +417,16 @@ function Jadwal({ user, onLogout, role }) {
   return (
     <Layout user={user} onLogout={onLogout} role={role} active="jadwal">
       <div className="page-header"><h1>Jadwal</h1></div>
+      {toastMsg && <div className="alert alert-success" style={{ marginBottom: 16 }}>{toastMsg}</div>}
 
       {isAdmin && (
         <>
           <div className="jadwal-tabs">
             <button className={tab === 'guru' ? 'jadwal-tab active' : 'jadwal-tab'} onClick={() => setTab('guru')}>
-              <TreeStructure weight="regular" /> Guru & Jenis Layanan
+              <IconHierarchy2 size={16} stroke={1.8} /> Guru & Jenis Layanan
             </button>
             <button className={tab === 'grid' ? 'jadwal-tab active' : 'jadwal-tab'} onClick={() => setTab('grid')}>
-              <CalendarBlank weight="regular" /> Jadwal Kelas
+              <IconCalendar size={16} stroke={1.8} /> Jadwal Kelas
             </button>
           </div>
         </>
@@ -423,14 +438,14 @@ function Jadwal({ user, onLogout, role }) {
           <div className="card">
             <div className="jadwal-filter">
               <div className="jadwal-search">
-                <MagnifyingGlass weight="regular" />
+                <IconSearch size={16} stroke={1.8} />
                 <input type="text" placeholder="Cari guru / kode / jenis layanan…" value={qRaw} onChange={e => setQRaw(e.target.value)} />
               </div>
               <select className="filter-select" value={filterLayanan} onChange={e => setFilterLayanan(e.target.value)}>
                 <option value="">Semua Jenis Layanan</option>
                 {types.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
-              <button className="btn btn-secondary btn-sm" onClick={openAddGuru}><Plus weight="regular" /> Tambah</button>
+              <button className="btn btn-primary btn-sm" onClick={openAddGuru}><IconCirclePlus size={16} stroke={1.8} /> Tambah</button>
             </div>
             <div className="jadwal-guru">
               <table className="table">
@@ -455,18 +470,18 @@ function Jadwal({ user, onLogout, role }) {
                         <td className="cell-trunc jadwal-kelas" title={kelasArray}>{kelasArray}</td>
                         <td className="center-col">
                           <div className="btn-wrap">
-                            <button className="btn-action" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
-                              <PencilSimple weight="regular" />
+                            <button className="btn-action btn-edit" onClick={() => openAturJadwal(g)} title="Atur Jadwal">
+                              <IconPencil size={16} stroke={1.8} />
                             </button>
-                            <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus"><Trash weight="regular" /></button>
+                            <button className="btn-action btn-delete" onClick={() => deleteGuru(g.kode)} title="Hapus" disabled={saving}><IconTrash size={16} stroke={1.8} /></button>
                           </div>
                         </td>
                       </tr>
                     )
                   })}
-                  {filteredGuru.length === 0 && <tr><td colSpan="5" className="empty">Tidak ditemukan.</td></tr>}
                 </tbody>
               </table>
+              {filteredGuru.length === 0 && <EmptyState icon={Users} title="Tidak ditemukan" description="Tidak ada guru yang cocok dengan pencarian atau filter." />}
             </div>
           </div>
 
@@ -506,7 +521,7 @@ function Jadwal({ user, onLogout, role }) {
               <div className="modal-content modal-lg" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
                   <h2>Jadwal untuk {selectedGuru.nama_guru} ({selectedGuru.kode})</h2>
-                  <button className="modal-close" onClick={handleTutupModal} aria-label="Tutup"><X weight="regular" /></button>
+                  <button className="modal-close" onClick={handleTutupModal} aria-label="Tutup"><IconX size={16} stroke={1.8} /></button>
                 </div>
                 {toastMsg && <div className="alert alert-success" style={{ margin: '10px 0' }}>{toastMsg}</div>}
                 
@@ -557,11 +572,11 @@ function Jadwal({ user, onLogout, role }) {
                   <div style={{ marginTop: 8 }}>
                     <button
                       type="submit"
-                      className="btn btn-outline"
+                      className="btn btn-primary btn-sm"
                       disabled={!newHari || !newJam || !newKelas}
                       title="Tambah kelas ini ke daftar jadwal guru"
                     >
-                      {editIdx !== null ? 'Perbarui Baris Ini' : <><Plus size={15} weight="regular" /> Tambah Kelas</>}
+                      {editIdx !== null ? 'Perbarui Baris Ini' : <><IconCirclePlus size={16} stroke={1.8} /> Tambah Kelas</>}
                     </button>
                   </div>
                 </form>
@@ -575,13 +590,13 @@ function Jadwal({ user, onLogout, role }) {
                         {(r.keterangan || r.jenis_layanan) && <span className="jadwal-sub"> ({r.keterangan || r.jenis_layanan})</span>}
                       </div>
                       <div className="jadwal-item-actions">
-                        <button className="btn-action btn-sm" onClick={() => handleEditStaged(r, idx)} title="Edit baris"><PencilSimple weight="regular" /></button>
-                        <button className="btn-action btn-sm btn-delete" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><Trash weight="regular" /></button>
+                        <button className="btn-action btn-sm btn-edit" onClick={() => handleEditStaged(r, idx)} title="Edit baris"><IconPencil size={16} stroke={1.8} /></button>
+                        <button className="btn-action btn-sm btn-delete" onClick={() => handleDeleteStaged(idx)} title="Hapus baris"><IconTrash size={16} stroke={1.8} /></button>
                       </div>
                     </div>
                   ))}
                   {stagedJadwal.length === 0 && (
-                    <p className="empty">Belum ada kelas di jadwal guru ini. Gunakan form di atas lalu klik "+ Tambah Kelas".</p>
+                    <EmptyState icon={CalendarBlank} title="Belum ada kelas" description='Gunakan form di atas lalu klik "+ Tambah Kelas" untuk menambah jadwal.' />
                   )}
                 </div>
 
@@ -590,8 +605,8 @@ function Jadwal({ user, onLogout, role }) {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => handleSimpanSemuaPerubahan(false)}
-                    disabled={saving}
+                    onClick={handleRequestSimpan}
+                    disabled={saving || !hasUnsavedChanges}
                     style={{ minWidth: 160 }}
                   >
                     {saving ? 'Menyimpan ke Database...' : 'Simpan'}
@@ -660,7 +675,7 @@ function Jadwal({ user, onLogout, role }) {
               </div>
             </form>
             <a href="#" className="btn btn-outline btn-sm" style={{ marginTop: 10 }} onClick={(e) => { e.preventDefault(); downloadTemplate() }}>
-              <DownloadSimple weight="regular" /> Download Template
+              <IconDownload size={16} stroke={1.8} /> Download Template
             </a>
           </div>
         </div>
@@ -673,8 +688,9 @@ function Jadwal({ user, onLogout, role }) {
         confirmText={confirmAction?.confirmLabel || 'Ya'}
         cancelText={confirmAction?.type === 'info' ? 'Tutup' : 'Batal'}
         danger={confirmAction?.type === 'delete'}
+        loading={saving}
         onConfirm={() => confirmAction?.onConfirm?.()}
-        onClose={() => setConfirmAction(null)}
+        onClose={() => !saving && setConfirmAction(null)}
       />
     </Layout>
   )

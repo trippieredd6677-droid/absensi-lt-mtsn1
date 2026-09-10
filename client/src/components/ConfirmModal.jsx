@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { WarningCircle, X } from '@phosphor-icons/react'
+import { IconAlertCircle, IconX } from '@tabler/icons-react'
 import './ConfirmModal.css'
 
 // Modal konfirmasi pengganti window.confirm / alert.
@@ -11,6 +12,7 @@ function ConfirmModal({
   confirmText = 'Ya',
   cancelText = 'Batal',
   danger = false,
+  loading = false,
   onConfirm,
   onClose,
 }) {
@@ -41,25 +43,27 @@ function ConfirmModal({
           className="confirm-close"
           aria-label="Tutup"
           onClick={onClose}
+          disabled={loading}
         >
-          <X weight="regular" />
+          <IconX size={16} stroke={1.8} />
         </button>
         <div className="confirm-icon-wrap">
-          <WarningCircle weight="regular" className="confirm-icon" />
+          <IconAlertCircle size={16} stroke={1.8} className="confirm-icon" />
         </div>
         <h2 className="confirm-title">{title}</h2>
         {message ? <p className="confirm-message">{message}</p> : null}
         <div className="modal-actions confirm-actions">
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading}>
             {cancelText}
           </button>
           <button
             type="button"
             className={`btn ${danger ? 'btn-danger' : 'btn-primary'}`}
             onClick={onConfirm}
+            disabled={loading}
             autoFocus
           >
-            {confirmText}
+            {loading ? 'Memproses...' : confirmText}
           </button>
         </div>
       </div>

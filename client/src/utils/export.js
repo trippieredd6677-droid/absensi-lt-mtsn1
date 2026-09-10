@@ -1,24 +1,24 @@
 // Util ekspor laporan → file .xlsx ber-style (header hijau, bold, warna status).
 // Pakai exceljs (dimuat on-demand biar halaman tetep cepat). Dipakai di Histori (guru) & AdminAbsensi (admin).
 
-const ACCENT = '16A34A'      // hijau
-const ACCENT_DARK = '15803D'
+const ACCENT = '3A7A55'
+const ACCENT_DARK = '2F6345'
 const SURFACE = 'FFFFFF'
-const TEXT = '1C2B22'
-const BORDER = 'E2E9E4'
-const ROW_ALT = 'F6F9F7'
+const TEXT = '1F2421'
+const BORDER = 'E2E2DE'
+const ROW_ALT = 'EFEFEC'
 
 const STATUS_FILL = {
-  hadir: 'E9F9EF',
-  sakit: 'FDF3E3',
-  izin: 'E8F0FE',
-  alpa: 'FDEAEA',
+  hadir: 'E9F1EB',
+  sakit: 'F7EFDD',
+  izin: 'E9EEF6',
+  alpa: 'F7E9E7',
 }
 const STATUS_COLOR = {
-  hadir: '15803D',
-  sakit: 'B45309',
-  izin: '2563EB',
-  alpa: 'DC2626',
+  hadir: '3A7A55',
+  sakit: '8F6820',
+  izin: '47649C',
+  alpa: 'A84343',
 }
 
 /**
@@ -57,13 +57,12 @@ export async function exportXlsx({ fileName, title, subtitle, owner, columns, ro
   titleCell.alignment = { vertical: 'middle', horizontal: 'left' }
 
   const subCell = subRow.getCell(1)
-  subCell.font = { name: 'Calibri', size: 10, color: { argb: '6B7A72' } }
+  subCell.font = { name: 'Calibri', size: 10, color: { argb: '5F665F' } }
   subCell.alignment = { vertical: 'middle', horizontal: 'left' }
 
-  // Baris pemilik laporan (supaya jelas punya siapa)
   if (owner) {
     ws.mergeCells(3, 1, 3, total)
-    ownerRow.getCell(1).value = `Disusun oleh: ${owner}`
+    ownerRow.getCell(1).value = `${owner}`
     ownerRow.height = 18
     const oCell = ownerRow.getCell(1)
     oCell.font = { name: 'Calibri', size: 10.5, bold: true, color: { argb: TEXT } }
@@ -88,8 +87,8 @@ export async function exportXlsx({ fileName, title, subtitle, owner, columns, ro
       const statusCol = statusCols.includes(colNumber - 1)
       if (statusCol) {
         const status = String(cell.value || '').toLowerCase()
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: STATUS_FILL[status] || 'F1F5F9' } }
-        cell.font = { name: 'Calibri', size: 11, bold: true, color: { argb: STATUS_COLOR[status] || '64748B' } }
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: STATUS_FILL[status] || 'EFEFEC' } }
+        cell.font = { name: 'Calibri', size: 11, bold: true, color: { argb: STATUS_COLOR[status] || '5F665F' } }
         cell.alignment = { vertical: 'middle', horizontal: 'center' }
         if (typeof cell.value === 'string') cell.value = status.charAt(0).toUpperCase() + status.slice(1)
       } else {
@@ -97,7 +96,7 @@ export async function exportXlsx({ fileName, title, subtitle, owner, columns, ro
         cell.alignment = { vertical: 'middle', horizontal: 'left' }
       }
       cell.border = { bottom: { style: 'thin', color: { argb: BORDER } } }
-      if (idx % 2 === 1) {
+      if (idx % 2 === 1 && !statusCol) {
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: ROW_ALT } }
       }
     })

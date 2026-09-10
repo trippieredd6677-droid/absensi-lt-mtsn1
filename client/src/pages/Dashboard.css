@@ -1,16 +1,11 @@
-/* Dashboard guru — komposisi hierarki (v3 "Ledger"):
-   baris 1: hero kehadiran (focal, angka mono besar) + mini stats 2x2
-   baris 2: jadwal hari ini | absensi terbaru (grid asimetris 1fr/1.25fr)
-   Motif: angka = satu keluarga font (tabular). */
-
 .dash-hero {
   display: flex;
   align-items: stretch;
-  gap: 28px;
+  gap: var(--space-4);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 26px 28px;
+  padding: 20px;
 }
 
 .dash-hero-main {
@@ -20,125 +15,82 @@
   flex-direction: column;
   justify-content: center;
   border-right: 1px solid var(--border);
-  padding-right: 28px;
+  padding-right: var(--space-5);
 }
 
 .dash-hero-label {
   display: block;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--text-base);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .dash-hero-value {
-  
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 
-.dash-hero-sub {
-  margin: 10px 0 0;
-  color: var(--text-muted);
-  font-size: 13px;
-}
+.dash-hero-sub { margin: var(--space-3) 0 0; color: var(--text-muted); font-size: var(--text-base); }
 
 .dash-hero-stats {
   flex: 2 1 320px;
   display: grid;
   grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 10px;
+  gap: var(--space-3);
   align-content: center;
 }
 
 .dash-mini {
-  background: var(--surface-2);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 13px 15px;
+  padding: 16px;
 }
-
 .dash-mini-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-muted); font-size: var(--text-sm); font-weight: 600;
 }
-
-.dash-mini-label svg { width: 15px; height: 15px; }
-
-.dash-mini-value {
-  margin-top: 6px;
-  
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
+.dash-mini-label svg { width: var(--icon-sm); height: var(--icon-sm); }
+.dash-mini-value { margin-top: 6px; font-size: 24px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .dash-mini-value.hadir { color: var(--status-hadir); }
 .dash-mini-value.sakit { color: var(--status-sakit); }
 .dash-mini-value.izin  { color: var(--status-izin); }
 .dash-mini-value.alpa  { color: var(--status-alpa); }
 
-/* Baris 2: dua kolom, tabel absensi lebih lebar (data > jadwal) */
 .dash-cols {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
-  gap: 16px;
+  gap: var(--space-4);
   align-items: start;
-  margin-top: 16px;
+  margin-top: var(--space-4);
 }
-
-/* Grid item default min-width:auto = tidak bisa menyusut di bawah lebar konten
-   (tabel). Paksa 0 supaya tidak overflow viewport kecil. */
 .dash-cols > * { min-width: 0; }
 
-/* Kartu Jadwal Mingguan Saya */
-.dash-muted { color: var(--text-muted); font-size: 13px; }
-.dash-jadwal { display: flex; flex-direction: column; gap: 8px; }
-.dash-jadwal-day { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.dash-muted { color: var(--text-muted); font-size: var(--text-base); }
+.dash-jadwal { display: flex; flex-direction: column; gap: var(--space-2); }
+.dash-jadwal-day { display: flex; align-items: baseline; gap: var(--space-3); padding: 6px 0; border-bottom: 1px solid var(--border); }
 .dash-jadwal-day:last-child { border-bottom: none; }
-.dash-jadwal-hari {
-  width: auto;
-  min-width: 110px;
-  
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
+.dash-jadwal-hari { min-width: 110px; font-size: var(--text-sm); font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
 .dash-jadwal-items { display: flex; flex-wrap: wrap; gap: 6px; }
 .dash-jadwal-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px 9px;
-  border-radius: var(--radius-sm);
-  background: var(--accent-dim);
-  border: 1px solid var(--accent-border);
-  font-size: 12px;
-  color: var(--text);
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 4px 9px; border-radius: var(--radius-sm);
+  background: var(--accent-dim); border: 1px solid var(--accent-border);
+  font-size: var(--text-sm); color: var(--text);
 }
 .dash-jadwal-item strong { color: var(--accent); font-weight: 700; }
 .dash-jadwal-item em { font-style: normal; color: var(--text-muted); }
+.dash-table td:first-child { font-size: var(--text-sm); }
 
-.dash-table td:first-child {  font-size: 12px; }
-
-@media (max-width: 900px) {
-  .dash-cols { grid-template-columns: 1fr; }
-}
-
+@media (max-width: 900px) { .dash-cols { grid-template-columns: 1fr; } }
 @media (max-width: 768px) {
-  .dash-hero { flex-direction: column; gap: 18px; padding: 20px; }
-  .dash-hero-main { border-right: none; padding-right: 0; }
+  .dash-hero { flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+  .dash-hero-main { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: var(--space-4); }
   .dash-hero-value { font-size: 42px; }
   .dash-hero-stats { grid-template-columns: repeat(2, 1fr); }
 }

@@ -1,21 +1,28 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  Gauge,
   ClipboardText,
   ClockCounterClockwise,
   UserCircle,
-  Users,
   CalendarCheck,
   CalendarBlank,
   SignOut,
   Sun,
   Moon,
-  ListBullets,
   ShieldCheck,
-  TreeStructure,
   List,
 } from '@phosphor-icons/react'
+import {
+  IconLayoutDashboard,
+  IconClipboardCheck,
+  IconHistory,
+  IconUsers,
+  IconListDetails,
+  IconSun,
+  IconMoon,
+  IconLogout,
+  IconMenu2,
+} from '@tabler/icons-react'
 import { useTheme } from '../ThemeContext'
 import logo from '../assets/logo-sidebar.jpg'
 
@@ -45,18 +52,18 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
   })
 
   const guruMenu = [
-    { to: '/', label: 'Dashboard', icon: Gauge, key: 'dashboard' },
-    { to: '/absensi', label: 'Absensi', icon: ClipboardText, key: 'absensi' },
-    { to: '/histori', label: 'Histori', icon: ClockCounterClockwise, key: 'histori' },
+    { to: '/', label: 'Dashboard', icon: IconLayoutDashboard, key: 'dashboard' },
+    { to: '/absensi', label: 'Absensi', icon: IconClipboardCheck, key: 'absensi' },
+    { to: '/histori', label: 'Histori', icon: IconHistory, key: 'histori' },
     { to: '/jadwal', label: 'Jadwal', icon: CalendarBlank, key: 'jadwal' },
     { to: '/profil', label: 'Profil', icon: UserCircle, key: 'profil' },
   ]
 
   const adminMenu = [
-    { to: '/admin', label: 'Dashboard', icon: Gauge, key: 'dashboard' },
-    { to: '/admin/users', label: 'Manajemen Guru', icon: Users, key: 'users' },
+    { to: '/admin', label: 'Dashboard', icon: IconLayoutDashboard, key: 'dashboard' },
+    { to: '/admin/users', label: 'Manajemen Guru', icon: IconUsers, key: 'users' },
     { to: '/admin/absensi', label: 'Data Absensi', icon: CalendarCheck, key: 'absensi' },
-    { to: '/admin/kelas', label: 'Kelola Kelas', icon: ListBullets, key: 'kelas' },
+    { to: '/admin/kelas', label: 'Kelola Kelas', icon: IconListDetails, key: 'kelas' },
     { to: '/admin/jadwal', label: 'Jadwal', icon: CalendarBlank, key: 'jadwal' },
     { to: '/admin/audit', label: 'Audit Log', icon: ShieldCheck, key: 'audit' },
     { to: '/profil', label: 'Profil', icon: UserCircle, key: 'profil' },
@@ -86,7 +93,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 title={theme === 'light' ? 'Aktifkan mode gelap' : 'Aktifkan mode terang'}
                 aria-label="Ganti tema"
               >
-                {theme === 'light' ? <Moon weight="regular" /> : <Sun weight="regular" />}
+                {theme === 'light' ? <IconMoon size={16} stroke={1.8} /> : <IconSun size={16} stroke={1.8} />}
               </button>
               <button
                 className="mobile-menu-btn"
@@ -94,7 +101,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
                 aria-expanded={menuOpen}
               >
-                <List weight="regular" />
+                <IconMenu2 size={16} stroke={1.8} />
               </button>
               <button
                 className="mobile-logout"
@@ -102,7 +109,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 aria-label="Keluar"
                 title="Keluar"
               >
-                <SignOut weight="regular" />
+                <IconLogout size={16} stroke={1.8} />
               </button>
             </div>
           </div>
@@ -123,7 +130,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 className={active === item.key ? 'active' : ''}
                 onClick={() => setMenuOpen(false)}
               >
-                <Icon weight={active === item.key ? 'bold' : 'regular'} />
+                <Icon size={18} stroke={active === item.key ? 2.2 : 1.8} weight={active === item.key ? 'bold' : 'regular'} />
                 {item.label}
               </Link>
             )
@@ -139,7 +146,7 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
             </div>
           </div>
           <button onClick={handleLogout} className="btn btn-danger logout-btn">
-            <SignOut weight="regular" />
+            <IconLogout size={16} stroke={1.8} />
             Keluar
           </button>
         </div>

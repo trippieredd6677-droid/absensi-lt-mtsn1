@@ -45,7 +45,7 @@ async function setupDatabase() {
         nip VARCHAR(20),
         role VARCHAR(20) NOT NULL DEFAULT 'guru',
         kelas VARCHAR(10),
-        jabatan VARCHAR(50),
+        jenis_layanan VARCHAR(50),
         no_hp VARCHAR(15),
         foto_profil VARCHAR(255),
         status VARCHAR(20) DEFAULT 'active',

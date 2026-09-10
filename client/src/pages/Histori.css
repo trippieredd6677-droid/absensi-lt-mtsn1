@@ -1,123 +1,36 @@
-/* Histori */
-
-.histori-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
+.histori-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
 .histori-header > div { margin: 0; }
-
-.filter-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filter-group label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.filter-group select { cursor: pointer; }
-
-.histori-table-wrapper {
-  overflow-x: auto;
-  margin: 4px 0 8px;
-}
 
 .catatan-col {
   max-width: 220px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 13px;
+  font-size: var(--text-base);
   color: var(--text-muted);
 }
-
 .capitalize { text-transform: capitalize; }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-}
+.stats-section { margin-top: 0; }
+.stats-section h2 { margin-bottom: var(--space-4); font-size: 15px; font-weight: 700; }
 
-.page-info {
-  color: var(--text-muted);
-  font-size: 13px;
-  min-width: 90px;
-  text-align: center;
-}
-
-/* Statistik: satu baris kartu kompak, ikon + label sejajar */
-.stats-section {
-  margin-top: 0;
-}
-
-.stats-section h2 {
-  margin-bottom: 16px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.histori-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-}
-
-.histori-stats-grid .stat-card {
-  padding: 14px 16px;
-}
-
+.histori-stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); }
+.stats-section { margin-bottom: var(--space-4); }
+.stats-section + .card { margin-top: 0; }
+.histori-stats-grid .stat-card { padding: 18px 20px; }
+.histori-stats-grid .stat-card { padding: var(--space-4); }
 .histori-stats-grid .stat-card h3 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  margin: 0 0 6px;
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-muted); font-size: var(--text-sm); font-weight: 600; margin: 0 0 6px;
 }
-
-.histori-stats-grid .stat-card h3 svg {
-  width: 16px;
-  height: 16px;
-  color: var(--accent);
-}
-
-.histori-stats-grid .stat-card .value {
-  font-size: 30px;
-  line-height: 1.05;
-}
-
+.histori-stats-grid .stat-card h3 svg { width: var(--icon-sm); height: var(--icon-sm); color: var(--accent); }
+.histori-stats-grid .stat-card .value { font-size: 30px; line-height: 1.05; }
 
 @media (max-width: 1024px) {
   .histori-stats-grid { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
   .histori-stats-grid .stat-card .value { font-size: 24px; }
 }
-
 @media (max-width: 768px) {
-  .filter-section { grid-template-columns: 1fr; }
-  .pagination { flex-direction: column; gap: 10px; }
   .histori-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-section h2 { font-size: 14px; }
+  .stats-section h2 { font-size: var(--text-md); }
 }

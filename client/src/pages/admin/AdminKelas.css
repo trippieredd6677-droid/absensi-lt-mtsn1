@@ -2,20 +2,20 @@
  * AdminKelas — Smart Grouped UI (Antislop + UI/UX Pro Max)
  * ============================================================ */
 
-/* Toolbar (search + filter + add button) */
+/* Toolbar (search + filter + add button) — rapat, tidak berjauhan */
 .kelas-toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-5);
+  justify-content: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
   flex-wrap: wrap;
 }
 .kelas-toolbar-left {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
   flex-wrap: wrap;
 }
@@ -34,7 +34,7 @@
   max-width: 360px;
   height: 40px;
   color: var(--text-muted);
-  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
 .kelas-search:focus-within {
   border-color: var(--accent);
@@ -46,7 +46,7 @@
   background: transparent;
   border: none;
   outline: none;
-  font-size: 14px;
+  font-size: var(--text-md);
   color: var(--text);
   min-width: 0;
   height: 100%;
@@ -68,10 +68,10 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   color: var(--text);
-  font-size: 14px;
+  font-size: var(--text-md);
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
 .kelas-filter select:hover { border-color: var(--accent-border); }
 .kelas-filter select:focus {
@@ -97,7 +97,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
   box-shadow: var(--shadow-sm);
 }
 .kelas-add-row {
@@ -122,9 +122,9 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   color: var(--text);
-  font-size: 14px;
+  font-size: var(--text-md);
   font-weight: 500;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
 .kelas-add-field select:focus,
 .kelas-add-field input:focus {
@@ -164,16 +164,18 @@
   font-size: 14px;
 }
 
-/* Grouped tables */
+/* Grouped tables — standardized to Manajemen Guru (card + users-table-wrapper) */
 .kelas-groups { display: flex; flex-direction: column; gap: var(--space-4); }
-.kelas-group-card { padding: 0; overflow: hidden; }
+.kelas-group.card { padding: 22px 24px; }
+.kelas-group .users-table-wrapper { margin: var(--space-3) 0 0; }
 .kelas-group-header {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  padding: 0 var(--space-1);
+  margin-bottom: 0;
+  padding: 0 0 var(--space-3) 0;
   color: var(--text);
+  border-bottom: 1px solid var(--border);
 }
 .kelas-group-header h3 {
   font-size: 13px;
@@ -207,10 +209,10 @@
   white-space: nowrap;
 }
 .kelas-badge-reg { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
-.kelas-badge-ibs { background: var(--accent-dim); color: var(--accent-strong); border: 1px solid var(--accent-border); }
-.kelas-badge-bil { background: var(--status-izin-bg); color: var(--status-izin); border: 1px solid rgba(15, 111, 176, 0.2); }
-.kelas-badge-inf { background: var(--status-sakit-bg); color: var(--status-sakit); border: 1px solid rgba(176, 114, 16, 0.2); }
-.kelas-badge-or  { background: var(--status-alpa-bg); color: var(--status-alpa); border: 1px solid rgba(166, 61, 94, 0.2); }
+.kelas-badge-ibs { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.kelas-badge-bil { background: var(--status-izin-bg); color: var(--status-izin); border: 1px solid color-mix(in srgb, var(--status-izin) 22%, transparent); }
+.kelas-badge-inf { background: var(--status-sakit-bg); color: var(--status-sakit); border: 1px solid color-mix(in srgb, var(--status-sakit) 22%, transparent); }
+.kelas-badge-or  { background: var(--status-alpa-bg); color: var(--status-alpa); border: 1px solid color-mix(in srgb, var(--status-alpa) 22%, transparent); }
 .kelas-badge-rst { background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border-strong); }
 .kelas-badge-th,
 .kelas-badge-thf { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); font-weight: 600; }
@@ -236,7 +238,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
   color: var(--text);
 }
 .jam-info svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
@@ -252,16 +254,17 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   border: 1px solid var(--border);
 }
 
-/* Suggestion chips */
+/* Suggestion chips — balanced & symmetrical */
 .jam-suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
   gap: var(--space-2);
   margin-top: var(--space-3);
   max-width: 600px;
+  align-items: center;
 }
 .jam-suggestions-label {
+  grid-column: 1 / -1;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-faint);
@@ -271,17 +274,18 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 .jam-suggestion-chip {
   display: inline-flex;
   align-items: center;
-  height: 28px;
+  justify-content: center;
+  height: 36px;
   padding: 0 var(--space-3);
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius);
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.16s ease;
+  transition: all var(--ease);
 }
 .jam-suggestion-chip:hover {
   background: var(--accent-dim);
@@ -311,9 +315,10 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   font-family: inherit;
   letter-spacing: 0.01em;
 }
-.kelas-add { margin-bottom: var(--space-5); }
+.kelas-add { margin-bottom: var(--space-4); }
 .kelas-add-form { display: flex; gap: var(--space-3); align-items: center; max-width: 420px; }
-.kelas-add-form .form-control { flex: 1; }
+.kelas-add-form .form-control { flex: 1; height: 40px; }
+.kelas-add-form .btn { height: 40px; }
 
 .form-control {
   padding: var(--space-2) var(--space-3);
@@ -322,7 +327,7 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   border-radius: var(--radius);
   color: var(--text);
   font-size: 14px;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+  transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
 }
 .form-control:focus {
   outline: none;
@@ -333,9 +338,11 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
 .kelas-name { font-weight: 600; color: var(--text); }
 
 .th-actions { width: 140px; text-align: right; }
-.kelas-actions { display: flex; gap: var(--space-2); justify-content: flex-end; }
+.kelas-actions,
+.action-buttons { display: flex; gap: var(--space-2); justify-content: flex-end; }
 .kelas-actions input { width: 180px; padding: var(--space-2) var(--space-2); }
-.kelas-actions .btn {
+.kelas-actions .btn,
+.action-buttons .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -344,7 +351,8 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   height: 40px;
   border-radius: var(--radius);
 }
-.kelas-actions .btn svg { width: 18px; height: 18px; }
+.kelas-actions .btn svg,
+.action-buttons .btn svg { width: var(--icon-md); height: var(--icon-md); }
 
 
 .empty { text-align: center; color: var(--text-muted); padding: var(--space-8) 0; font-size: 13px; }
@@ -354,9 +362,9 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   display: inline-flex; align-items: center; gap: var(--space-2);
   padding: 0 var(--space-4); height: 40px; background: var(--surface); border: 1px solid var(--border-strong);
   border-radius: var(--radius); color: var(--text-muted); font-weight: 600; font-size: 14px;
-  cursor: pointer; transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+  cursor: pointer; transition: background var(--ease), color var(--ease), border-color var(--ease);
 }
-.kelas-tab svg { width: 18px; height: 18px; }
+.kelas-tab svg { width: var(--icon-md); height: var(--icon-md); }
 .kelas-tab:hover { color: var(--accent); border-color: var(--accent-border); background: var(--surface-2); }
 .kelas-tab.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
 
@@ -405,6 +413,6 @@ html[data-theme="dark"] .kelas-badge-rst { color: var(--text-faint); background:
   .kelas-actions { gap: var(--space-1); }
   .kelas-actions input { width: 100%; max-width: none; }
   .kelas-actions .btn { min-width: 44px; height: 44px; padding: 0 var(--space-2); }
-  .kelas-actions .btn svg { width: 18px; height: 18px; }
+  .kelas-actions .btn svg { width: var(--icon-md); height: var(--icon-md); }
   .kelas-group-header h3 { font-size: 11px; }
 }

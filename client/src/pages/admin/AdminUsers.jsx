@@ -1,26 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react'
 import {
-  PencilSimple,
   Key,
-  Trash,
   Prohibit,
   ArrowClockwise,
   CaretLeft,
   CaretRight,
   UserCircle,
-  Plus,
+  PlusCircle,
   Link as LinkIcon,
   UserSwitch,
+  Users,
 } from '@phosphor-icons/react'
+import { IconBan, IconChevronLeft, IconChevronRight, IconCirclePlus, IconKey, IconPencil, IconRefresh, IconTrash, IconUserShare } from '@tabler/icons-react'
 import api from '../../api'
 import Layout from '../../components/Layout'
 import ConfirmModal from '../../components/ConfirmModal'
+import EmptyState from '../../components/EmptyState'
 
 import './AdminUsers.css'
 
 function AdminUsers({ user, onLogout }) {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [search, setSearch] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [page, setPage] = useState(1)
@@ -28,7 +30,7 @@ function AdminUsers({ user, onLogout }) {
   const [pages, setPages] = useState(1)
   const [roleFilter, setRoleFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
-  const [onlyOrphan, setOnlyOrphan] = useState(false)
+  const [onlyUnmapped, setOnlyUnmapped] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
   const [showResetForm, setShowResetForm] = useState(false)
@@ -36,9 +38,11 @@ function AdminUsers({ user, onLogout }) {
   const [newPassword, setNewPassword] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editUser, setEditUser] = useState(null)
-  const emptyForm = { username: '', email: '', password: '', full_name: '', nip: '', kelas: '', jabatan: '', no_hp: '', role: 'guru' }
+  const emptyForm = { username: '', email: '', password: 'Guru2026', full_name: '', nip: '', kelas: '', jenis_layanan: '', no_hp: '', role: 'guru' }
   const [form, setForm] = useState(emptyForm)
   const [jenisLayanan, setJenisLayanan] = useState([])
+  const [jenisOpen, setJenisOpen] = useState(false)
+  const jenisRef = useRef(null)
   const [selected, setSelected] = useState(new Set())
   const [showLink, setShowLink] = useState(false)
   const [linkUser, setLinkUser] = useState(null)
@@ -53,24 +57,35 @@ function AdminUsers({ user, onLogout }) {
   }
 
   useEffect(() => {
+    if (!jenisOpen) return
+    const onDown = (e) => { if (jenisRef.current && !jenisRef.current.contains(e.target)) setJenisOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [jenisOpen])
+
+  useEffect(() => {
     fetchUsers()
-  }, [page, roleFilter, statusFilter, onlyOrphan, search])
+  }, [page, roleFilter, statusFilter, onlyUnmapped, search])
 
   useEffect(() => {
     api.get('/jadwal/guru-map')
       .then((res) => {
         const list = res.data || []
-        setJenisLayanan([...new Set(list.map((g) => g.jenis_layanan).filter(Boolean))].sort())
         setGuruMapList(list)
       })
-      .catch(() => { setJenisLayanan([]); setGuruMapList([]) })
+      .catch(() => { setGuruMapList([]) })
+    api.get('/jenis-layanan').then((res) => {
+      const list = (res.data?.jenis_layanan || []).map((j) => j.nama).filter(Boolean).sort()
+      if (list.length) setJenisLayanan(list)
+      else api.get('/jadwal/guru-map').then((r2) => setJenisLayanan([...new Set((r2.data || []).map((g) => g.jenis_layanan).filter(Boolean))].sort())).catch(() => setJenisLayanan([]))
+    }).catch(() => api.get('/jadwal/guru-map').then((r2) => setJenisLayanan([...new Set((r2.data || []).map((g) => g.jenis_layanan).filter(Boolean))].sort())).catch(() => setJenisLayanan([])))
   }, [])
 
   const fetchUsers = async () => {
     try {
       setLoading(true)
-      if (onlyOrphan) {
-        const res = await api.get('/admin/users-orphan')
+      if (onlyUnmapped) {
+        const res = await api.get('/admin/users-unmapped')
         setUsers(res.data.users)
         setTotal(res.data.users.length)
         setPages(1)
@@ -93,10 +108,16 @@ function AdminUsers({ user, onLogout }) {
     }
   }
 
-  const triggerSearch = () => {
-    setPage(1)
-    setSearch(searchInput)
-  }
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const v = searchInput.trim()
+      if (v !== search) {
+        setPage(1)
+        setSearch(v)
+      }
+    }, 320)
+    return () => clearTimeout(t)
+  }, [searchInput])
 
   const openCreate = () => {
     setEditUser(null)
@@ -109,7 +130,7 @@ function AdminUsers({ user, onLogout }) {
     setForm({
       username: u.username, email: u.email, password: '',
       full_name: u.full_name || '', nip: u.nip || '',
-      kelas: u.kelas || '', jabatan: u.jabatan || '', no_hp: u.no_hp || '',
+      kelas: u.kelas || '', jenis_layanan: u.jenis_layanan || '', no_hp: u.no_hp || '',
       role: u.role || 'guru',
     })
     setShowForm(true)
@@ -149,28 +170,55 @@ function AdminUsers({ user, onLogout }) {
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setMessage('')
-    try {
-      if (editUser) {
-        await api.put(`/admin/users/${editUser.id}`, {
-          username: form.username,
-          email: form.email,
-          full_name: form.full_name,
-          kelas: form.kelas,
-          jabatan: form.jabatan,
-          no_hp: form.no_hp,
-          role: form.role,
-        })
-        setMessage('Data guru berhasil diperbarui')
-      } else {
-        await api.post('/admin/users', form)
-        setMessage(form.role === 'admin' ? 'Admin berhasil ditambahkan' : 'Guru berhasil ditambahkan')
+    if (editUser) {
+      const dirty = ['username','email','full_name','nip','kelas','jenis_layanan','no_hp','role'].some((k) => String(form[k] || '') !== String(editUser[k] || ''))
+      if (!dirty) {
+        setMessage('Tidak ada perubahan')
+        setMessageType('info')
+        return
       }
+      confirmThen({
+        title: 'Simpan perubahan?',
+        message: `Yakin simpan perubahan untuk ${form.username}?`,
+        confirmText: 'Simpan',
+        onConfirm: async () => {
+          setSaving(true)
+          try {
+            await api.put(`/admin/users/${editUser.id}`, {
+              username: form.username,
+              email: form.email,
+              full_name: form.full_name,
+              kelas: form.kelas,
+              jenis_layanan: form.jenis_layanan,
+              no_hp: form.no_hp,
+              role: form.role,
+            })
+            setMessage('Data guru berhasil diperbarui')
+            setMessageType('success')
+            setShowForm(false)
+            fetchUsers()
+          } catch (err) {
+            setMessage(err.response?.data?.message || 'Gagal menyimpan data guru')
+            setMessageType('error')
+          } finally {
+            setSaving(false)
+          }
+        },
+      })
+      return
+    }
+    setSaving(true)
+    try {
+      await api.post('/admin/users', form)
+      setMessage(form.role === 'admin' ? 'Admin berhasil ditambahkan' : 'Guru berhasil ditambahkan')
       setMessageType('success')
       setShowForm(false)
       fetchUsers()
     } catch (err) {
       setMessage(err.response?.data?.message || 'Gagal menyimpan data guru')
       setMessageType('error')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -185,22 +233,32 @@ function AdminUsers({ user, onLogout }) {
       setMessageType('error')
       return
     }
-    try {
-      await api.post(`/admin/users/${resetUserId}/reset-password`, { newPassword })
-      setMessage('Password berhasil direset')
-      setMessageType('success')
-      setShowResetForm(false)
-      setNewPassword('')
-      setResetUserId(null)
-      fetchUsers()
-    } catch (err) {
-      setMessage(
-        err.response?.data?.message ||
-        err.response?.data?.errors?.[0]?.msg ||
-        'Gagal mereset password'
-      )
-      setMessageType('error')
-    }
+    confirmThen({
+      title: 'Reset password?',
+      message: `Yakin reset password user ini?`,
+      confirmText: 'Reset',
+      onConfirm: async () => {
+        setSaving(true)
+        try {
+          await api.post(`/admin/users/${resetUserId}/reset-password`, { newPassword })
+          setMessage('Password berhasil direset')
+          setMessageType('success')
+          setShowResetForm(false)
+          setNewPassword('')
+          setResetUserId(null)
+          fetchUsers()
+        } catch (err) {
+          setMessage(
+            err.response?.data?.message ||
+            err.response?.data?.errors?.[0]?.msg ||
+            'Gagal mereset password'
+          )
+          setMessageType('error')
+        } finally {
+          setSaving(false)
+        }
+      },
+    })
   }
 
   const handleDeactivate = (userId) => {
@@ -209,6 +267,7 @@ function AdminUsers({ user, onLogout }) {
       message: 'Pengguna ini akan dinonaktifkan dan tidak bisa login sampai diaktifkan kembali.',
       confirmText: 'Nonaktifkan',
       onConfirm: async () => {
+        setSaving(true)
         try {
           await api.post(`/admin/users/${userId}/deactivate`)
           setMessage('Pengguna berhasil dinonaktifkan')
@@ -217,21 +276,33 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal menonaktifkan pengguna')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
   }
 
-  const handleActivate = async (userId) => {
-    try {
-      await api.post(`/admin/users/${userId}/activate`)
-      setMessage('Pengguna berhasil diaktifkan')
-      setMessageType('success')
-      fetchUsers()
-    } catch (err) {
-      setMessage(err.response?.data?.message || 'Gagal mengaktifkan pengguna')
-      setMessageType('error')
-    }
+  const handleActivate = (userId) => {
+    confirmThen({
+      title: 'Aktifkan pengguna?',
+      message: 'Pengguna ini akan diaktifkan dan bisa login kembali.',
+      confirmText: 'Aktifkan',
+      onConfirm: async () => {
+        setSaving(true)
+        try {
+          await api.post(`/admin/users/${userId}/activate`)
+          setMessage('Pengguna berhasil diaktifkan')
+          setMessageType('success')
+          fetchUsers()
+        } catch (err) {
+          setMessage(err.response?.data?.message || 'Gagal mengaktifkan pengguna')
+          setMessageType('error')
+        } finally {
+          setSaving(false)
+        }
+      },
+    })
   }
 
   const handleDelete = (u) => {
@@ -241,6 +312,7 @@ function AdminUsers({ user, onLogout }) {
       confirmText: 'Hapus Permanen',
       danger: true,
       onConfirm: async () => {
+        setSaving(true)
         try {
           await api.delete(`/admin/users/${u.id}`)
           setMessage('Pengguna berhasil dihapus')
@@ -249,6 +321,8 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal menghapus pengguna')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
@@ -269,6 +343,7 @@ function AdminUsers({ user, onLogout }) {
       message: `Tindakan ini akan ${status === 'active' ? 'mengaktifkan' : 'menonaktifkan'} ${selected.size} pengguna terpilih.`,
       confirmText: status === 'active' ? 'Aktifkan' : 'Nonaktifkan',
       onConfirm: async () => {
+        setSaving(true)
         try {
           await api.post('/admin/users/bulk/status', { ids: [...selected], status })
           setMessage(`${selected.size} pengguna di${status === 'active' ? 'aktifkan' : 'nonaktifkan'}`)
@@ -278,6 +353,8 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal update massal')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
@@ -290,6 +367,7 @@ function AdminUsers({ user, onLogout }) {
       message: `Password baru untuk ${selected.size} pengguna terpilih akan ditampilkan setelah reset.`,
       confirmText: 'Reset',
       onConfirm: async () => {
+        setSaving(true)
         try {
           const res = await api.post('/admin/users/bulk/reset-password', { ids: [...selected] })
           const creds = res.data.credentials || []
@@ -301,6 +379,8 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal reset massal')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
@@ -314,6 +394,7 @@ function AdminUsers({ user, onLogout }) {
       confirmText: 'Hapus Permanen',
       danger: true,
       onConfirm: async () => {
+        setSaving(true)
         try {
           await api.post('/admin/users/bulk/delete', { ids: [...selected] })
           setMessage(`${selected.size} pengguna dihapus`)
@@ -323,6 +404,8 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal hapus massal')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
@@ -335,18 +418,28 @@ function AdminUsers({ user, onLogout }) {
   }
 
   const handleLinkSave = async () => {
-    try {
-      const code = linkCode.trim() || null
-      await api.post(`/admin/users/${linkUser.id}/link-guru-map`, { guru_map_kode: code })
-      setMessage(code ? `User ter-link ke ${code}` : 'Link guru_map dilepas')
-      setMessageType('success')
-      setShowLink(false)
-      setLinkUser(null)
-      fetchUsers()
-    } catch (err) {
-      setMessage(err.response?.data?.message || 'Gagal link guru_map')
-      setMessageType('error')
-    }
+    const code = linkCode.trim() || null
+    confirmThen({
+      title: code ? `Link ke ${code}?` : 'Lepas link?',
+      message: code ? `Yakin link ${linkUser?.full_name || linkUser?.username} ke ${code}?` : 'Yakin lepas link guru_map?',
+      confirmText: 'Simpan',
+      onConfirm: async () => {
+        setSaving(true)
+        try {
+          await api.post(`/admin/users/${linkUser.id}/link-guru-map`, { guru_map_kode: code })
+          setMessage(code ? `User ter-link ke ${code}` : 'Link guru_map dilepas')
+          setMessageType('success')
+          setShowLink(false)
+          setLinkUser(null)
+          fetchUsers()
+        } catch (err) {
+          setMessage(err.response?.data?.message || 'Gagal link guru_map')
+          setMessageType('error')
+        } finally {
+          setSaving(false)
+        }
+      },
+    })
   }
 
   const handleImpersonate = (u) => {
@@ -355,6 +448,7 @@ function AdminUsers({ user, onLogout }) {
       message: `Anda akan masuk sebagai ${u.full_name || u.username}.`,
       confirmText: 'Login',
       onConfirm: async () => {
+        setSaving(true)
         try {
           const res = await api.post(`/admin/impersonate/${u.id}`)
           localStorage.setItem('token', res.data.token)
@@ -362,6 +456,8 @@ function AdminUsers({ user, onLogout }) {
         } catch (err) {
           setMessage(err.response?.data?.message || 'Gagal impersonate')
           setMessageType('error')
+        } finally {
+          setSaving(false)
         }
       },
     })
@@ -386,10 +482,8 @@ function AdminUsers({ user, onLogout }) {
             placeholder="Cari nama, username, atau email..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && triggerSearch()}
             className="search-input"
           />
-          <button className="btn btn-secondary btn-sm" onClick={triggerSearch}>Cari</button>
           <select className="filter-select" value={roleFilter} onChange={(e) => { setRoleFilter(e.target.value); setPage(1); }}>
             <option value="">Semua Role</option>
             <option value="guru">Guru</option>
@@ -400,23 +494,23 @@ function AdminUsers({ user, onLogout }) {
             <option value="active">Aktif</option>
             <option value="inactive">Nonaktif</option>
           </select>
-          <label className="orphan-toggle">
-            <input type="checkbox" checked={onlyOrphan} onChange={(e) => { setOnlyOrphan(e.target.checked); setPage(1); }} />
-            Hanya orphan (belum ter-link)
+          <label className="unmapped-toggle">
+            <input type="checkbox" checked={onlyUnmapped} onChange={(e) => { setOnlyUnmapped(e.target.checked); setPage(1); }} />
+            Hanya Unmapped
           </label>
           <button onClick={openCreate} className="btn btn-primary">
-            <Plus size={16} weight="regular" /> Tambah Guru
+            <IconCirclePlus size={16} stroke={1.8} /> Tambah Guru
           </button>
         </div>
 
         {selected.size > 0 && (
           <div className="bulk-bar">
             <span>{selected.size} dipilih</span>
-            <button className="btn btn-secondary btn-sm" onClick={() => handleBulkStatus('active')}>Aktifkan</button>
-            <button className="btn btn-secondary btn-sm" onClick={() => handleBulkStatus('inactive')}>Nonaktifkan</button>
-            <button className="btn btn-secondary btn-sm" onClick={handleBulkReset}>Reset PW</button>
-            <button className="btn btn-danger btn-sm" onClick={handleBulkDelete}>Hapus</button>
-            <button className="btn btn-secondary btn-sm" onClick={() => setSelected(new Set())}>Batal</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => handleBulkStatus('active')} disabled={saving}>Aktifkan</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => handleBulkStatus('inactive')} disabled={saving}>Nonaktifkan</button>
+            <button className="btn btn-secondary btn-sm" onClick={handleBulkReset} disabled={saving}>Reset PW</button>
+            <button className="btn btn-danger btn-sm" onClick={handleBulkDelete} disabled={saving}>Hapus</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => setSelected(new Set())} disabled={saving}>Batal</button>
           </div>
         )}
 
@@ -433,7 +527,7 @@ function AdminUsers({ user, onLogout }) {
                     <th>Nama Lengkap</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Status</th>
+                    <th>Jenis Layanan</th>
                     <th>Link</th>
                     <th>Aksi</th>
                   </tr>
@@ -452,32 +546,28 @@ function AdminUsers({ user, onLogout }) {
                           {u.role === 'admin' ? 'Admin' : 'Guru'}
                         </span>
                       </td>
-                      <td>
-                        <span className={`status-badge status-${u.status}`}>
-                          {u.status === 'active' ? 'Aktif' : 'Nonaktif'}
-                        </span>
-                      </td>
+                      <td style={{ fontSize: '13px', color: 'var(--text)', maxWidth: '220px', whiteSpace: 'normal', lineHeight: '1.4' }}>{u.jenis_layanan || '-'}</td>
                       <td>
                         {u.guru_map_kode ? (
                           <span className="link-badge linked">{u.guru_map_kode}</span>
                         ) : (
-                          <span className="link-badge orphan">orphan</span>
+                          <span className="link-badge unmapped">Unmapped</span>
                         )}
                       </td>
                       <td>
                         <div className="action-buttons">
-                          <button onClick={() => openEdit(u)} className="btn-action btn-edit" title="Ubah Data"><PencilSimple weight="regular" /></button>
-                          <button onClick={() => { setResetUserId(u.id); setShowResetForm(true); }} className="btn-action btn-edit" title="Atur Ulang Password"><Key weight="regular" /></button>
+                          <button onClick={() => openEdit(u)} className="btn-action btn-edit" title="Ubah Data"><IconPencil size={16} stroke={1.8} /></button>
+                          <button onClick={() => { setResetUserId(u.id); setShowResetForm(true); }} className="btn-action btn-edit" title="Atur Ulang Password"><IconKey size={16} stroke={1.8} /></button>
                           {u.status === 'active' ? (
-                            <button onClick={() => handleDeactivate(u.id)} className="btn-action btn-warn" title="Nonaktifkan" disabled={u.id === user?.id}><Prohibit weight="regular" /></button>
+                            <button onClick={() => handleDeactivate(u.id)} className="btn-action btn-warn" title="Nonaktifkan" disabled={u.id === user?.id}><IconBan size={16} stroke={1.8} /></button>
                           ) : (
-                            <button onClick={() => handleActivate(u.id)} className="btn-action btn-edit" title="Aktifkan"><ArrowClockwise weight="regular" /></button>
+                            <button onClick={() => handleActivate(u.id)} className="btn-action btn-edit" title="Aktifkan"><IconRefresh size={16} stroke={1.8} /></button>
                           )}
                           <button onClick={() => openLink(u)} className="btn-action btn-edit" title="Link Guru Map"><LinkIcon weight="regular" /></button>
                           {u.role === 'guru' && (
-                            <button onClick={() => handleImpersonate(u)} className="btn-action btn-edit" title="Login Sebagai"><UserSwitch weight="regular" /></button>
+                            <button onClick={() => handleImpersonate(u)} className="btn-action btn-edit" title="Login Sebagai"><IconUserShare size={16} stroke={1.8} /></button>
                           )}
-                          <button onClick={() => handleDelete(u)} className="btn-action btn-delete" title="Hapus Permanen" disabled={u.id === user?.id}><Trash weight="regular" /></button>
+                          <button onClick={() => handleDelete(u)} className="btn-action btn-delete" title="Hapus Permanen" disabled={u.id === user?.id}><IconTrash size={16} stroke={1.8} /></button>
                         </div>
                       </td>
                     </tr>
@@ -485,20 +575,20 @@ function AdminUsers({ user, onLogout }) {
                 </tbody>
               </table>
             </div>
-            {!onlyOrphan && (
+            {!onlyUnmapped && (
               <div className="pagination" style={{ marginTop: '20px' }}>
                 <button onClick={() => setPage(Math.max(1, page - 1))} className="btn btn-secondary" disabled={page === 1}>
-                  <CaretLeft weight="regular" /> Sebelumnya
+                  <IconChevronLeft size={16} stroke={1.8} /> Sebelumnya
                 </button>
                 <span className="page-info">Halaman {page} / {pages} ({total})</span>
                 <button onClick={() => setPage(page + 1)} className="btn btn-secondary" disabled={page >= pages}>
-                  Berikutnya <CaretRight weight="regular" />
+                  Berikutnya <IconChevronRight size={16} stroke={1.8} />
                 </button>
               </div>
             )}
           </>
         ) : (
-          <p style={{ color: 'var(--text-muted)', marginTop: '20px' }}>Tidak ada data pengguna</p>
+          <EmptyState icon={Users} title="Tidak ada pengguna" description="Belum ada data guru/admin. Tambah guru atau sesuaikan filter." action={<button onClick={openCreate} className="btn btn-primary btn-sm">Tambah Guru</button>} />
         )}
       </div>
 
@@ -506,10 +596,11 @@ function AdminUsers({ user, onLogout }) {
         <div className="modal-overlay" onClick={() => setShowForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>{editUser ? 'Ubah Data Guru' : 'Tambah Guru'}</h2>
+            {!editUser && <div style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', borderRadius: '8px', padding: '8px 12px', fontSize: '12px', color: 'var(--text-muted)', marginBottom: '14px' }}>Username otomatis dari nama • Password default <strong style={{ color: 'var(--accent)' }}>Guru2026</strong></div>}
             <form onSubmit={handleFormSubmit}>
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Username {!editUser && <span className="form-hint">otomatis dari nama, boleh diubah</span>}</label>
+                  <label>Username</label>
                   <input name="username" value={form.username} onChange={handleFormChange} required minLength={3} maxLength={18} />
                 </div>
                 <div className="form-group">
@@ -522,8 +613,8 @@ function AdminUsers({ user, onLogout }) {
                 </div>
                 {!editUser && (
                   <div className="form-group full">
-                    <label>Password Awal (min. 8 karakter)</label>
-                    <input name="password" type="password" value={form.password} onChange={handleFormChange} required minLength={8} />
+                    <label>Password Awal <span className="form-hint">default: Guru2026</span></label>
+                    <input name="password" type="text" value={form.password} onChange={handleFormChange} required minLength={8} placeholder="Guru2026" />
                   </div>
                 )}
                 <div className="form-group">
@@ -539,10 +630,29 @@ function AdminUsers({ user, onLogout }) {
                 </div>
                 <div className="form-group">
                   <label>Jenis Layanan</label>
-                  <select name="jabatan" value={form.jabatan} onChange={handleFormChange}>
-                    <option value="">Pilih Jenis Layanan</option>
-                    {jenisLayanan.map((jl) => <option key={jl} value={jl}>{jl}</option>)}
-                  </select>
+                  <div ref={jenisRef} style={{ position: 'relative' }}>
+                    <button type="button" onClick={() => setJenisOpen((o) => !o)} style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', background: 'var(--surface)', border: '1px solid var(--border-strong)', borderRadius: 'var(--radius)', color: String(form.jenis_layanan || '').trim() ? 'var(--text)' : 'var(--text-faint)', fontSize: '14px', cursor: 'pointer' }}>
+                      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{String(form.jenis_layanan || '').trim() ? String(form.jenis_layanan).split(',').map((s) => s.trim()).filter(Boolean).join(', ') : 'Pilih Jenis Layanan'}</span>
+                      <span style={{ marginLeft: '8px', fontSize: '12px', color: 'var(--text-faint)' }}>▾</span>
+                    </button>
+                    {jenisOpen && (
+                      <div style={{ position: 'absolute', top: '44px', left: 0, right: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', boxShadow: 'var(--shadow-md)', zIndex: 20, maxHeight: '180px', overflowY: 'auto', padding: '4px' }}>
+                        {jenisLayanan.length === 0 ? <span style={{ color: 'var(--text-faint)', fontSize: '13px', padding: '8px' }}>Memuat...</span> : jenisLayanan.map((jl) => {
+                          const sel = String(form.jenis_layanan || '').split(',').map((s) => s.trim()).filter(Boolean)
+                          const checked = sel.includes(jl)
+                          return (
+                            <div key={jl} onClick={() => {
+                              const cur = String(form.jenis_layanan || '').split(',').map((s) => s.trim()).filter(Boolean)
+                              const next = cur.includes(jl) ? cur.filter((x) => x !== jl) : [...cur, jl]
+                              setForm({ ...form, jenis_layanan: next.join(', ') })
+                            }} style={{ padding: '9px 12px', borderRadius: '6px', cursor: 'pointer', background: checked ? 'var(--accent-dim)' : 'transparent', color: checked ? 'var(--accent)' : 'var(--text)', fontSize: '13px', fontWeight: checked ? 600 : 400 }}>
+                              {jl}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="form-group">
                   <label>No. HP</label>
@@ -550,10 +660,10 @@ function AdminUsers({ user, onLogout }) {
                 </div>
               </div>
               <div className="modal-actions">
-                <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {editUser ? 'Simpan Perubahan' : 'Simpan'}
+                <button type="submit" className="btn btn-primary" disabled={saving}>
+                  {saving ? 'Menyimpan...' : editUser ? 'Simpan' : 'Simpan'}
                 </button>
-                <button type="button" onClick={() => setShowForm(false)} className="btn btn-secondary">
+                <button type="button" onClick={() => setShowForm(false)} className="btn btn-secondary" disabled={saving}>
                   Batal
                 </button>
               </div>
@@ -578,8 +688,8 @@ function AdminUsers({ user, onLogout }) {
               />
             </div>
             <div className="modal-actions">
-              <button onClick={() => handleResetPassword(resetUserId)} className="btn btn-primary">
-                Simpan
+              <button onClick={() => handleResetPassword(resetUserId)} className="btn btn-primary" disabled={saving}>
+                {saving ? 'Memproses...' : 'Simpan'}
               </button>
               <button
                 onClick={() => {
@@ -587,6 +697,7 @@ function AdminUsers({ user, onLogout }) {
                   setNewPassword('')
                 }}
                 className="btn btn-secondary"
+                disabled={saving}
               >
                 Batal
               </button>
@@ -619,8 +730,8 @@ function AdminUsers({ user, onLogout }) {
               </datalist>
             </div>
             <div className="modal-actions">
-              <button onClick={handleLinkSave} className="btn btn-primary">Simpan</button>
-              <button onClick={() => { setShowLink(false); setLinkUser(null); }} className="btn btn-secondary">Batal</button>
+              <button onClick={handleLinkSave} className="btn btn-primary" disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan'}</button>
+              <button onClick={() => { setShowLink(false); setLinkUser(null); }} className="btn btn-secondary" disabled={saving}>Batal</button>
             </div>
           </div>
         </div>
@@ -633,8 +744,9 @@ function AdminUsers({ user, onLogout }) {
         confirmText={pendingConfirm?.confirmText || 'Ya'}
         cancelText={pendingConfirm?.cancelText || 'Batal'}
         danger={pendingConfirm?.danger}
+        loading={saving}
         onConfirm={runConfirm}
-        onClose={() => setPendingConfirm(null)}
+        onClose={() => !saving && setPendingConfirm(null)}
       />
     </Layout>
   )

@@ -11,8 +11,10 @@ import {
   ShieldCheck,
   Alarm,
 } from '@phosphor-icons/react'
+import { IconAlarm, IconAlertTriangle, IconArrowRight, IconClipboardCheck, IconHistory, IconListDetails, IconShieldCheck, IconUsers } from '@tabler/icons-react'
 import api from '../../api'
 import Layout from '../../components/Layout'
+import EmptyState from '../../components/EmptyState'
 import './AdminDashboard.css'
 
 function AdminDashboard({ user, onLogout }) {
@@ -70,30 +72,34 @@ function AdminDashboard({ user, onLogout }) {
         <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Total Guru</span>
-            <span className="stat-chip"><Users weight="regular" /></span>
+            <span className="stat-chip"><IconUsers size={16} stroke={1.8} /></span>
           </div>
           <div className="stat-value">{stats.totalGuru || 0}</div>
+          <div className="sparkline"><div className="sparkline-fill" style={{ width: `${Math.min(100, (stats.totalGuru || 0) / 70 * 100)}%` }} /></div>
         </div>
         <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Belum Input</span>
-            <span className="stat-chip"><Warning weight="regular" /></span>
+            <span className="stat-chip"><IconAlertTriangle size={16} stroke={1.8} /></span>
           </div>
           <div className="stat-value">{bdSummary.belum ?? notSubmitted.length}</div>
+          <div className="sparkline"><div className="sparkline-fill" style={{ width: `${Math.min(100, (bdSummary.belum ?? notSubmitted.length) / 20 * 100)}%`, background: 'var(--status-sakit)' }} /></div>
         </div>
         <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Absensi Hari Ini</span>
-            <span className="stat-chip"><ClockCounterClockwise weight="regular" /></span>
+            <span className="stat-chip"><IconHistory size={16} stroke={1.8} /></span>
           </div>
           <div className="stat-value">{today.total || 0}</div>
+          <div className="sparkline"><div className="sparkline-fill" style={{ width: `${Math.min(100, (today.total || 0) / 30 * 100)}%` }} /></div>
         </div>
         <div className="stat-card">
           <div className="stat-row">
             <span className="stat-label">Terlambat</span>
-            <span className="stat-chip"><Alarm weight="regular" /></span>
+            <span className="stat-chip"><IconAlarm size={16} stroke={1.8} /></span>
           </div>
           <div className="stat-value">{bdSummary.terlambat || 0}</div>
+          <div className="sparkline"><div className="sparkline-fill" style={{ width: `${Math.min(100, (bdSummary.terlambat || 0) / 10 * 100)}%`, background: 'var(--status-alpa)' }} /></div>
         </div>
       </div>
 
@@ -120,11 +126,11 @@ function AdminDashboard({ user, onLogout }) {
             ))}
           </div>
           <h2 style={{ marginTop: '22px' }}>
-            <ClockCounterClockwise weight="regular" /> Aktivitas Terbaru
+            <IconHistory size={16} stroke={1.8} /> Aktivitas Terbaru
           </h2>
           <div className="recent-feed">
             {recent.length === 0 ? (
-              <p className="ns-empty">Belum ada aktivitas absensi.</p>
+              <EmptyState icon={ClockCounterClockwise} title="Belum ada aktivitas" description="Absensi hari ini belum ada. Aktivitas guru akan muncul di sini." />
             ) : (
               recent.map((r) => (
                 <div className="recent-item" key={r.id}>
@@ -139,7 +145,7 @@ function AdminDashboard({ user, onLogout }) {
 
         <div className="card dash-panel">
           <h2>
-            <Warning weight="regular" /> Guru Belum Input ({bdSummary.belum ?? notSubmitted.length})
+            Guru Belum Input ({bdSummary.belum ?? notSubmitted.length})
           </h2>
           {notSubmitted.length > 0 ? (
             <ul className="not-submitted">
@@ -153,13 +159,13 @@ function AdminDashboard({ user, onLogout }) {
               ))}
             </ul>
           ) : (
-            <p className="ns-empty">Semua guru sudah input absensi hari ini.</p>
+            <EmptyState icon={CheckCircle} title="Semua sudah input" description="Tidak ada guru yang tertinggal hari ini. Rekap sudah lengkap." />
           )}
 
           {lateList.length > 0 && (
             <>
               <h2 style={{ marginTop: '22px' }}>
-                <Alarm weight="regular" /> Terlambat ({lateList.length})
+                <IconAlarm size={16} stroke={1.8} /> Terlambat ({lateList.length})
               </h2>
               <ul className="late-list">
                 {lateList.map((g) => (
@@ -176,36 +182,36 @@ function AdminDashboard({ user, onLogout }) {
 
       <div className="admin-actions">
         <div className="adm-quick" onClick={() => navigate('/admin/users')}>
-          <div className="adm-quick-icon"><Users weight="regular" /></div>
+          <div className="adm-quick-icon"><IconUsers size={16} stroke={1.8} /></div>
           <div className="adm-quick-text">
             <h3>Manajemen Guru</h3>
             <p>Kelola akun guru dan data pribadi</p>
           </div>
-          <ArrowRight weight="regular" className="adm-quick-arrow" />
+          <IconArrowRight size={16} stroke={1.8} className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/absensi')}>
-          <div className="adm-quick-icon"><ClipboardText weight="regular" /></div>
+          <div className="adm-quick-icon"><IconClipboardCheck size={16} stroke={1.8} /></div>
           <div className="adm-quick-text">
             <h3>Data Absensi</h3>
             <p>Lihat dan kelola data absensi</p>
           </div>
-          <ArrowRight weight="regular" className="adm-quick-arrow" />
+          <IconArrowRight size={16} stroke={1.8} className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/kelas')}>
-          <div className="adm-quick-icon"><ListBullets weight="regular" /></div>
+          <div className="adm-quick-icon"><IconListDetails size={16} stroke={1.8} /></div>
           <div className="adm-quick-text">
             <h3>Kelola Kelas</h3>
             <p>Atur kelas &amp; shift untuk input absensi</p>
           </div>
-          <ArrowRight weight="regular" className="adm-quick-arrow" />
+          <IconArrowRight size={16} stroke={1.8} className="adm-quick-arrow" />
         </div>
         <div className="adm-quick" onClick={() => navigate('/admin/audit')}>
-          <div className="adm-quick-icon"><ShieldCheck weight="regular" /></div>
+          <div className="adm-quick-icon"><IconShieldCheck size={16} stroke={1.8} /></div>
           <div className="adm-quick-text">
             <h3>Audit Log</h3>
             <p>Jejak aktivitas pengguna</p>
           </div>
-          <ArrowRight weight="regular" className="adm-quick-arrow" />
+          <IconArrowRight size={16} stroke={1.8} className="adm-quick-arrow" />
         </div>
       </div>
     </Layout>

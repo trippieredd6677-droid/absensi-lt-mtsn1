@@ -1,201 +1,24 @@
+ABSENSI LT MTsN1 — PROJECT READY (ledger)
 
-╔═══════════════════════════════════════════════════════════════════════╗
-║                                                                       ║
-║                  ✅ PROJECT COMPLETE & READY                        ║
-║                                                                       ║
-║            Absensi LT MTsN 1 Kebumen - Full Stack System             ║
-║                                                                       ║
-╚═══════════════════════════════════════════════════════════════════════╝
+DIBANGUN:
+  Backend  server/index.js :5001 (Express, JWT refresh rotation, 7 tabel, 20+ endpoint, ConfirmModal+loading+isDirty)
+  Frontend client/src :3001 (Vite 5, React 18, Phosphor, ledger #f5f5f3 + ink #0e2e1d + sage #3a7a55, E1/R2/M1)
+  DB  users 58 (2 admin, 56 guru), absensi 0 (dikosongkan), jadwal 237, kelas 30, audit 1323
 
-📦 WHAT WAS BUILT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DOKS (baca urut):
+  1 DESIGN.md              arah desain & dial
+  2 README.md              setup & struktur
+  3 QUICK_START.txt        3 langkah jalan
+  4 PROJECT_STRUCTURE.md   arsitektur & schema
+  5 DEPLOYMENT.md          hosting aman
 
-✅ BACKEND (Node.js + Express)
-   → 8 source files
-   → 15+ REST API endpoints
-   → JWT authentication
-   → PostgreSQL integration
-   → File upload handling
-   → Input validation
-   → Security headers
+JALAN 3 LANGKAH:
+  brew services start postgresql@15
+  npm run setup-db
+  Terminal1 npm run dev | Terminal2 cd client && npm run dev → http://localhost:3001
 
-✅ FRONTEND (React + Vite)
-   → 11 React components
-   → Dark cinematic UI
-   → 6 guru pages + 3 admin pages
-   → Responsive design
-   → Form validation
-   → Statistics & filtering
+LOGIN:
+  admin: sekar / TempPass123!  (admin / admin@mtsn1kebumen.id juga ada)
+  guru: mansyur.nurudin / KvRHw/AMJmFZYmpi
 
-✅ DATABASE (PostgreSQL)
-   → 3 tables designed
-   → Connection pooling
-   → Automatic indexes
-   → Audit logging
-
-✅ SECURITY
-   → JWT authentication (7 days)
-   → Password hashing (bcryptjs)
-   → Role-based access control
-   → Input validation (all endpoints)
-   → SQL injection protection
-   → CORS whitelist
-   → File upload security
-   → Audit logging
-
-✅ DOCUMENTATION
-   → 11 comprehensive guides (82 KB)
-   → Architecture documentation
-   → Deployment guide
-   → Setup checklist
-   → Quick reference
-
-📊 FINAL METRICS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Source Files:         42 files
-Documentation:        11 files (82 KB)
-Backend Components:   8 files
-Frontend Components:  11 components
-CSS Stylesheets:      9 files
-API Endpoints:        15+
-Database Tables:      3
-Security Features:    10+
-npm Packages:         237 installed
-Project Size:         64 MB
-Lines of Code:        ~3,500
-
-📁 LOCATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-/Users/anm/Desktop/absensi-lt-mtsn1
-
-✅ ALREADY OPEN IN:
-   • VS Code (for coding)
-   • Finder (for browsing)
-
-📚 DOCUMENTATION FILES (Read in Order)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. DO_THIS_NOW.md          ⭐ START HERE (immediate actions)
-2. QUICK_START.txt         Quick reference (3-step guide)
-3. README.md               Main documentation
-4. PROJECT_STRUCTURE.md    Architecture & database
-5. SETUP_COMPLETE.md       Setup checklist
-6. VERIFICATION.md         Verification checklist
-7. BUILD_COMPLETE.md       Build summary
-8. INDEX.md                Documentation index
-9. DEPLOYMENT.md           Production deployment
-10. POSTGRESQL_SETUP.md    Database installation
-11. FINAL_SUMMARY.txt      Overview
-
-🚀 NEXT 3 STEPS TO RUN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1️⃣  Install PostgreSQL (2 min)
-    brew install postgresql@15
-    brew services start postgresql@15
-
-2️⃣  Setup Database (1 min)
-    cd /Users/anm/Desktop/absensi-lt-mtsn1
-    npm run setup-db
-
-3️⃣  Start Servers (2 terminals)
-    Terminal 1: npm run dev
-    Terminal 2: cd client && npm run dev
-
-Then: Open http://localhost:3000 and login with admin/admin123
-
-✨ FEATURES READY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-FOR GURU:
-  ✓ Login & Dashboard
-  ✓ Isi Absensi (shift, kelas, status, foto, catatan)
-  ✓ Riwayat Absensi (filter, stats)
-  ✓ Edit Profil
-  ✓ Logout
-
-FOR ADMIN:
-  ✓ Admin Dashboard (4 KPI cards)
-  ✓ Manajemen Guru (list, edit, reset password)
-  ✓ Data Absensi (view all, filter, export CSV)
-  ✓ Audit Logs
-
-🔐 SECURITY VERIFIED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✅ JWT Authentication          ✅ Input Validation
-✅ Password Hashing            ✅ SQL Injection Protection
-✅ Role-Based Access           ✅ CORS Whitelist
-✅ File Upload Security        ✅ Security Headers
-✅ Audit Logging               ✅ Error Handling
-
-💻 TECH STACK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Backend:      Node.js 18 + Express.js
-Frontend:     React 18 + Vite 4
-Database:     PostgreSQL 12+
-Authentication: JWT + bcryptjs
-File Upload:  Multer
-Validation:   express-validator
-Styling:      Dark cinematic CSS
-
-✅ WHAT'S INCLUDED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ Complete source code (42 files)
-✓ All dependencies installed (237 packages)
-✓ Database schema ready
-✓ Security best practices
-✓ Comprehensive documentation (11 files)
-✓ Production deployment guide
-✓ Dark cinematic UI
-✓ API fully documented
-✓ Example admin user included
-✓ File upload system
-✓ Audit logging
-✓ Responsive design
-
-⚡ PERFORMANCE FEATURES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ React + Vite fast reload
-✓ PostgreSQL connection pooling
-✓ Database query optimization
-✓ JWT stateless auth
-✓ CSS minification ready
-✓ Production build optimized
-✓ Gzip compression ready
-
-🎯 DEPLOYMENT OPTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ VPS (DigitalOcean, Linode, AWS)  → See DEPLOYMENT.md
-✓ PaaS (Heroku, Railway, Render)   → Simplified setup
-✓ On-Premises (local server)        → Full control
-
-═══════════════════════════════════════════════════════════════════════
-
-                        🎉 BUILD STATUS: COMPLETE 🎉
-
-                  All files created. All deps installed.
-              Security implemented. Docs comprehensive.
-           Ready to run after PostgreSQL installation.
-
-                         👉 Next: Read DO_THIS_NOW.md
-                         👉 Then: Install PostgreSQL
-                         👉 Then: Run npm run setup-db
-                         👉 Finally: Start servers
-
-═══════════════════════════════════════════════════════════════════════
-
-Created:  September 1, 2026
-Version:  1.0.0
-Status:   ✅ PRODUCTION READY (pending PostgreSQL setup)
-
-Location: /Users/anm/Desktop/absensi-lt-mtsn1
-Opened:   VS Code + Finder
-
-═══════════════════════════════════════════════════════════════════════
+CATATAN: histori sudah dikosongkan 207→0, dummy 13 user dihapus, foto absensi dibersihkan, border hijau profil dihapus jadi netral, export owner hanya nama & warna ledger, foto profil nama file slug(full_name)_profil_<ts>.jpg
