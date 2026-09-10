@@ -40,5 +40,7 @@
 
 @media (max-width: 768px) {
   .absensi-form-card, .info-card { max-width: 100%; }
-  .file-input-wrapper { padding: var(--space-4); }
+  .absensi-form-card { padding: 16px 14px; }
+  .absensi-form-card .form-row { grid-template-columns: 1fr; gap: 12px; }
+  .absensi-form-card .form-group input[type="date"] { font-size: 16px; }
 }

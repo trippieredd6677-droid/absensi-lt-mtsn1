@@ -167,7 +167,13 @@
 /* Grouped tables — standardized to Manajemen Guru (card + users-table-wrapper) */
 .kelas-groups { display: flex; flex-direction: column; gap: var(--space-4); }
 .kelas-group.card { padding: 22px 24px; }
-.kelas-group .users-table-wrapper { margin: var(--space-3) 0 0; }
+.kelas-group .users-table-wrapper { margin: var(--space-3) 0 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.kelas-group .users-table-wrapper .table { min-width: 480px; }
+@media (max-width: 768px) {
+  .kelas-group .users-table-wrapper .table th:last-child,
+  .kelas-group .users-table-wrapper .table td:last-child { position: sticky; right: 0; background: var(--surface); box-shadow: -2px 0 6px rgba(0,0,0,0.06); z-index: 2; }
+  .kelas-group .users-table-wrapper .table thead th:last-child { background: var(--surface-2); z-index: 4; }
+}
 .kelas-group-header {
   display: flex;
   align-items: center;

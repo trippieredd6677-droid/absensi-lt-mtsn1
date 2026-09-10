@@ -114,8 +114,13 @@ html[data-theme="dark"] .audit-filter .filter-group input[type="date"]::-webkit-
 .users-table-wrapper { margin: var(--space-1) 0 var(--space-2); }
 
 @media (max-width: 768px) {
-  .audit-filter .filter-actions { width: 100%; }
+  .audit-filter { display: flex; flex-direction: column; gap: 12px; }
+  .audit-filter .filter-group { width: 100%; }
+  .audit-filter .filter-actions { width: 100%; flex-direction: row; }
   .audit-filter .filter-actions .btn { flex: 1; justify-content: center; }
   .table th:nth-child(5), .table td:nth-child(5) { display: none; }
   .audit-detail { max-width: 160px; }
+  .audit-timeline { padding-left: 16px; margin-top: 12px; }
+  .audit-tl-item { grid-template-columns: 1fr; gap: 6px; padding: 12px 0; }
+  .audit-tl-dot { left: -21px; top: 14px; }
 }

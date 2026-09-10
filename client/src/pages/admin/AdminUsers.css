@@ -136,11 +136,14 @@
   .search-section .btn-primary { flex: 1 1 100%; justify-content: center; }
 
   .users-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); margin: 12px -14px 0; border-left: none; border-right: none; border-radius: 0; }
-  .users-table-wrapper .table { min-width: 680px; font-size: 12px; }
+  .users-table-wrapper .table { min-width: 720px; font-size: 12px; }
   .users-table-wrapper .table th { font-size: 10px; padding: 8px 10px; white-space: nowrap; }
   .users-table-wrapper .table td { padding: 10px; vertical-align: middle; }
   .users-table-wrapper .table td:nth-child(4) { display: none; }
   .users-table-wrapper .table th:nth-child(4) { display: none; }
+  .users-table-wrapper .table th:last-child,
+  .users-table-wrapper .table td:last-child { position: sticky; right: 0; background: var(--surface); box-shadow: -2px 0 6px rgba(0,0,0,0.06); z-index: 2; }
+  .users-table-wrapper .table thead th:last-child { background: var(--surface-2); z-index: 4; }
 
   .bulk-bar { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
   .bulk-bar .btn { flex: 1; min-width: calc(50% - 8px); justify-content: center; }

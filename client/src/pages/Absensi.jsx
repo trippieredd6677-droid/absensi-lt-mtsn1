@@ -19,7 +19,7 @@ function Absensi({ user, onLogout }) {
 
   const [formData, setFormData] = useState({
     tanggal: today,
-    shift: 'siang',
+    shift: '',
     kelas: '',
     status: 'hadir',
     catatan: '',
@@ -48,22 +48,10 @@ function Absensi({ user, onLogout }) {
     api.get('/shift/jam-lt')
       .then((res) => {
         const list = (res.data.jam_lt || []).map((s) => s.nama)
-        if (list.length > 0) {
-          setShiftList(list)
-          setFormData((prev) => ({ ...prev, shift: list[0] }))
-        } else {
-          return api.get('/shift').then((r2) => {
-            const fallback = (r2.data.shift || []).map((s) => s.nama)
-            setShiftList(fallback)
-            if (fallback.length > 0) setFormData((prev) => ({ ...prev, shift: fallback[0] }))
-          })
-        }
+        setShiftList(list)
+        if (list.length > 0) setFormData((prev) => ({ ...prev, shift: prev.shift || list[0] }))
       })
-      .catch(() => api.get('/shift').then((r2) => {
-        const fallback = (r2.data.shift || []).map((s) => s.nama)
-        setShiftList(fallback)
-        if (fallback.length > 0) setFormData((prev) => ({ ...prev, shift: fallback[0] }))
-      }).catch(() => setShiftList([])))
+      .catch(() => setShiftList([]))
   }, [])
 
   const klasesList = kelasList
@@ -159,7 +147,7 @@ function Absensi({ user, onLogout }) {
       // Reset form
       setFormData({
         tanggal: new Date().toISOString().split('T')[0],
-        shift: shiftList[0] || 'siang',
+        shift: shiftList[0] || '',
         kelas: '',
         status: 'hadir',
         catatan: '',
