@@ -114,10 +114,15 @@ html[data-theme="dark"] .audit-filter .filter-group input[type="date"]::-webkit-
 .users-table-wrapper { margin: var(--space-1) 0 var(--space-2); }
 
 @media (max-width: 768px) {
-  .audit-filter { display: flex; flex-direction: column; gap: 12px; }
-  .audit-filter .filter-group { width: 100%; }
-  .audit-filter .filter-actions { width: 100%; flex-direction: row; }
-  .audit-filter .filter-actions .btn { flex: 1; justify-content: center; }
+  .audit-filter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .audit-filter .filter-group:nth-child(1),
+  .audit-filter .filter-group:nth-child(2) { grid-column: span 2; }
+  .audit-filter .filter-group:nth-child(3),
+  .audit-filter .filter-group:nth-child(4) { grid-column: span 1; }
+  .audit-filter .filter-actions { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .audit-filter .filter-actions .btn { width: 100%; }
+  .audit-filter .filter-group input,
+  .audit-filter .filter-group select { height: 38px; font-size: 14px; }
   .table th:nth-child(5), .table td:nth-child(5) { display: none; }
   .audit-detail { max-width: 160px; }
   .audit-timeline { padding-left: 16px; margin-top: 12px; }

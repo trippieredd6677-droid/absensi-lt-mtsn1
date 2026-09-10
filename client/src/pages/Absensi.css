@@ -39,8 +39,9 @@
 .info-card li svg { flex-shrink: 0; margin-top: 1px; color: var(--accent); width: var(--icon-sm); height: var(--icon-sm); }
 
 @media (max-width: 768px) {
-  .absensi-form-card, .info-card { max-width: 100%; }
-  .absensi-form-card { padding: 16px 14px; }
+  .absensi-form-card, .info-card { max-width: 100%; border: none; border-radius: 0; box-shadow: none; padding: 0; background: transparent; }
+  .absensi-form-card form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 14px; }
   .absensi-form-card .form-row { grid-template-columns: 1fr; gap: 12px; }
   .absensi-form-card .form-group input[type="date"] { font-size: 16px; }
+  .info-card { margin-top: 12px; padding: 16px 14px; }
 }

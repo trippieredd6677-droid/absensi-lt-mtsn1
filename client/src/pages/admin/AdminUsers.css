@@ -145,8 +145,8 @@
   .users-table-wrapper .table td:last-child { position: sticky; right: 0; background: var(--surface); box-shadow: -2px 0 6px rgba(0,0,0,0.06); z-index: 2; }
   .users-table-wrapper .table thead th:last-child { background: var(--surface-2); z-index: 4; }
 
-  .bulk-bar { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
-  .bulk-bar .btn { flex: 1; min-width: calc(50% - 8px); justify-content: center; }
+  .bulk-bar { flex-wrap: wrap; gap: 8px; padding: 10px 12px; position: sticky; top: 52px; z-index: 5; background: var(--accent-dim); border-color: var(--accent-border); box-shadow: var(--shadow-sm); }
+  .bulk-bar .btn { flex: 1; min-width: calc(50% - 8px); justify-content: center; min-height: 38px; }
 
   .pagination { flex-wrap: wrap; gap: 8px; }
   .pagination .btn { flex: 1; justify-content: center; min-width: 120px; }

@@ -64,5 +64,22 @@
 }
 
 @media (max-width: 768px) {
-  .stats-summary { grid-template-columns: repeat(2, 1fr); }
+  .stats-summary { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .filter-export-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 14px; }
+  .filter-export-section .filter-group:nth-child(1),
+  .filter-export-section .filter-group:nth-child(2) { grid-column: span 1; }
+  .filter-export-section .filter-group:nth-child(3) { grid-column: span 2; }
+  .filter-export-section .btn { grid-column: span 1; height: 38px; justify-content: center; }
+  .filter-export-section .btn-primary { grid-column: span 2; }
+  .absensi-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px -14px 0; border-left: none; border-right: none; border-radius: 0; }
+  .absensi-table-wrapper .table { min-width: 720px; font-size: 12px; }
+  .absensi-table-wrapper .table th { font-size: 10px; padding: 8px 10px; }
+  .absensi-table-wrapper .table td { padding: 9px 10px; }
+  .absensi-table-wrapper .table th.hide-mobile,
+  .absensi-table-wrapper .table td.hide-mobile,
+  .absensi-table-wrapper .table th:nth-child(4),
+  .absensi-table-wrapper .table td:nth-child(4) { display: none; }
+  .absensi-table-wrapper .table th:last-child,
+  .absensi-table-wrapper .table td:last-child { position: sticky; right: 0; background: var(--surface); box-shadow: -2px 0 6px rgba(0,0,0,0.06); z-index: 2; }
+  .absensi-table-wrapper .table thead th:last-child { background: var(--surface-2); z-index: 4; }
 }
