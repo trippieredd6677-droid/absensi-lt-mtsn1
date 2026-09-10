@@ -83,7 +83,7 @@
 }
 .bulk-bar .btn-danger:hover:not(:disabled) {
   background: var(--status-alpa);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--status-alpa);
 }
 

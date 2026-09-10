@@ -62,13 +62,13 @@ function Login({ onLogin }) {
           <span className="login-brand-name">Absensi LT</span>
         </div>
         <div className="login-brand-mid">
-          <span className="login-brand-kicker">Sistem Absensi Layanan Terpadu</span>
-          <h2 className="login-brand-title">Catat & dokumetasi kegiatan <br />Siswa dan Guru.</h2>
+          <span className="login-brand-kicker">Sistem Absensi Layanan Tambahan</span>
+          <h2 className="login-brand-title">Bissmillah, We always <br /> to be better.</h2>
           <p className="login-brand-sub">
-            Kelola presensi guru lebih praktis, rapi, dan terintegrasi.
+            MTsN 1 Kebumen · 2026
           </p>
         </div>
-        <div className="login-brand-foot">MTsN 1 Kebumen · 2026</div>
+        <div className="login-brand-foot">@mtsn1kebumen</div>
       </aside>
 
       <div className="login-form-side">
