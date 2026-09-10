@@ -38,24 +38,7 @@ async function runMigrations() {
     console.log('✓ Seed kelas default: ' + names.length);
   }
 
-  // Tabel jenis_layanan (master, dikelola di Kelola Kelas > Jenis Layanan)
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS jenis_layanan (
-      id SERIAL PRIMARY KEY,
-      nama VARCHAR(120) NOT NULL UNIQUE,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
-  const { rows: jl } = await pool.query('SELECT COUNT(*)::int AS c FROM jenis_layanan');
-  if (jl[0].c === 0) {
-    const { rows: distinct } = await pool.query('SELECT DISTINCT jenis_layanan FROM guru_map WHERE jenis_layanan IS NOT NULL AND jenis_layanan <> \'\'');
-    for (const r of distinct) {
-      await pool.query('INSERT INTO jenis_layanan (nama) VALUES ($1) ON CONFLICT (nama) DO NOTHING', [r.jenis_layanan]);
-    }
-    if (distinct.length) console.log('✓ Seed jenis_layanan dari guru_map: ' + distinct.length);
-  }
-
-  console.log('✓ Migrations ready (password_resets, kelas, jenis_layanan)');
+  console.log('✓ Migrations ready (password_resets, kelas)');
 
   // Tabel shift (dinamis, dikelola admin)
   await pool.query(`
@@ -280,6 +263,23 @@ async function runMigrations() {
   await pool.query(
     `CREATE INDEX IF NOT EXISTS idx_users_guru_map ON users(guru_map_kode)`
   );
+
+  // Tabel jenis_layanan (master, dikelola di Kelola Kelas > Jenis Layanan)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS jenis_layanan (
+      id SERIAL PRIMARY KEY,
+      nama VARCHAR(120) NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  const { rows: jlCount } = await pool.query('SELECT COUNT(*)::int AS c FROM jenis_layanan');
+  if (jlCount[0].c === 0) {
+    const { rows: distinct } = await pool.query('SELECT DISTINCT jenis_layanan FROM guru_map WHERE jenis_layanan IS NOT NULL AND jenis_layanan <> \'\'');
+    for (const r of distinct) {
+      await pool.query('INSERT INTO jenis_layanan (nama) VALUES ($1) ON CONFLICT (nama) DO NOTHING', [r.jenis_layanan]);
+    }
+    if (distinct.length) console.log('✓ Seed jenis_layanan dari guru_map: ' + distinct.length);
+  }
 
   // Bootstrap admin pertama — hanya jika ADMIN_PASSWORD di-set (anti default-cred lemah)
   const bcrypt = require('bcryptjs');
