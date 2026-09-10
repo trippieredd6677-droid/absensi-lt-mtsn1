@@ -70,7 +70,7 @@ async function setupDatabase() {
         ip_address VARCHAR(45),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(user_id, tanggal, shift)
+        UNIQUE(user_id, tanggal, shift, kelas)
       );
     `);
 

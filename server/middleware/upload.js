@@ -7,9 +7,13 @@ const fs = require('fs');
 // (cwd beda = file kesimpen di tempat lain / ENOENT). Upgrade path: pindahkan
 // nilai UPLOAD_DIR di .env jadi path absolut saat deploy.
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
-const uploadDir = process.env.UPLOAD_DIR
-  ? path.resolve(PROJECT_ROOT, process.env.UPLOAD_DIR)
-  : path.join(__dirname, '../../uploads');
+// Railway Volume otomatis dipakai kalau ada (RAILWAY_VOLUME_MOUNT_PATH),
+// fallback ke UPLOAD_DIR, terakhir ./uploads
+const uploadDir = process.env.RAILWAY_VOLUME_MOUNT_PATH
+  ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
+  : process.env.UPLOAD_DIR
+    ? path.resolve(PROJECT_ROOT, process.env.UPLOAD_DIR)
+    : path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

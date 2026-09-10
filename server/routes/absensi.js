@@ -49,14 +49,15 @@ router.post('/', verifyToken, isGuruOrAdmin, attachGuruName, upload.single('foto
       return res.status(400).json({ message: 'Absensi hanya dapat diisi untuk hari ini.' });
     }
 
-    // Check if already submitted for this date/shift
+    // Boleh kirim >1x per tanggal+shift, asal beda kelas.
+    // Cegah duplikat persis: user + tanggal + shift + kelas sama
     const existing = await pool.query(
-      'SELECT id FROM absensi WHERE user_id = $1 AND tanggal = $2 AND shift = $3',
-      [userId, tanggal, shift]
+      'SELECT id FROM absensi WHERE user_id = $1 AND tanggal = $2 AND shift = $3 AND kelas = $4',
+      [userId, tanggal, shift, kelas]
     );
 
     if (existing.rows.length > 0) {
-      return res.status(400).json({ message: 'Absensi untuk tanggal dan shift ini sudah pernah dikirim' });
+      return res.status(400).json({ message: 'Absensi untuk tanggal, shift, dan kelas ini sudah pernah dikirim' });
     }
 
     // Insert absensi
@@ -103,11 +104,11 @@ router.post('/admin-create', verifyToken, isAdmin, attachGuruName, upload.single
     if (own.rows.length === 0) return res.status(404).json({ message: 'User tidak ditemukan' });
 
     const existing = await pool.query(
-      'SELECT id FROM absensi WHERE user_id = $1 AND tanggal = $2 AND shift = $3',
-      [user_id, tanggal, shift]
+      'SELECT id FROM absensi WHERE user_id = $1 AND tanggal = $2 AND shift = $3 AND kelas = $4',
+      [user_id, tanggal, shift, kelas]
     );
     if (existing.rows.length > 0) {
-      return res.status(400).json({ message: 'Absensi untuk guru, tanggal & shift ini sudah ada' });
+      return res.status(400).json({ message: 'Absensi untuk guru, tanggal, shift & kelas ini sudah ada' });
     }
 
     const result = await pool.query(

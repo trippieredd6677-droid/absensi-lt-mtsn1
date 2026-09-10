@@ -94,15 +94,16 @@ async function runMigrations() {
       shift VARCHAR(20) NOT NULL,
       kelas VARCHAR(10),
       status VARCHAR(20) NOT NULL,
-      foto_kegiatan VARCHAR(255),
+      foto_kegiatan TEXT,
       catatan TEXT,
       lokasi_gps VARCHAR(100),
       ip_address VARCHAR(45),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE(user_id, tanggal, shift)
+      UNIQUE(user_id, tanggal, shift, kelas)
     );
   `);
+  await pool.query(`ALTER TABLE absensi ALTER COLUMN foto_kegiatan TYPE TEXT`);
   await pool.query(`
     CREATE TABLE IF NOT EXISTS audit_log (
       id SERIAL PRIMARY KEY,
@@ -229,6 +230,11 @@ async function runMigrations() {
   await addConstraintIfNotExists('jadwal', 'jadwal_slot_unique', 'UNIQUE (hari, jam, kelas, gender_target)');
   await dropConstraintIfExists('jadwal_source', 'jadwal_source_hari_jam_kelas_key');
   await addConstraintIfNotExists('jadwal_source', 'jadwal_source_slot_unique', 'UNIQUE (hari, jam, kelas, gender_target)');
+
+  // Absensi boleh >1x per tanggal+shift asal beda kelas:
+  // UNIQUE lama (user_id, tanggal, shift) -> baru (user_id, tanggal, shift, kelas)
+  await dropConstraintIfExists('absensi', 'absensi_user_id_tanggal_shift_key');
+  await addConstraintIfNotExists('absensi', 'absensi_user_shift_kelas_unique', 'UNIQUE (user_id, tanggal, shift, kelas)');
 
   // Trigger propagasi jadwal_source -> jadwal (dipakai import Excel yang hanya menulis
   // jadwal_source). Dibuat ulang di sini supaya selalu mengikuti kunci slot terbaru

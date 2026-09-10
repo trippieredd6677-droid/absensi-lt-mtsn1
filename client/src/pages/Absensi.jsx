@@ -302,7 +302,7 @@ function Absensi({ user, onLogout }) {
         <h3><IconInfoCircle size={16} stroke={1.8} /> Informasi Penting</h3>
         <ul>
           <li><IconCircleCheck size={16} stroke={1.8} /> Pastikan semua data yang Anda isi sudah benar sebelum mengirim</li>
-          <li><IconCircleCheck size={16} stroke={1.8} /> Setiap tanggal dan Jam LT hanya boleh diisi satu kali</li>
+          <li><IconCircleCheck size={16} stroke={1.8} /> Setiap tanggal + Jam LT boleh diisi lebih dari 1x asal beda kelas</li>
           <li><IconCircleCheck size={16} stroke={1.8} /> Anda hanya bisa melihat riwayat absensi; koreksi data ditangani admin</li>
           <li><IconCircleCheck size={16} stroke={1.8} /> Unggah foto kegiatan untuk mendokumentasikan aktivitas Anda</li>
         </ul>

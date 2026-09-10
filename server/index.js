@@ -83,7 +83,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Static files for uploads (cache privat, no execution)
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
+// Samakan dengan server/middleware/upload.js: Volume Railway > UPLOAD_DIR > ./uploads
+const uploadDir = process.env.RAILWAY_VOLUME_MOUNT_PATH
+  ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'uploads')
+  : process.env.UPLOAD_DIR
+    ? path.resolve(__dirname, '..', process.env.UPLOAD_DIR)
+    : path.join(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadDir, {
   setHeaders: (res) => {
     res.setHeader('Cache-Control', 'private, max-age=3600');
     res.setHeader('Content-Disposition', 'inline');

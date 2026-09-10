@@ -83,7 +83,7 @@ async function seed() {
         await client.query(
           `INSERT INTO absensi (user_id, tanggal, hari, shift, kelas, status, catatan, ip_address)
            VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-           ON CONFLICT (user_id, tanggal, shift) DO NOTHING`,
+           ON CONFLICT (user_id, tanggal, shift, kelas) DO NOTHING`,
           [uid, tanggal, hari, shift, kelas, status, catatan, '127.0.0.1']
         );
         inserted++;
