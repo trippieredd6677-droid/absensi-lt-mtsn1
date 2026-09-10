@@ -22,6 +22,7 @@ import {
   IconMoon,
   IconLogout,
   IconMenu2,
+  IconX,
 } from '@tabler/icons-react'
 import { useTheme } from '../ThemeContext'
 import logo from '../assets/logo-sidebar.jpg'
@@ -96,12 +97,14 @@ function Layout({ user, onLogout, role = 'guru', active, children }) {
                 {theme === 'light' ? <IconMoon size={16} stroke={1.8} /> : <IconSun size={16} stroke={1.8} />}
               </button>
               <button
-                className="mobile-menu-btn"
+                className={`mobile-menu-btn ${menuOpen ? 'open' : ''}`}
                 onClick={() => setMenuOpen((o) => !o)}
                 aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
                 aria-expanded={menuOpen}
               >
-                <IconMenu2 size={16} stroke={1.8} />
+                <span className="burger-icon">
+                  {menuOpen ? <IconX size={16} stroke={1.8} /> : <IconMenu2 size={16} stroke={1.8} />}
+                </span>
               </button>
               <button
                 className="mobile-logout"
