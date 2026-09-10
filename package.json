@@ -7,7 +7,7 @@
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
     "client": "cd client && npm start",
-    "build": "cd client && npm run build",
+    "build": "npm install --prefix client && npm run build --prefix client",
     "setup-db": "node server/setup-db.js",
     "sync-jadwal": "node server/sync-jadwal.js --apply"
   },
